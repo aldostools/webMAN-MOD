@@ -684,7 +684,7 @@ static void prepare_html(char *buffer, char *templn, char *param, u8 is_ps3_http
 	if(islike(param, "/index.ps3"))
 	{
 		strcat(buffer,	".gc{float:left;overflow:hidden;position:relative;text-align:center;width:280px;height:260px;margin:3px;border:1px dashed grey;}"
-						".ic{position:absolute;top:5px;right:5px;left:5px;bottom:40px;}");
+						".ic{position:absolute;top:5px;right:5px;left:5px;bottom:44px;}");
 
 		if(is_ps3_http == 1)
 			strcat(buffer, ".gi{height:210px;width:267px;");
@@ -693,7 +693,7 @@ static void prepare_html(char *buffer, char *templn, char *param, u8 is_ps3_http
 	}
 
 	strcat(buffer, "position:absolute;bottom:0px;top:0px;left:0px;right:0px;margin:auto;}"
-				   ".gn{position:absolute;height:38px;bottom:0px;right:7px;left:7px;text-align:center;}--></style>");
+				   ".gn{position:absolute;height:42px;bottom:0px;right:7px;left:7px;text-align:center;}--></style>");
 
 	if(param[1] != NULL && !strstr(param, ".ps3")) {strcat(buffer, "<base href=\""); urlenc(templn, param, 0); strcat(templn, "/\">"); strcat(buffer, templn);}
 
