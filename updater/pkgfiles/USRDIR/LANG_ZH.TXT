@@ -149,7 +149,7 @@ STR_OVERHEAT2		[過熱危險! 風扇轉速增加!]
 
 STR_NOTFOUND		[沒找到]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

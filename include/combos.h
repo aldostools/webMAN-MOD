@@ -102,7 +102,7 @@
 #ifdef WM_CUSTOM_COMBO
 								if(file_exists(WM_CUSTOM_COMBO "select_square"))
 								{
-									sysLv2FsLink(WM_CUSTOM_COMBO "select_square", "/dev_hdd0/tmp/wm_request"); break;
+									filecopy(WM_CUSTOM_COMBO "select_square", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 								}
 								else
 #endif
@@ -365,7 +365,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_up"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_up", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_up", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -399,7 +399,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_down"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_down", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_down", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -432,7 +432,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_left"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_left", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_left", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -453,7 +453,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_right"))
 							{
-									sysLv2FsLink(WM_CUSTOM_COMBO "select_right", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_right", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -474,7 +474,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_l1"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_l1", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_l1", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -491,7 +491,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_r1"))
 							{
- 								sysLv2FsLink(WM_CUSTOM_COMBO "select_r1", "/dev_hdd0/tmp/wm_request"); break;
+ 								filecopy(WM_CUSTOM_COMBO "select_r1", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -508,7 +508,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "select_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_circle", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -520,7 +520,7 @@ show_popup:
 						{
 							if(file_exists(WM_CUSTOM_COMBO "select_triangle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "select_triangle", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "select_triangle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 						}
 #endif
@@ -605,22 +605,22 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "l2_r2_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "l2_r2_circle", "/dev_hdd0/tmp/wm_request");
+								filecopy(WM_CUSTOM_COMBO "l2_r2_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE);
 							}
 							else
 							if(file_exists(WM_CUSTOM_COMBO "l2_r2_l1_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "l2_r2_l1_circle", "/dev_hdd0/tmp/wm_request");
+								filecopy(WM_CUSTOM_COMBO "l2_r2_l1_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE);
 							}
 							else
 							if(file_exists(WM_CUSTOM_COMBO "l2_r2_r1_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "l2_r2_r1_circle", "/dev_hdd0/tmp/wm_request");
+								filecopy(WM_CUSTOM_COMBO "l2_r2_r1_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE);
 							}
 							else
 							if(file_exists(WM_CUSTOM_COMBO "l2_r2_l1_r1_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "l2_r2_l1_r1_circle", "/dev_hdd0/tmp/wm_request");
+								filecopy(WM_CUSTOM_COMBO "l2_r2_l1_r1_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE);
 							}
 							else
 #endif
@@ -651,7 +651,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "r2_triangle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "r2_triangle", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "r2_triangle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -667,14 +667,14 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "r2_square"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "r2_square", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "r2_square", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
 #ifdef WM_REQUEST
 							if(file_exists("/dev_hdd0/tmp/wm_custom_combo"))
 							{
-								sysLv2FsLink("/dev_hdd0/tmp/wm_custom_combo", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy("/dev_hdd0/tmp/wm_custom_combo", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif
@@ -688,7 +688,7 @@ show_popup:
 #ifdef WM_CUSTOM_COMBO
 							if(file_exists(WM_CUSTOM_COMBO "r2_circle"))
 							{
-								sysLv2FsLink(WM_CUSTOM_COMBO "r2_circle", "/dev_hdd0/tmp/wm_request"); break;
+								filecopy(WM_CUSTOM_COMBO "r2_circle", (char*)"/dev_hdd0/tmp/wm_request", COPY_WHOLE_FILE); break;
 							}
 							else
 #endif

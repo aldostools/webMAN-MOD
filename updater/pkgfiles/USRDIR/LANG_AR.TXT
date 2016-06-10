@@ -149,7 +149,7 @@ STR_OVERHEAT2		[!ﺔﺣﻭﺮﻤﻟا ﺔﻋﺮﺳ ﺓﺩﺎﻳﺯ ! ﺓﺭاﺮ
 
 STR_NOTFOUND		[!غير موجود]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

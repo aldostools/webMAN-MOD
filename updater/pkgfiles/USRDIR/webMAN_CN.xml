@@ -873,7 +873,7 @@
 	<View id="seg_webman_unmount">
 		<Attributes>
 			<Table key="webman_unmount">
-				<Pair key="icon"><String>/dev_hdd0/game/XMBMANPLS/USRDIR/IMAGES/icon_wm_eject.png</String></Pair>
+				<Pair key="icon"><String>/dev_hdd0/tmp/wm_icons/icon_wm_ps3.png</String></Pair>
 				<Pair key="title"><String>卸载光盘</String></Pair>
 				<Pair key="info"><String></String></Pair>
 				<Pair key="module_name"><String>webrender_plugin</String></Pair>

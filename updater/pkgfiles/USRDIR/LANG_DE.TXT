@@ -149,6 +149,6 @@ STR_OVERHEAT2   [! ÜBERHITZUNGSGEFAHR ! LÜFTER-GESCHWINDIGKEIT ERHÖHT !]
 
 STR_NOTFOUND    [Nicht gefunden !]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]

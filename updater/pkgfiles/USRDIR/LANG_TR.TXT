@@ -149,7 +149,7 @@ STR_OVERHEAT2		[ASIRI ISINMA TEHLIKESI! FAN HIZI ARTTIRILDI!]
 
 STR_NOTFOUND		[Bulunamadı!]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

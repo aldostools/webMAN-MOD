@@ -166,6 +166,10 @@ static void setup_parse_settings(char *param)
 	webman_config->refr=0;
 	if(strstr(param, "refr")) webman_config->refr=1;
 
+#ifdef LAUNCHPAD
+	if(strstr(param, "lx=1")) webman_config->launchpad_xml=1;
+#endif
+
 	webman_config->temp0=0;
 
 	webman_config->temp1   = get_valuen(param, "step=", 40, MAX_TEMPERATURE); //°C
@@ -385,7 +389,13 @@ static void setup_form(char *buffer, char *templn)
 
 	add_check_box("bl", "1"   ,  STR_DEVBL,    _BR_, (webman_config->blind), buffer);
 	add_check_box("wn", "wmdn",  STR_NOWMDN,   _BR_, (webman_config->wmdn) , buffer);
-	add_check_box("rf", "refr",  STR_CONTSCAN, _BR_, (webman_config->refr) , buffer);
+
+#ifdef LAUNCHPAD
+	add_check_box("rf", "refr",  STR_CONTSCAN, " & ", (webman_config->refr), buffer);
+	add_check_box("lx", "1",  "LaunchPad.xml", _BR_, (webman_config->launchpad_xml), buffer);
+#else
+	add_check_box("rf", "refr",  STR_CONTSCAN, _BR_, (webman_config->refr), buffer);
+#endif
 
 	add_check_box("pl", "1", STR_USBPOLL,  _BR_, (webman_config->poll) , buffer);
 	add_check_box("ft", "1", STR_FTPSVC,   _BR_, (webman_config->ftpd) , buffer);

@@ -149,7 +149,7 @@ STR_OVERHEAT2		[오버히트 위험! 팬속도가 증가!]
 
 STR_NOTFOUND		[찾을 수 없습니다!]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

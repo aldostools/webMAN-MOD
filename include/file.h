@@ -11,11 +11,11 @@ static u32 copied_count = 0;
 static int isDir(const char* path);
 
 static int savefile(char *file, char *mem, u64 size);
-static int filecopy(char *file1, char *file2, uint64_t maxbytes);
+static int filecopy(const char *file1, char *file2, uint64_t maxbytes);
 static int folder_copy(char *path1, char *path2);
 
 #ifndef LITE_EDITION
-static int del(char *path, bool recursive);
+static int del(const char *path, bool recursive);
 #endif
 
 static void enable_dev_blind(char *msg);
@@ -153,7 +153,7 @@ static int concat(char *file1, char *file2)
 	return ret;
 }
 */
-static int filecopy(char *file1, char *file2, uint64_t maxbytes)
+static int filecopy(const char *file1, char *file2, uint64_t maxbytes)
 {
 	struct CellFsStat buf;
 	int fd1, fd2;
@@ -319,7 +319,7 @@ static int folder_copy(char *path1, char *path2)
 }
 
 #ifndef LITE_EDITION
-static int del(char *path, bool recursive)
+static int del(const char *path, bool recursive)
 {
 	if(!isDir(path)) {return cellFsUnlink(path);}
 	if(strlen(path) < 11 || islike(path, "/dev_bdvd") || islike(path, "/dev_flash") || islike(path, "/dev_blind")) return FAILED;

@@ -149,7 +149,7 @@ STR_OVERHEAT2	[DANGER SURCHAUFFE! VITESSE DU VENTILATEUR AUGMENTÉE!]
 
 STR_NOTFOUND		[N'a pas été trouvé!]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

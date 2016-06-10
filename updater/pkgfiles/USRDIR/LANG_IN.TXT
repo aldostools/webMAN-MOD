@@ -149,7 +149,7 @@ STR_OVERHEAT2	[TERLALU PANAS BAHAYA! KECEPATAN KIPAS MENINGKAT!]
 
 STR_NOTFOUND		[Tidak ditemukan!]
 
-COVERS_PATH			[]
+COVERS_PATH			[http://xmbmods.co/wmlp/covers/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 

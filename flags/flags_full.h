@@ -43,5 +43,5 @@
 #define SYS_BGM			1	// system background music (may freeze the system when enabled)
 //#define USE_DEBUG		1	// debug using telnet
 //#define RAWISO_PSX_MULTI	// support for multi PSX from Iris Manager (it's incomplete - only rawseciso.h code is complete)
-//#define LAUNCHPAD		1	// create /dev_hdd0/tmp/wm_lauchpad.xml
+#define LAUNCHPAD		1	// create /dev_hdd0/tmp/wm_lauchpad.xml
 
