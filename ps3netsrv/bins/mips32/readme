@@ -1,24 +1,30 @@
-Toolchain from Entware-ng/Entware-ng@80b982e, built on ppc64 HOST
+ps3netsrv build 20170106, mips binaries
+----------------------------------------
 
-GNU C++ (OpenWrt GCC 5.4.0 unknown) version 5.4.0 (mipsel-openwrt-linux-uclibc)
-compiled by GNU C version 6.2.1 20160916 (Red Hat 6.2.1-2), GMP version 6.1.1, MPFR version 3.1.5, MPC version 1.0.3
-GNU assembler version 2.26.1 (mipsel-openwrt-linux-uclibc) using BFD version (GNU Binutils) 2.26.1
-GNU ld (GNU Binutils) 2.26.1
-Supported emulations:
-elf32ltsmip
-elf32btsmip
-elf32ltsmipn32
-elf64ltsmip
-elf32btsmipn32
-elf64btsmip
+compiled using toolchains from buildroot.org, built on ppc64 host:
+
+# BE
+$ mips-linux-g++ -v
+Target: mips-buildroot-linux-uclibc
+Configured with: ./configure --prefix=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr --sysconfdir=/mnt/data/buildroot/buildroot-2016.11.1/output/host/etc --enable-static --target=mips-buildroot-linux-uclibc --with-sysroot=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr/mips-buildroot-linux-uclibc/sysroot --disable-__cxa_atexit --with-gnu-ld --disable-libssp --disable-multilib --with-gmp=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr --with-mpc=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr --with-mpfr=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr --with-pkgversion='Buildroot 2016.11.1' --with-bugurl=http://bugs.buildroot.net/ --disable-libquadmath --disable-libsanitizer --enable-tls --disable-libmudflap --enable-threads --without-isl --without-cloog --with-float=soft --disable-decimal-float --with-arch=mips32 --with-abi=32 --enable-languages=c,c++ --with-build-time-tools=/mnt/data/buildroot/buildroot-2016.11.1/output/host/usr/mips-buildroot-linux-uclibc/bin --disable-shared --disable-libcilkrts --disable-libgomp --with-endian=big,little --disable-libquadmath --disable-multilib --disable-shared --disable-gprof --disable-__cxa_atexit --disable-lto --enable-languages=c,c++ --disable-libssp --disable-libatomic
+Thread model: posix
+gcc version 6.2.0 (Buildroot 2016.11.1)
+GNU assembler version 2.27 (mips-buildroot-linux-uclibc) using BFD version (GNU Binutils) 2.27
+uclibc-1.0.16
+
+# LE
+$ mipsel-buildroot-linux-uclibc-g++ -v
+Target: mipsel-buildroot-linux-uclibc
+Configured with: ./configure --prefix=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr --sysconfdir=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/etc --enable-static --target=mipsel-buildroot-linux-uclibc --with-sysroot=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr/mipsel-buildroot-linux-uclibc/sysroot --disable-__cxa_atexit --with-gnu-ld --disable-libssp --disable-multilib --with-gmp=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr --with-mpc=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr --with-mpfr=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr --with-pkgversion='Buildroot 2016.11.1' --with-bugurl=http://bugs.buildroot.net/ --disable-libquadmath --disable-libsanitizer --enable-tls --disable-libmudflap --enable-threads --without-isl --without-cloog --with-float=soft --disable-decimal-float --with-arch=mips32 --with-abi=32 --enable-languages=c,c++ --with-build-time-tools=/mnt/data/buildroot/mipsel/buildroot-2016.11.1/output/host/usr/mipsel-buildroot-linux-uclibc/bin --disable-shared --disable-libcilkrts --disable-libgomp --with-endian=little --disable-libquadmath --disable-multilib --disable-shared --disable-gprof --disable-__cxa_atexit --disable-lto --enable-languages=c,c++ --disable-libssp --disable-libatomic
+Thread model: posix
+gcc version 6.2.0 (Buildroot 2016.11.1)
+GNU assembler version 2.27 (mipsel-buildroot-linux-uclibc) using BFD version (GNU Binutils) 2.27
+uclibc-1.0.19
 
 
-built with buildroot toolchain:
+binaries are upx compressed, sha1sums:
+62f4c809e0227d39a50bb13726eec10573b8e4ef  ps3netsrv_mipseb
+c2ecbf5401c903d51e3660390b0722f6b2bbd6c7  ps3netsrv_mipsel
 
-GNU C++14 (Buildroot 2016.11) version 6.2.0 (mipsel-buildroot-linux-uclibc)
-compiled by GNU C version 6.2.1 20160916 (Red Hat 6.2.1-2), GMP version 6.1.1, MPFR version 3.1.5, MPC version 1.0.3, isl version none
-GNU assembler version 2.26.1 (mipsel-buildroot-linux-uclibc) using BFD version (GNU Binutils) 2.26.1
-GNU ld (GNU Binutils) 2.26.1
+masterzorag
 
-___
-posted by masterzorag on https://github.com/aldostools/webMAN-MOD/issues/36
