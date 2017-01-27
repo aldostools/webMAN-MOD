@@ -152,6 +152,7 @@ int main(int argc, const char* argv[])
 		if(strcasestr(path, "/ROMS/ATARI2600/")){sprintf(param, "%s", path); sprintf(path, "%s/stella_libretro_ps3.SELF", RETROARCH);}          else
 		if(strcasestr(path, "/ROMS/ATARI7800/")){sprintf(param, "%s", path); sprintf(path, "%s/prosystem_libretro_ps3.SELF", RETROARCH);}       else
 		if(strcasestr(path, "/ROMS/GW/"))   {sprintf(param, "%s", path); sprintf(path, "%s/gw_libretro_ps3.SELF", RETROARCH);}                  else
+		if(strcasestr(path, "/ROMS/NXENGINE-DATAFILES/"))   {sprintf(param, "%s", path); sprintf(path, "%s/nxengine_libretro_ps3.SELF", RETROARCH);}                  else
 		{
 			char extension[8]; int plen = strlen(path);
 			if(plen > 4)
