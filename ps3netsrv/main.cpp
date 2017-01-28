@@ -1554,7 +1554,7 @@ int main(int argc, char *argv[])
 	if(sizeof(off_t) < 8)
 	{
 		DPRINTF("off_t too small!\n");
-		return -1;
+//		return -1;
 	}
 #endif
 
