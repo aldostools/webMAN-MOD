@@ -1,4 +1,4 @@
-STR_TRADBY			[<br/>|Tłumaczenie - mpq1671 | Oparte na pracy użytkownika Raskolnikow<br/></a><br/>]
+STR_TRADBY			
 
 STR_FILES				[Pliki]
 STR_GAMES				[Gry]
@@ -54,7 +54,7 @@ STR_AUTOAT				[Auto przy]
 STR_LOWEST				[Najniższe]
 STR_FANSPEED			[prędkości wentylatora]
 STR_MANUAL				[Manualnie]
-STR_PS2EMU				[Emulator PS2]
+STR_PS2EMU				[PS2]
 STR_LANGAMES			[Szukaj gier/filmów w sieci LAN]
 STR_ANYUSB				[Czekaj na gotowość wszystkich urządzeń USB]
 STR_ADDUSB				[Czekaj dodatkowo na każde wybrane urządzenie USB do momentu jego gotowości]
