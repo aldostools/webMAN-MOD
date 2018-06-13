@@ -24,7 +24,7 @@
 
 			<Query class="type:x-xmb/folder-pixmap" key="webman_refresh_xml_link" src="#seg_webman_refresh_xml"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_refresh_html_link" src="#seg_webman_refresh_html"/>
-
+			<Query class="type:x-xmb/folder-pixmap" key="seg_webman_system" src="#seg_webman_system_files"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_webman_cpursx" src="#seg_webman_cpursx"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_games_link" src="#seg_webman_games"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_files_link" src="#seg_webman_files"/>
