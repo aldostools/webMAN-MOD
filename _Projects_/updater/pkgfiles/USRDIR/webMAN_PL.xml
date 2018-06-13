@@ -124,7 +124,8 @@
 			<Table key="webman_system_files">
 				<Pair key="icon"><String>/dev_hdd0/game/XMBMANPLS/USRDIR/IMAGES/sysfiles.png</String></Pair>
 				<Pair key="icon_notation"><String>WNT_XmbItemBrowser</String></Pair>
-				<Pair key="title"><String>System Files</String></Pair>
+				<Pair key="title"><String>Usuń pliki</String></Pair>
+				<Pair key="info"><String>Usuń pliki z pamięci</String></Pair>
 				<Pair key="child"><String>segment</String></Pair>
 			</Table>
 		</Attributes>
