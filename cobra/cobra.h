@@ -5,6 +5,23 @@
 extern "C" {
 #endif
 
+enum DiscEmu
+{
+	EMU_OFF = 0,
+	EMU_PS3,
+	EMU_PS2_DVD,
+	EMU_PS2_CD,
+	EMU_PSX,
+	EMU_BD,
+	EMU_DVD,
+	EMU_MAX,
+	EMU_PSP,   // not a DiscEmu
+	EMU_ROMS,  // not a DiscEmu
+	EMU_GAMEI, // not a DiscEmu
+};
+
+#ifdef COBRA_ONLY
+
 enum DiscType
 {
 	DISC_TYPE_NONE, /* No disc inserted */
@@ -21,7 +38,7 @@ enum DiscType
 	DISC_TYPE_CD, /* Any kind of CD (ROM, CDDA, -R, -RW) that is not a PS game. No idea how to distinguish the type :) */
 	DISC_TYPE_UNKNOWN /* You shouldn't see this value. There is a posibility of this value to be reported on SCDA, since I don't have any, I haven't been able to verify */
 };
-
+/*
 enum BookType
 {
 	DVD_ROM,
@@ -41,14 +58,14 @@ enum BookType
 	DVD_PR_DL,
 	RESERVED4
 };
-
+*/
 enum PS2EmuType
 {
 	PS2_EMU_HW, // the so called "full" bc models, CECHA and CECHB
 	PS2_EMU_GX, // the so called partial bc models, CECHC and CECHE
 	PS2_EMU_SW, // the non bc models
 };
-
+/*
 enum DVDRegion
 {
 	DVD_VIDEO_REGION_1 = 1,
@@ -82,27 +99,13 @@ enum PSPEmu
 	EMU_355,
 	EMU_400
 };
-
-enum DiscEmu
-{
-	EMU_OFF = 0,
-	EMU_PS3,
-	EMU_PS2_DVD,
-	EMU_PS2_CD,
-	EMU_PSX,
-	EMU_BD,
-	EMU_DVD,
-	EMU_MAX,
-	EMU_PSP, // not a DiscEmu
-	EMU_ROMS,   // not a DiscEmu
-	EMU_GAMEI, // not a DiscEmu
-};
-
+*/
 typedef struct
 {
 	uint32_t lba;
 	int is_audio;
 } TrackDef;
+
 /*
 // This structure represents the Disc structure format 0 as defined in MMC-6 document
 typedef struct
@@ -784,3 +787,4 @@ int cobra_unload_vsh_plugin(unsigned int slot);
 
 #endif /* _COBRA_H */
 
+#endif //#ifdef COBRA_ONLY

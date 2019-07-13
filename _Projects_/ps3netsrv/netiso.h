@@ -43,7 +43,7 @@ enum NETISO_CMD
 	/* Gets a directory size */
 	NETISO_CMD_GET_DIR_SIZE,
 
-	/* Get complete directory contents */
+	/* Get complete directory contents - 2013 by deank */
 	NETISO_CMD_READ_DIR,
 
 	/* Replace this with any custom command */

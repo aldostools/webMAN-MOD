@@ -12,6 +12,8 @@ int scandir(const char *dirname,
 	int (*select)(const struct dirent2 *),
 	int (*compar)(const struct dirent2 **, const struct dirent2 **));
 
+static const int FAILED	= -1;
+
 /*
  * convenience helper function for scandir's |compar()| function:
  * sort directory entries using strcoll(3)
@@ -68,13 +70,13 @@ scandir(const char *dirname,
 	struct dirent2 *ent, *ent2;
 	struct dirent2 **namelist = NULL;
 
-	if ((dir = opendir2(dirname)) == NULL) return -1;
+	if ((dir = opendir2(dirname)) == NULL) return FAILED;
 
 	used = 0;
 	allocated = 2;
 	namelist = malloc(allocated * sizeof(struct dirent2 *));
 	if (!namelist)
-	goto error;
+		goto error;
 
 	while ((ent = readdir2(dir)) != NULL)
 	{
@@ -82,7 +84,7 @@ scandir(const char *dirname,
 
 		/* duplicate struct direct for this entry */
 		len = offsetof(struct dirent2, d_name) + strlen(ent->d_name) + 1;
-		if ((ent2 = malloc(len)) == NULL) return -1;
+		if ((ent2 = malloc(len)) == NULL) return FAILED;
 
 		if (used >= allocated)
 		{
@@ -112,5 +114,5 @@ error:
 
 		free(namelist);
 	}
-	return -1;
+	return FAILED;
 }

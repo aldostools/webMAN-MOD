@@ -80,6 +80,7 @@ SYS_MODULE_STOP(netiso_stop);
 #define DEVICE_TYPE_DVD		0x10 /* DVD-ROM, DVD+-R, DVD+-RW etc, they are differenced by booktype field in some scsi command */
 #define DEVICE_TYPE_CD		0x08 /* CD-ROM, CD-DA, CD-R, CD-RW, etc, they are differenced somehow with scsi commands */
 
+#define PLAYSTATION      "PLAYSTATION "
 
 enum EMU_TYPE
 {
@@ -417,6 +418,18 @@ static int process_read_cd_2352_cmd(uint8_t *buf, uint32_t sector, uint32_t rema
 	return 0;
 }
 
+static int detect_cd_sector_size(char *buffer)
+{
+	uint16_t sec_size[7] = {2352, 2048, 2336, 2448, 2328, 2340, 2368};
+	for(uint8_t n = 0; n < 7; n++)
+	{
+		if( (!strncmp(buffer + ((sec_size[n]<<4) + 0x20), PLAYSTATION, 0xC)) ||
+			(!strncmp(buffer + ((sec_size[n]<<4) + 0x19), "CD001", 5) && buffer[(sec_size[n]<<4) + 0x18] == 0x01) ) return sec_size[n];
+	}
+
+	return 2352;
+}
+
 static void netiso_thread(uint64_t arg)
 {
 	uint8_t buff[sizeof(netiso_args)]; // 1392 bytes
@@ -448,12 +461,34 @@ static void netiso_thread(uint64_t arg)
 		sys_ppu_thread_exit(0);
 	}
 
-	discsize = (uint64_t)size;
-	cd_sec_size = 2352;
+	emu_mode = args->emu_mode;
 
-	if(!(discsize%2336)) cd_sec_size = 2336;
-	else if(!(discsize%2448)) cd_sec_size = 2448;
-	else if(!(discsize%2048)) cd_sec_size = 2048;
+	discsize = (uint64_t)size;
+
+	if(!(discsize%2352)) cd_sec_size = 2352; else
+	if(!(discsize%2336)) cd_sec_size = 2336; else
+	if(!(discsize%2448)) cd_sec_size = 2448; else
+	if(!(discsize%2048)) cd_sec_size = 2048; else cd_sec_size = 2352;
+
+	// detect CD sector size
+	if((emu_mode == EMU_PSX) && (discsize >= 65536) && (discsize <= 0x35000000UL))
+	{
+		sys_addr_t sysmem = NULL; uint32_t size = 65536;
+		if(sys_memory_allocate(size, SYS_MEMORY_PAGE_SIZE_64K, &sysmem) == CELL_OK)
+		{
+			char *buffer = (char*)sysmem;
+
+			int bytes_read;
+
+			bytes_read = read_remote_file_critical(0, buffer, size);
+			if(bytes_read)
+			{
+				cd_sec_size = detect_cd_sector_size(buffer);
+			}
+
+			sys_memory_free((sys_addr_t)sysmem);
+		}
+	}
 
 	ret = sys_event_port_create(&result_port, 1, SYS_EVENT_PORT_NO_NAME);
 	if(ret != CELL_OK)
@@ -479,13 +514,13 @@ static void netiso_thread(uint64_t arg)
 		fake_eject_event();
 	}
 
-	emu_mode = args->emu_mode;
 	if(emu_mode == EMU_PSX)
 	{
 		numtracks = args->numtracks;
 		tracks = &args->tracks[0];
 		is_cd2352 = 1;
-		cd_sec_size_param = (cd_sec_size<<4);
+		if(cd_sec_size & 0xf) cd_sec_size_param = cd_sec_size<<8;
+		else cd_sec_size_param = (cd_sec_size<<4);
 	}
 	else
 	{

@@ -17,7 +17,7 @@
 *   @file   dirent.c
 *
 *   @brief  This file contains an implementation on readdir and friends
-*           which works under Win32.
+*		   which works under Win32.
 *
 *****************************************************************************/
 
@@ -28,6 +28,8 @@
 
 #include <windows.h>
 
+static const int FAILED		= -1;
+static const int SUCCEEDED	=  0;
 
 //***************************************************************************
 /**
@@ -117,7 +119,7 @@ struct dirent2 *readdir2( DIR2 *dir )
 		dir->dd_handle = FindFirstFile( dir->dd_dirpattern, dir->dd_finddata );
 		if ( dir->dd_handle == INVALID_HANDLE_VALUE )
 		{
-			errno = 0;
+			errno = SUCCEEDED;
 			return NULL;
 		}
 	}
@@ -127,7 +129,7 @@ struct dirent2 *readdir2( DIR2 *dir )
 		{
 			if ( GetLastError() == ERROR_NO_MORE_FILES )
 			{
-				errno = 0;
+				errno = SUCCEEDED;
 				return NULL;
 			}
 		}
@@ -160,14 +162,14 @@ struct dirent2 *readdir2( DIR2 *dir )
 
 int closedir2( DIR2 *dir )
 {
-	int rc = 0;
+	int rc = SUCCEEDED;
 
 	if (( dir->dd_handle == 0 ) || ( dir->dd_handle != INVALID_HANDLE_VALUE ))
 	{
 		if ( !FindClose( dir->dd_handle ))
 		{
 			errno = EBADF;
-			rc = -1;
+			rc = FAILED;
 		}
 		dir->dd_handle = 0;
 	}

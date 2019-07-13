@@ -18,6 +18,7 @@ typedef struct _FileList
 typedef struct _DirList
 {
 	char *path;
+	uint16_t path_len;
 	uint8_t *content;
 	uint8_t *contentJoliet;
 	size_t contentSize;
@@ -44,7 +45,7 @@ typedef struct
 typedef struct 
 {
 	/*000*/char consoleId[0x10];	// "PlayStation3\0\0\0\0"
-	/*010*/char productId[0x20];	// "BCES-00104      ", "                "
+	/*010*/char productId[0x20];	// "BCES-00104	  ", "				"
 	/*030*/uint8_t zeros[0x10]; 	// all 0x00
 	/*040*/uint8_t info[0x1B0]; 	// disc info
 	/*1F0*/uint8_t	hash[0x10]; 	// a hash 0x1B0 bytes of 'info' above

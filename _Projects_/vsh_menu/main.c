@@ -47,11 +47,11 @@ enum menus
 ////////////////////////////////
 typedef struct
 {
-	uint16_t version;
+	uint16_t  version;
 
 	uint8_t padding0[14];
 
-	uint8_t lang;
+	uint8_t lang; //0=EN, 1=FR, 2=IT, 3=ES, 4=DE, 5=NL, 6=PT, 7=RU, 8=HU, 9=PL, 10=GR, 11=HR, 12=BG, 13=IN, 14=TR, 15=AR, 16=CN, 17=KR, 18=JP, 19=ZH, 20=DK, 21=CZ, 22=SK, 99=XX
 
 	// scan devices settings
 
@@ -64,14 +64,14 @@ typedef struct
 	uint8_t dev_sd;
 	uint8_t dev_ms;
 	uint8_t dev_cf;
-	uint8_t ntfs;
+	uint8_t ntfs; // 1=enable internal prepNTFS to scan content
 
 	uint8_t padding1[5];
 
 	// scan content settings
 
-	uint8_t refr;
-	uint8_t foot;
+	uint8_t refr; // 1=disable content scan on startup
+	uint8_t foot; // buffer size during content scanning : 0=896KB,1=320KB,2=1280KB,3=512KB,4 to 7=1280KB
 	uint8_t cmask;
 
 	uint8_t nogrp;
@@ -86,14 +86,16 @@ typedef struct
 	uint8_t launchpad_grp;
 	uint8_t ps3l;
 	uint8_t roms;
+	uint8_t noused; // formerly mc_app
+	uint8_t info;   // info level: 0=Path, 1=Path + ID, 2=ID, 3=None
+	uint8_t npdrm;
 	uint8_t mc_app; // allow allocation from app memory container
-	uint8_t info;
 
-	uint8_t padding2[15];
+	uint8_t padding2[13];
 
 	// start up settings
 
-	uint8_t wmstart;
+	uint8_t wmstart; // 1=disable start up message (webMAN Loaded!)
 	uint8_t lastp;
 	uint8_t autob;
 	char    autoboot_path[256];
@@ -104,18 +106,18 @@ typedef struct
 	uint8_t blind;
 	uint8_t spp;    //disable syscalls, offline: lock PSN, offline ingame
 	uint8_t noss;   //no singstar
-	uint8_t nosnd0; //no snd0.at3
+	uint8_t nosnd0; //mute snd0.at3
 	uint8_t dsc;    //disable syscalls if physical disc is inserted
 
 	uint8_t padding3[4];
 
 	// fan control settings
 
-	uint8_t fanc;
-	uint8_t temp0;
-	uint8_t temp1;
-	uint8_t manu;
-	uint8_t ps2temp;
+	uint8_t fanc;      // 1 = enabled, 0 = disabled (syscon)
+	uint8_t man_speed; // manual fan speed (calculated using man_rate)
+	uint8_t dyn_temp;  // max temp for dynamic fan control (0 = disabled)
+	uint8_t man_rate;  // % manual fan speed (0 = dynamic fan control)
+	uint8_t ps2_rate;  // % ps2 fan speed
 	uint8_t nowarn;
 	uint8_t minfan;
 
@@ -125,35 +127,36 @@ typedef struct
 
 	uint8_t  nopad;
 	uint8_t  keep_ccapi;
-	uint32_t combo;
-	uint32_t combo2;
-	uint8_t  sc8mode;
+	uint32_t  combo;
+	uint32_t  combo2;
+	uint8_t  sc8mode; // 0/4=Remove cfw syscall disables syscall8 / PS3MAPI=disabled, 1=Keep syscall8 / PS3MAPI=enabled
+	uint8_t  nobeep;
 
-	uint8_t padding5[21];
+	uint8_t padding5[20];
 
 	// ftp server settings
 
 	uint8_t  bind;
 	uint8_t  ftpd;
-	uint16_t ftp_port;
+	uint16_t  ftp_port;
 	uint8_t  ftp_timeout;
-	char     ftp_password[20];
-	char     allow_ip[16];
+	char ftp_password[20];
+	char allow_ip[16];
 
 	uint8_t padding6[7];
 
 	// net server settings
 
 	uint8_t  netsrvd;
-	uint16_t netsrvp;
+	uint16_t  netsrvp;
 
 	uint8_t padding7[13];
 
 	// net client settings
 
 	uint8_t  netd[5];
-	uint16_t netp[5];
-	char     neth[5][16];
+	uint16_t  netp[5];
+	char neth[5][16];
 
 	uint8_t padding8[33];
 
@@ -164,8 +167,9 @@ typedef struct
 	uint8_t ps1emu;
 	uint8_t autoplay;
 	uint8_t ps2emu;
+	uint8_t ps2config;
 
-	uint8_t padding9[11];
+	uint8_t padding9[10];
 
 	// profile settings
 
@@ -180,8 +184,8 @@ typedef struct
 	uint8_t default_restart;
 	uint8_t poll; // poll usb
 
-	uint32_t rec_video_format;
-	uint32_t rec_audio_format;
+	uint32_t  rec_video_format;
+	uint32_t  rec_audio_format;
 
 	uint8_t auto_power_off; // 0 = prevent auto power off on ftp, 1 = allow auto power off on ftp (also on install.ps3, download.ps3)
 
@@ -190,7 +194,8 @@ typedef struct
 	uint8_t homeb;
 	char home_url[255];
 
-	uint8_t padding11[32];
+	uint8_t sman;
+	uint8_t padding11[31];
 
 	// spoof console id
 
@@ -433,7 +438,7 @@ static void do_main_menu_action(void)
 					 cellFsRead(fd, (void *)wmconfig, sizeof(WebmanCfg_v2), 0);
 					 cellFsClose(fd);
 
-					 fan_mode = (webman_config->temp0 > 0); // manual
+					 fan_mode = (webman_config->man_speed > 0); // manual
 				}
 			}
 
@@ -1408,15 +1413,6 @@ static bool gui_allowed(bool popup)
 
 static void vsh_menu_thread(uint64_t arg)
 {
-	int val_lang = 1;
-	xsetting_0AF1F161()->GetSystemLanguage(&val_lang);
-
-	if(val_lang == 7)
-	{
-		vshtask_notify("VSH Menu Error!\nRussian language is not supported.");
-		beep(3); sys_ppu_thread_exit(0); return;
-	}
-
 #ifdef DEBUG
 	dbg_init();
 	dbg_printf("programstart:\n");

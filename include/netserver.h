@@ -21,7 +21,7 @@ typedef struct {
 	char dirpath[STD_PATH_LEN];
 } _client;
 
-_client clients[MAX_CLIENTS];
+static _client clients[MAX_CLIENTS];
 
 static void init_client(u8 index)
 {
@@ -113,7 +113,14 @@ static int process_open_cmd(u8 index, netiso_open_cmd *cmd)
 
 			if((result.file_size > _64KB_) && (result.file_size <= 0x35000000UL))
 			{
-				clients[index].CD_SECTOR_SIZE_2352 = detect_cd_sector_size(fd);
+				sys_addr_t sysmem = NULL; const u64 chunk_size = _64KB_;
+				if(sys_memory_allocate(chunk_size, SYS_MEMORY_PAGE_SIZE_64K, &sysmem) == CELL_OK)
+				{
+					char *chunk = (char*)sysmem; u64 read_e;
+					cellFsRead(fd, chunk, _64KB_, &read_e);
+					clients[index].CD_SECTOR_SIZE_2352 = detect_cd_sector_size(chunk);
+					sys_memory_free((sys_addr_t)sysmem);
+				}
 			}
 
 			/// detect multi part ISO - open file parts ///
@@ -606,7 +613,7 @@ static void handleclient_net(u64 arg)
 	char ip_address[16];
 	sprintf(ip_address, "%s", inet_ntoa(conn_info.remote_adr));
 
-	if(webman_config->bind && ((conn_info.local_adr.s_addr!=conn_info.remote_adr.s_addr)  && strncmp(ip_address, webman_config->allow_ip, strlen(webman_config->allow_ip))!=0))
+	if(bind_check && webman_config->bind && ((conn_info.local_adr.s_addr!=conn_info.remote_adr.s_addr)  && strncmp(ip_address, webman_config->allow_ip, strlen(webman_config->allow_ip))!=0))
 	{
 		sclose(&clients[index].s);
 		sys_ppu_thread_exit(0);
@@ -667,7 +674,7 @@ static void handleclient_net(u64 arg)
 	sys_ppu_thread_exit(0);
 }
 
-static void netsvrd_thread(u64 arg)
+static void netsvrd_thread(__attribute__((unused)) u64 arg)
 {
 	int list_s = NONE;
 	net_working = 1;

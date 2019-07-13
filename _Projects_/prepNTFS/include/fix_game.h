@@ -173,10 +173,10 @@ void fix_iso(char *iso_file, uint64_t maxbytes)
 					}
 					else goto exit_fix; //do not fix if sfo version is ok
 
-					if(size>lba) size=lba;
+					if(size > lba) size = lba;
 
 					lba = getlba(chunk, chunk_size, "PS3_DISC.SFB;1", 14, 0); lba *= 0x800ULL; chunk_size = 0x800; //1 sector
-					if(lba>0 && size>lba) size=lba;
+					if(lba > 0 && size > lba) size = lba;
 				}
 			}
 
@@ -187,7 +187,7 @@ void fix_iso(char *iso_file, uint64_t maxbytes)
 				if(ps3ntfs_seek64(fd, pos, SEEK_SET) != pos) break;
 				if(ps3ntfs_read(fd, (void *) chunk, chunk_size) != chunk_size) break;
 
-				start=0;
+				start = 0;
 
 				while(true)
 				{

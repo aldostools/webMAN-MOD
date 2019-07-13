@@ -45,8 +45,9 @@
 			<Query class="type:x-xmb/folder-pixmap" key="webman_wm_vsh_menu" src="#seg_wm_vsh_menu"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_wm_slaunch" src="#seg_wm_slaunch"/>
 
-			<Query class="type:x-xmb/folder-pixmap" key="webman_webman_restart" src="#seg_webman_restart"/>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_webman_shutdown" src="#seg_webman_shutdown"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_restart_link" src="#seg_webman_restart"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_shutdown_link" src="#seg_webman_shutdown"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_update_link" src="#seg_webman_update"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_prepare_ntfs" src="xcb://localhost/query?limit=1&cond=Ae+Game:Game.titleId BLES80616"/>
 		</Items>
 	</View>
@@ -1025,6 +1026,44 @@
 			</Table>
 		</Attributes>
 		<Items><Item class="type:x-xmb/module-action" key="webman_shutdown" attr="webman_shutdown"/></Items>
+	</View>
+
+	<!-- Main > Update webMAN MOD -->
+	<View id="seg_webman_update">
+		<Attributes>
+			<Table key="wm_update_link">
+				<Pair key="icon"><String>/dev_hdd0/game/XMBMANPLS/USRDIR/IMAGES/webman.png</String></Pair>
+				<Pair key="icon_notation"><String>WNT_XmbItemBrowser</String></Pair>
+				<Pair key="title"><String>Update webMAN MOD</String></Pair>
+				<Pair key="info"><String>Download & install latest version. Reboot manually after install.</String></Pair>
+				<Pair key="child"><String>segment</String></Pair>
+			</Table>
+		</Attributes>
+		<Items>
+			<Query class="type:x-xmb/folder-pixmap" key="wm_update_link" attr="wm_update_link" src="#seg_webman_update_sublink"/>
+		</Items>
+	</View>
+
+	<View id="seg_webman_update_sublink">
+		<Items>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_update_sublink" src="#seg_webman_update_link"/>
+		</Items>
+	</View>
+
+	<View id="seg_webman_update_link">
+		<Attributes>
+			<Table key="webman_update">
+				<Pair key="info"><String>net_package_install</String></Pair>
+				<Pair key="pkg_src"><String>http://aldostools.org/ps3/webMAN_MOD_latest.pkg</String></Pair>
+				<Pair key="pkg_src_qa"><String>http://aldostools.org/ps3/webMAN_MOD_latest.pkg</String></Pair>
+				<Pair key="content_name"><String>msg_install</String></Pair>
+				<Pair key="content_id"><String>EP0001-UPDWEBMOD_00-0000000000000000</String></Pair>
+				<Pair key="prod_pict_path"><String>/dev_hdd0/game/XMBMANPLS/USRDIR/IMAGES/webman.png</String></Pair>
+			</Table>
+		</Attributes>
+		<Items>
+			<Item class="type:x-xmb/xmlnpsignup" key="webman_update" attr="webman_update"/>
+		</Items>
 	</View>
 
 <!-- ...... more homebrew .......... -->

@@ -80,7 +80,7 @@ void UTF8_to_UTF16(u8 *stb, u16 *stw)
 
 		} else UTF32 = (u32) *(stb++);
 
-		if(UTF32<65536)
+		if(UTF32 < 65536)
 			*stw++= (u16) UTF32;
 		else
 		{
@@ -93,11 +93,29 @@ void UTF8_to_UTF16(u8 *stb, u16 *stw)
 	*stw++ = 0;
 }
 
+void set_directory_record(struct iso_directory_record * idr, u32 last_lba, u64 fsize, u8 flags)
+{
+	idr->length[0] = (idr->name_len[0] + sizeof(struct iso_directory_record) + 1) & ~1;
+	idr->ext_attr_length[0] = 0;
+
+	set733(idr->extent, last_lba);
+	set733(idr->size, fsize);
+
+	idr->date[0] = 0x71; idr->date[1] = 0x0B;
+	idr->date[2] = 0x0A; idr->date[3] = 0x0D;
+	idr->date[4] = 0x38; idr->date[5] = 0x00;
+	idr->date[6] = 0x04;
+
+	idr->flags[0] = flags;
+	idr->file_unit_size[0] = 0;
+	idr->interleave[0] = 0;
+
+	set723(idr->volume_sequence_number, 1);
+}
+
 u8 *create_fake_file_iso_mem(char *filename, u64 size)
 {
-	int len_string;
-
-	u8 *mem = malloc(sizeof(build_iso_data));
+	u8 *mem = malloc(fake_iso_size);
 	if(!mem) return NULL;
 	u16 *string = (u16 *) malloc(256);
 	if(!string) {free(mem); return NULL;}
@@ -116,68 +134,44 @@ u8 *create_fake_file_iso_mem(char *filename, u64 size)
 
 	UTF8_to_UTF16((u8 *) name, string);
 
+	int len_string;
 	for(len_string = 0; len_string < 512; len_string++) if(string[len_string] == 0) break;
 
-	memcpy(mem, build_iso_data, sizeof(build_iso_data));
+	memset(mem, fake_iso_size, 0);
+	memcpy(mem + 0x8000, build_iso_data, sizeof(build_iso_data));
 
-	struct iso_primary_descriptor *ipd = (struct iso_primary_descriptor *) &mem[0x8000];
-	struct iso_primary_descriptor *ipd2 = (struct iso_primary_descriptor *) &mem[0x8800];
-	struct iso_directory_record * idr = (struct iso_directory_record *) &mem[0xB840];
-	struct iso_directory_record * idr2 = (struct iso_directory_record *) &mem[0xC044];
+	struct iso_primary_descriptor * ipd  = (struct iso_primary_descriptor *) &mem[0x8000];
+	struct iso_primary_descriptor * ipd2 = (struct iso_primary_descriptor *) &mem[0x8800];
+	struct iso_directory_record   * idr  = (struct iso_directory_record   *) &mem[0xB840];
+	struct iso_directory_record   * idr2 = (struct iso_directory_record   *) &mem[0xC044];
 
 	u32 last_lba = isonum_733 (ipd->volume_space_size);
 
-	u64 size0 = size;
+	u64 fsize = size;
+
+	int name_len = strlen(name);
 
 	while(size > 0)
 	{
 		u8 flags = 0;
 
-		if(size > 0xFFFFF800ULL) {flags = 0x80; size0 = 0xFFFFF800ULL;} else size0 = size;
-		idr->name_len[0] = strlen(name);
+		if(size > 0xFFFFF800ULL) {flags = 0x80; fsize = 0xFFFFF800ULL;} else fsize = size;
+
+		idr->name_len[0] = name_len;
 		memcpy(idr->name, name, idr->name_len[0]);
-		idr->length[0] = (idr->name_len[0] + sizeof(struct iso_directory_record) + 1) & ~1;
-		idr->ext_attr_length[0] = 0;
-
-		set733(idr->extent, last_lba);
-		set733(idr->size, size0);
-
-		idr->date[0] = 0x71; idr->date[1] = 0x0B;
-		idr->date[2] = 0x0A; idr->date[3] = 0x0D;
-		idr->date[4] = 0x38; idr->date[5] = 0x00;
-		idr->date[6] = 0x04;
-		idr->flags[0] = flags;
-		idr->file_unit_size[0] = 0;
-		idr->interleave[0] = 0;
-
-		set723(idr->volume_sequence_number, 1);
-
+		set_directory_record(idr, last_lba, fsize, flags);
 		idr = (struct iso_directory_record *) (((char *) idr) + idr->length[0]);
 
 		/////////////////////
 
 		idr2->name_len[0] = len_string * 2;
-
 		memcpy(idr2->name, string, idr2->name_len[0]);
-
-		idr2->length[0] = (idr2->name_len[0] + sizeof(struct iso_directory_record) + 1) & ~1;
-		idr2->ext_attr_length[0] = 0;
-		set733(idr2->extent, last_lba);
-		set733(idr2->size, size0);
-		idr2->date[0] = 0x71; idr2->date[1] = 0x0B;
-		idr2->date[2] = 0x0A; idr2->date[3] = 0x0D;
-		idr2->date[4] = 0x38; idr2->date[5] = 0x00;
-		idr2->date[6] = 0x04;
-		idr2->flags[0] = flags;
-		idr2->file_unit_size[0] = 0;
-		idr2->interleave[0] = 0;
-		set723(idr2->volume_sequence_number, 1);
-
+		set_directory_record(idr2, last_lba, fsize, flags);
 		idr2 = (struct iso_directory_record *) (((char *) idr2) + idr2->length[0]);
 
 		/////////////////////
-		last_lba += (size0 + 0x7ffULL)/ 0x800ULL;
-		size-= size0;
+		last_lba += (fsize + 0x7ffULL) / 0x800ULL;
+		size-= fsize;
 	}
 
 	last_lba += (size + SECTOR_FILL) / SECTOR_SIZE;
@@ -199,7 +193,7 @@ int create_fake_file_iso(char *path, char *filename, u64 size)
 
 	if(fp2)
 	{
-		fwrite((void *) mem, 1, sizeof(build_iso_data), fp2);
+		fwrite((void *) mem, 1, fake_iso_size, fp2);
 		fclose(fp2);
 	}
 	else ret = FAILED;
@@ -217,7 +211,7 @@ static int build_fake_iso(char *iso_path, char *src_path, int ioType, char *file
 
 	int iso_path_len = strlen(iso_path) - 4; if(iso_path_len < 0) return FAILED;
 
-	uint8_t *plugin_args = malloc(0x20000);
+	uint8_t *plugin_args = malloc(0x20000); // 128KB
 
 	if(plugin_args)
 	{
@@ -225,7 +219,7 @@ static int build_fake_iso(char *iso_path, char *src_path, int ioType, char *file
 		size = get_filesize(src_path);
 
 		char filename[MAXPATHLEN]; //name only
-		sprintf(filename, "%s", get_filename(src_path));;
+		sprintf(filename, "%s", get_filename(src_path));
 		create_fake_file_iso(iso_path, filename, size);
 
 		if(file_exists(iso_path) == false) {free(plugin_args); return FAILED;}
@@ -267,7 +261,7 @@ static int build_fake_iso(char *iso_path, char *src_path, int ioType, char *file
 
 
 				memcpy(plugin_args + sizeof(rawseciso_args), sections, parts * sizeof(uint32_t) + 0x200);
-				memcpy(plugin_args + sizeof(rawseciso_args) + (parts*sizeof(uint32_t) + 0x200), sections_size, parts * sizeof(uint32_t));
+				memcpy(plugin_args + sizeof(rawseciso_args) + (parts * sizeof(uint32_t) + 0x200), sections_size, parts * sizeof(uint32_t));
 
 				// save sectors file
 				iso_path[iso_path_len] = 0; strcat(iso_path, file_ext);
@@ -285,26 +279,9 @@ static int build_fake_iso(char *iso_path, char *src_path, int ioType, char *file
 			if(sections_size) free(sections_size);
 		}
 
-
 		if(plugin_args) free(plugin_args); plugin_args = NULL;
 
-		if(r == SUCCESS)
-		{
-			char name[65];
-			strncpy(name, filename, 64);
-			name[64] = 0;
-
-			if(strlen(src_path) > 64)
-			{
-				// break the string
-				int pos = 63 - strlen(get_extension(filename));
-				while(pos > 0 && (name[pos] & 192) == 128) pos--; // skip UTF extra codes
-				strcpy(&name[pos], get_extension(filename));
-			}
-		}
-
 		if(r == 0) return SUCCESS;
-
 	}
 
 	return FAILED;

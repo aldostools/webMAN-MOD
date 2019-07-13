@@ -1,6 +1,7 @@
 #define AVG_ITEM_SIZE			420
 
 #define QUERY_XMB(key, src) 	"<Query class=\"type:x-xmb/folder-pixmap\" key=\"" key "\" attr=\"" key "\" src=\"" src "\"/>"
+#define QUERY_XMB2(key, src) 	"<Query class=\"type:x-xmb/folder-pixmap\" key=\"" key "\" src=\"" src "\"/>"
 #define ADD_XMB_ITEM(key)		"<Item class=\"type:x-xmb/module-action\" key=\"" key "\" attr=\"" key "\"/>"
 
 #define XML_HEADER				"<?xml version=\"1.0\" encoding=\"UTF-8\"?><XMBML version=\"1.0\">"
@@ -11,14 +12,19 @@
 
 #define STR_NOITEM_PAIR			XML_PAIR("str_noitem", "msg_error_no_content") "</Table>"
 
-#define XML_KEY_LEN 7
+#define XML_KEY_LEN				7 /* 1 + 6 = Group + 6 chars */
 
-#define USE_MC      99
+#define USE_MC					99
+
+#define XMB_GROUPS				(!webman_config->nogrp)
+#define ADD_SETUP				(!webman_config->nosetup)
 
 typedef struct
 {
-	char value[12];
+	char value[1 + XML_KEY_LEN + 4];
 } t_keys;
+
+#define ROM (1<<6)
 
 enum xmb_groups
 {
@@ -30,84 +36,24 @@ enum xmb_groups
 	gROM = 5,
 };
 
-static void refresh_xml(char *msg)
-{
-	setPluginActive();
+bool scanning_roms = false;
 
-	refreshing_xml = 1;
-	webman_config->profile = profile; save_settings();
-
-	sprintf(msg, "%s XML%s: %s", STR_REFRESH, SUFIX2(profile), STR_SCAN2);
-	show_msg(msg);
-
-	// refresh XML
-	sys_ppu_thread_t t_id;
-	sys_ppu_thread_create(&t_id, handleclient_www, (u64)REFRESH_CONTENT, THREAD_PRIO_HIGH, THREAD_STACK_SIZE_WEB_CLIENT, SYS_PPU_THREAD_CREATE_NORMAL, THREAD_NAME_CMD);
-
-	// refresh SND0 settings for new installed games only with combo SELECT+R3+L1+R1 (reload_xmb)
-	CellPadData pad_data = pad_read();
-	if(pad_data.len > 0 && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == (CELL_PAD_CTRL_L1 | CELL_PAD_CTRL_L1)))
-	{
-		mute_snd0(true);
-	}
-
-	// wait until complete
-	while(refreshing_xml && working) sys_ppu_thread_sleep(1);
-
-	sprintf(msg, "%s XML%s: OK", STR_REFRESH, SUFIX2(profile));
-	show_msg(msg);
-
-	setPluginInactive();
-}
-
-static bool add_xmb_entry(u8 f0, u8 f1, int plen, const char *tempstr, char *templn, char *skey, u16 key, char *myxml_ps3, char *myxml_ps2, char *myxml_psx, char *myxml_psp, char *myxml_dvd, char *myxml_roms, char *entry_name, u16 *item_count, u32 *xml_len, u8 subfolder)
-{
-	set_sort_key(skey, templn, key, subfolder, f1);
-
-	#define ITEMS_BUFFER(a)  (64 * (item_count[a] + 8))
-
-	if( !(webman_config->nogrp) )
-	{
- #ifdef MOUNT_ROMS
-		if((IS_ROMS_FOLDER) && xml_len[gROM] < (BUFFER_SIZE_ROM - ITEMS_BUFFER(gROM)))
-		{xml_len[gROM] += concat(myxml_roms + xml_len[gROM], tempstr); *skey=DVD, ++item_count[gROM];}
-		else
- #endif
 #ifdef COBRA_ONLY
-		if(((IS_PS3_TYPE)   || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PS3ISO]", 13))) && xml_len[gPS3] < (BUFFER_SIZE - _4KB_ - ITEMS_BUFFER(gPS3)))
-		{xml_len[gPS3] += concat(myxml_ps3 + xml_len[gPS3], tempstr); *skey=PS3_, ++item_count[gPS3];}
-		else
-		if(((IS_PS2_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PS2ISO]", 13))) && xml_len[gPS2] < (BUFFER_SIZE_PS2 - ITEMS_BUFFER(gPS2)))
-		{xml_len[gPS2] += concat(myxml_ps2 + xml_len[gPS2], tempstr); *skey=PS2, ++item_count[gPS2];}
-		else
-		if(((IS_PSX_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PSXISO]", 13))) && xml_len[gPSX] < (BUFFER_SIZE_PSX - ITEMS_BUFFER(gPSX)))
-		{xml_len[gPSX] += concat(myxml_psx + xml_len[gPSX], tempstr); *skey=PS1, ++item_count[gPSX];}
-		else
-		if(((IS_PSP_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PSPISO]", 13))) && xml_len[gPSP] < (BUFFER_SIZE_PSP - ITEMS_BUFFER(gPSP)))
-		{xml_len[gPSP] += concat(myxml_psp + xml_len[gPSP], tempstr); *skey=PSP, ++item_count[gPSP];}
-		else
-		if(((IS_BLU_FOLDER) || (IS_DVD_FOLDER) || ((IS_NTFS) && (!extcmp(entry_name + plen, ".ntfs[DVDISO]", 13) || !extcmp(entry_name + plen, ".ntfs[BDISO]", 12) || !extcmp(entry_name + plen, ".ntfs[BDFILE]", 13)))) && xml_len[gDVD] < (BUFFER_SIZE_DVD - ITEMS_BUFFER(gDVD)))
-		{xml_len[gDVD] += concat(myxml_dvd + xml_len[gDVD], tempstr); *skey=BLU, ++item_count[gDVD];}
-#else
-		if((IS_PS3_TYPE) && xml_len[gPS3] < (BUFFER_SIZE - _4KB_ - ITEMS_BUFFER(gPS3)))
-		{xml_len[gPS3] += concat(myxml_ps3 + xml_len[gPS3], tempstr); *skey=PS3_, ++item_count[gPS3];}
-		else
-		if((IS_PS2_FOLDER) && xml_len[gPS2] < (BUFFER_SIZE_PS2 - ITEMS_BUFFER(gPS2)))
-		{xml_len[gPS2] += concat(myxml_ps2 + xml_len[gPS2], tempstr); *skey=PS2, ++item_count[gPS2];}
-#endif
-		else
-			return (false);
-	}
-	else
+static void apply_remaps(void)
+{
+ #ifdef WM_PROXY_SPRX
+	{sys_map_path(VSH_MODULE_DIR WM_PROXY_SPRX ".sprx", file_exists(WM_RES_PATH "/wm_proxy.sprx") ? WM_RES_PATH "/wm_proxy.sprx" : NULL);}
+ #endif
+
+	if(payload_ps3hen)
 	{
-		if(xml_len[gPS3] < (BUFFER_SIZE  - ITEMS_BUFFER(gPS3) - _4KB_))
-			{xml_len[gPS3] += concat(myxml_ps3+xml_len[gPS3], tempstr); ++item_count[gPS3];}
-		else
-			return (false);
+		{sys_map_path((char *)FB_XML,			(char *)"/dev_hdd0/xmlhost/game_plugin/fb-hen.xml");}
+	//	{sys_map_path((char *)HEN_HFW_SETTINGS, (char *)"/dev_hdd0/hen/xml/hfw_settings.xml");}
 	}
 
-	return (true);
+	{sys_map_path((char*)"/dev_bdvd/PS3_UPDATE", SYSMAP_EMPTY_DIR);} // redirect firmware update on BD disc to empty folder
 }
+#endif
 
 static void make_fb_xml(void)
 {
@@ -125,23 +71,26 @@ static void make_fb_xml(void)
 								  XML_PAIR("info","%s")
 								  "</Table>"
 								//"</Attributes><Items>"
-								  "%s" QUERY_XMB("mgames", "xmb://localhost%s#seg_mygames") "%s"
+								  "%s" QUERY_XMB("mgames", "xmb://localhost%s#seg_mygames") "%s",
 								//"</Items></View>"
-								  "</XMBML>", XML_HEADER,
+								//"</XMBML>"
+								  XML_HEADER,
 								  file_exists(WM_ICONS_PATH "/icon_wm_root.png") ?
 										XML_PAIR("icon", WM_ICONS_PATH "/icon_wm_root.png") :
 										XML_PAIR("icon_rsc", "item_tex_ps3util"),
 								  STR_MYGAMES, SUFIX2(profile),
 								  STR_LOADGAMES,
-								  "</Attributes><Items>", MY_GAMES_XML, "</Items></View>");
+								  "</Attributes><Items>", MY_GAMES_XML, "</Items></View></XMBML>\r\n");
 
 		char *fb_xml = (char *)FB_XML;
+		#ifdef COBRA_ONLY
 		if(payload_ps3hen)
 		{
 			fb_xml = (char *)"/dev_hdd0/xmlhost/game_plugin/fb-hen.xml";
 			cellFsUnlink(FB_XML);
 			sys_map_path((char *)FB_XML, (char *)fb_xml);
 		}
+		#endif
 
 		save_file(fb_xml, myxml, size);
 		sys_memory_free(sysmem);
@@ -161,7 +110,7 @@ static void make_fb_xml(void)
 
 static u32 get_buffer_size(u8 footprint)
 {
-	if((webman_config->mc_app == 0) && (footprint == USE_MC)) //mc_app
+	if(webman_config->vsh_mc && (footprint == USE_MC)) //vsh_mc
 	{
 		return _3MB_;
 	}
@@ -195,13 +144,13 @@ static void set_buffer_sizes(u8 footprint)
 	BUFFER_SIZE_ALL = get_buffer_size(footprint);
 	BUFFER_SIZE_FTP	= ( _128KB_);
 
-	BUFFER_SIZE_PSP	= (  _32KB_);
-	BUFFER_SIZE_PS2	= (  _64KB_);
-	BUFFER_SIZE_DVD	= (  _64KB_);
+	BUFFER_SIZE_PSP	= ( _32KB_);
+	BUFFER_SIZE_PS2	= ( _64KB_);
+	BUFFER_SIZE_DVD	= ( _64KB_);
 
-	if(footprint == USE_MC) //mc_app
+	if(footprint == USE_MC) //vsh_mc
 	{
-		BUFFER_SIZE_FTP	= ( _128KB_);
+		//BUFFER_SIZE_FTP	= ( _256KB_);
 
 		//BUFFER_SIZE	= (1792*KB);
 		BUFFER_SIZE_PSX	= (_384KB_);
@@ -219,6 +168,7 @@ static void set_buffer_sizes(u8 footprint)
 	if(footprint == 2) //MAX
 	{
 		BUFFER_SIZE_FTP	= ( _256KB_);
+
 		//BUFFER_SIZE	= ( _512KB_);
 		BUFFER_SIZE_PSX	= ( _256KB_);
 		BUFFER_SIZE_PSP	= (  _64KB_);
@@ -257,11 +207,7 @@ static void set_buffer_sizes(u8 footprint)
 	{
 		//BUFFER_SIZE	= (  368*KB);
 		BUFFER_SIZE_PSX	= (  _64KB_);
-#ifdef MOUNT_ROMS
-		BUFFER_SIZE_PSP	= (webman_config->roms) ? ( _128KB_) : (768*KB);
-#else
-		BUFFER_SIZE_PSP	= (768*KB);
-#endif
+		BUFFER_SIZE_PSP	= ( 768*KB );
 		BUFFER_SIZE_DVD	= (  _64KB_);
 	}
 	else	// if(footprint == 0) STANDARD
@@ -277,20 +223,72 @@ static void set_buffer_sizes(u8 footprint)
 	if((webman_config->cmask & PSP)) BUFFER_SIZE_PSP	= (_8KB_);
 	if((webman_config->cmask & (BLU | DVD)) == (BLU | DVD)) BUFFER_SIZE_DVD = (_8KB_);
 
-#ifdef MOUNT_ROMS
-	BUFFER_SIZE_ROM = !(webman_config->roms) ? _8KB_ : (footprint >= 7) ? _640KB_ : _64KB_;
-
-	BUFFER_SIZE = BUFFER_SIZE_ALL - (BUFFER_SIZE_PSX + BUFFER_SIZE_PSP + BUFFER_SIZE_PS2 + BUFFER_SIZE_DVD + BUFFER_SIZE_ROM);
-#else
 	BUFFER_SIZE = BUFFER_SIZE_ALL - (BUFFER_SIZE_PSX + BUFFER_SIZE_PSP + BUFFER_SIZE_PS2 + BUFFER_SIZE_DVD);
+}
+
+static void add_custom_xml(t_string *myxml, char *custom_xml, char *query_xmb)
+{
+	for(u8 d = 1; d < 7; d++)
+	{
+		sprintf(custom_xml,  "%s/wm_custom.xml", drives[d]);
+		if(file_exists(custom_xml))
+		{
+			sprintf(query_xmb, QUERY_XMB2("wm_custom", "xmb://localhost%s#wm_root"), custom_xml);
+			_concat(myxml, query_xmb);
+			return;
+		}
+	}
+}
+
+static bool add_xmb_entry(u8 f0, u8 f1, int plen, const char *tempstr, char *templn, char *skey, u16 key, t_string *myxml_ps3, t_string *myxml_ps2, t_string *myxml_psx, t_string *myxml_psp, t_string *myxml_dvd, char *entry_name, u16 *item_count, u8 subfolder)
+{
+	set_sort_key(skey, templn, key, subfolder, f1);
+
+	#define ITEMS_BUFFER(a)  (64 * (item_count[a] + 10))
+
+	if( !scanning_roms && XMB_GROUPS )
+	{
+#ifdef COBRA_ONLY
+		if(((IS_PS3_TYPE)   || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PS3ISO]", 13))) && myxml_ps3->size < (BUFFER_SIZE - _4KB_ - ITEMS_BUFFER(gPS3)))
+		{_concat(myxml_ps3, tempstr); *skey=PS3_, ++item_count[gPS3];}
+		else
+		if(((IS_PS2_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PS2ISO]", 13))) && myxml_ps2->size < (BUFFER_SIZE_PS2 - ITEMS_BUFFER(gPS2)))
+		{_concat(myxml_ps2, tempstr); *skey=PS2, ++item_count[gPS2];}
+		else
+		if(((IS_PSX_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PSXISO]", 13))) && myxml_psx->size < (BUFFER_SIZE_PSX - ITEMS_BUFFER(gPSX)))
+		{_concat(myxml_psx, tempstr); *skey=PS1, ++item_count[gPSX];}
+		else
+		if(((IS_PSP_FOLDER) || ((IS_NTFS) && !extcmp(entry_name + plen, ".ntfs[PSPISO]", 13))) && myxml_psp->size < (BUFFER_SIZE_PSP - ITEMS_BUFFER(gPSP)))
+		{_concat(myxml_psp, tempstr); *skey=PSP, ++item_count[gPSP];}
+		else
+		if(((IS_BLU_FOLDER) || (IS_DVD_FOLDER) || ((IS_NTFS) && (!extcmp(entry_name + plen, ".ntfs[DVDISO]", 13) || !extcmp(entry_name + plen, ".ntfs[BDISO]", 12) || !extcmp(entry_name + plen, ".ntfs[BDFILE]", 13)))) && myxml_dvd->size < (BUFFER_SIZE_DVD - ITEMS_BUFFER(gDVD)))
+		{_concat(myxml_dvd, tempstr); *skey=BLU, ++item_count[gDVD];}
+#else
+		if((IS_PS3_TYPE) && myxml_ps3->size < (BUFFER_SIZE - _4KB_ - ITEMS_BUFFER(gPS3)))
+		{_concat(myxml_ps3, tempstr); *skey=PS3_, ++item_count[gPS3];}
+		else
+		if((IS_PS2_FOLDER) && myxml_ps2->size < (BUFFER_SIZE_PS2 - ITEMS_BUFFER(gPS2)))
+		{_concat(myxml_ps2, tempstr); *skey=PS2, ++item_count[gPS2];}
 #endif
+		else
+			return (false);
+	}
+	else
+	{
+		if(myxml_ps3->size < (BUFFER_SIZE  - ITEMS_BUFFER(gPS3) - _4KB_))
+			{_concat(myxml_ps3, tempstr); ++item_count[gPS3];}
+		else
+			return (false);
+	}
+
+	return (true);
 }
 
 static bool scan_mygames_xml(u64 conn_s_p)
 {
 	if(conn_s_p == START_DAEMON)
 	{
-		if((webman_config->refr==1) || from_reboot)
+		if(webman_config->refr || from_reboot)
 		{
 			cellFsUnlink(WMNOSCAN);
 
@@ -319,10 +317,10 @@ static bool scan_mygames_xml(u64 conn_s_p)
 		return false;  //leave if cannot allocate memory
 	}
 #else
-	if(!webman_config->mc_app)
+	if(webman_config->vsh_mc)
 	{
-		sys_memory_container_t mc_app = get_app_memory_container();
-		if(mc_app && sys_memory_allocate_from_container(_3MB_, mc_app, SYS_MEMORY_PAGE_SIZE_1M, &sysmem) == CELL_OK) set_buffer_sizes(USE_MC);
+		sys_memory_container_t vsh_mc = get_vsh_memory_container();
+		if(vsh_mc && sys_memory_allocate_from_container(_3MB_, vsh_mc, SYS_MEMORY_PAGE_SIZE_1M, &sysmem) == CELL_OK) set_buffer_sizes(USE_MC);
 	}
 
 	if(!sysmem)
@@ -345,117 +343,136 @@ static bool scan_mygames_xml(u64 conn_s_p)
 	sys_addr_t sysmem_ps2 = sysmem + (BUFFER_SIZE) + (BUFFER_SIZE_PSX) + (BUFFER_SIZE_PSP);
 	sys_addr_t sysmem_dvd = sysmem + (BUFFER_SIZE) + (BUFFER_SIZE_PSX) + (BUFFER_SIZE_PSP) + (BUFFER_SIZE_PS2);
 
-#ifdef MOUNT_ROMS
-	sys_addr_t sysmem_rom = sysmem + (BUFFER_SIZE) + (BUFFER_SIZE_PSX) + (BUFFER_SIZE_PSP) + (BUFFER_SIZE_PS2) + (BUFFER_SIZE_DVD);
-	char *myxml_roms  = (char*)sysmem_rom;
-#else
-	char *myxml_roms  = NULL;
+#if defined(LAUNCHPAD) || defined(MOUNT_ROMS) 
+	char *sysmem_buf = (char*)sysmem;
 #endif
+	char *sysmem_xml = (char*)sysmem + (BUFFER_SIZE) - 4300;
 
-	char *myxml_ps3   = (char*)sysmem;
-	char *myxml_psx   = (char*)sysmem_psx;
-	char *myxml_ps2   = (char*)sysmem_ps2;
-	char *myxml_psp   = (char*)sysmem_psp;
-	char *myxml_dvd   = (char*)sysmem_dvd;
-	char *myxml       = (char*)sysmem+(BUFFER_SIZE)-4300;
-	char *myxml_items = (char*)sysmem_dvd;
+	cellFsMkdir("/dev_hdd0/xmlhost", DMODE);
+	cellFsMkdir("/dev_hdd0/xmlhost/game_plugin", DMODE);
 
-	cellFsMkdir("/dev_hdd0/xmlhost", MODE);
-	cellFsMkdir("/dev_hdd0/xmlhost/game_plugin", MODE);
-
-	u16 key = 0; const u16 max_xmb_items = ((u16)(BUFFER_SIZE_ALL / AVG_ITEM_SIZE));
+	const u16 max_xmb_items = ((u16)(BUFFER_SIZE_ALL / AVG_ITEM_SIZE));
 
 	make_fb_xml();
 
-#ifdef PKG_LAUNCHER
+	#if defined(PKG_LAUNCHER) || defined(MOUNT_ROMS)
+	bool c_roms = webman_config->roms;
+	if(c_roms) c_roms = isDir(PKGLAUNCH_DIR) && isDir(RETROARCH_DIR);
+	#endif
+
+	u16 key;
+	int fdxml; char *xml_file = (char*)MY_GAMES_XML;
+
+	#ifdef PKG_LAUNCHER
 	bool pkg_launcher = webman_config->ps3l && isDir(PKGLAUNCH_DIR);
-#endif
+	#endif
 	bool ps2_launcher = webman_config->ps2l && isDir(PS2_CLASSIC_PLACEHOLDER);
-#ifdef COBRA_ONLY
+	#ifdef COBRA_ONLY
 	bool psp_launcher = webman_config->pspl && (isDir(PSP_LAUNCHER_MINIS) || isDir(PSP_LAUNCHER_REMASTERS));
-#endif
+	#endif
 	char templn[1024];
 
+	led(YELLOW, BLINK_FAST);
+
+	check_cover_folders(templn);
+
+	#ifdef MOUNT_ROMS
+	#define ROM_PATHS	60
+	const char roms_path[ROM_PATHS][12] = { "2048", "MAME", "MAME078", "MAME2000", "MAME2003", "FBA", "FBA2012", "ATARI", "ATARI2600", "ATARI5200", "ATARI7800", "JAGUAR", "LYNX", "HANDY", "HATARI", "NXENGINE", "AMIGA", "VICE", "DOSBOX", "GW", "DOOM", "QUAKE", "LUA", "O2EM", "INTV", "BMSX", "FMSX", "PCE", "PCFX", "SGX", "NGP", "NES", "FCEUMM", "NESTOPIA", "QNES", "GB", "GBC", "GAMBATTE", "TGBDUAL", "GBA", "VBOY", "VBA", "MGBA", "POKEMINI", "GENESIS", "GEN", "MEGAD", "GG", "GEARBOY", "ZX81", "FUSE", "SNES", "MSNES", "SNES9X", "SNES9X2005", "SNES9X2010", "SNES9X_NEXT", "THEODORE", "VECX", "WSWAM" };
+	u16 roms_count[ROM_PATHS];
+	u8 roms_index = 0;
+	#endif
+
+	#ifdef SLAUNCH_FILE
+	int fdsl = create_slaunch_file();
+	#endif
+
+#ifdef MOUNT_ROMS
+scan_roms:
+#endif
+	fdxml = key = 0;
+
+	u16 item_count[6];
+	for(u8 i = 0; i < 6; i++) item_count[i] = 0;
+
+	t_string myxml_ps3; _alloc(&myxml_ps3, (char*)sysmem);
+	t_string myxml_psx; _alloc(&myxml_psx, (char*)sysmem_psx);
+	t_string myxml_ps2; _alloc(&myxml_ps2, (char*)sysmem_ps2);
+	t_string myxml_psp; _alloc(&myxml_psp, (char*)sysmem_psp);
+	t_string myxml_dvd; _alloc(&myxml_dvd, (char*)sysmem_dvd);
+	t_string myxml    ; _alloc(&myxml,     (char*)sysmem_xml);
+	t_string myxml_ngp; _alloc(&myxml_ngp, (char*)sysmem_dvd);
+
 	// --- build group headers ---
-	char *tempstr, *folder_name, *url; tempstr = myxml; memset(tempstr, 0, _4KB_); folder_name = myxml + (3*KB), url = myxml + _2KB_;
+	char *tempstr, *folder_name; tempstr = sysmem_xml; folder_name = sysmem_xml + (3*KB);
 
-	u16 item_count[6]; u32 xml_len[6];
-	for(u8 i = 0; i < 6; i++) item_count[i] = xml_len[i] = 0;
-
-	cellFsUnlink(MY_GAMES_XML);
-
-	key = 0;
-
-	if(!(webman_config->nogrp))
+	if( !scanning_roms && XMB_GROUPS )
 	{
 		if(!(webman_config->cmask & PS3))
 		{
-			xml_len[gPS3] = sprintf(myxml_ps3, "<View id=\"seg_wm_ps3_items\"><Attributes>");
-#ifdef PKG_LAUNCHER
+			_concat(&myxml_ps3, "<View id=\"seg_wm_ps3_items\"><Attributes>");
+			#ifdef PKG_LAUNCHER
 			if(pkg_launcher)
 			{
 				sprintf(templn, "<Table key=\"pkg_launcher\">"
 								XML_PAIR("icon", PKGLAUNCH_ICON)
 								XML_PAIR("title","PKG Launcher")
 								XML_PAIR("info","%s") "%s",
-								"PKG Launcher", "</Table>"); xml_len[gPS3] += concat(myxml_ps3, templn);
+								"PKG Launcher", "</Table>"); _concat(&myxml_ps3, templn);
 			}
-#endif
+			#endif
 		}
 		if(!(webman_config->cmask & PS2))
 		{
-			xml_len[gPS2] =  sprintf(myxml_ps2, "<View id=\"seg_wm_ps2_items\"><Attributes>");
+			_concat(&myxml_ps2, "<View id=\"seg_wm_ps2_items\"><Attributes>");
 			if(ps2_launcher)
 			{
-#ifndef ENGLISH_ONLY
+				#ifndef ENGLISH_ONLY
 				char *STR_LAUNCHPS2 =  tempstr; //[48];//	= "Launch PS2 Classic";
 				language("STR_LAUNCHPS2", STR_LAUNCHPS2, "Launch PS2 Classic");
-#endif
+				#endif
 				sprintf(templn, "<Table key=\"ps2_classic_launcher\">"
 								XML_PAIR("icon", PS2_CLASSIC_ISO_ICON)
 								XML_PAIR("title","PS2 Classic Launcher")
 								XML_PAIR("info","%s") "%s",
-								STR_LAUNCHPS2, "</Table>"); xml_len[gPS2] += concat(myxml_ps2, templn);
+								STR_LAUNCHPS2, "</Table>"); _concat(&myxml_ps2, templn);
 			}
 		}
-#ifdef COBRA_ONLY
-		if(!(webman_config->cmask & PS1)) {xml_len[gPSX] = sprintf(myxml_psx, "<View id=\"seg_wm_psx_items\"><Attributes>");}
+		#ifdef COBRA_ONLY
+		if(!(webman_config->cmask & PS1))
+		{
+			_concat(&myxml_psx, "<View id=\"seg_wm_psx_items\"><Attributes>");
+		}
 		if(!(webman_config->cmask & PSP))
 		{
-			xml_len[gPSP] =  sprintf(myxml_psp, "<View id=\"seg_wm_psp_items\"><Attributes>");
+			_concat(&myxml_psp, "<View id=\"seg_wm_psp_items\"><Attributes>");
 			if(psp_launcher)
 			{
-#ifndef ENGLISH_ONLY
+				#ifndef ENGLISH_ONLY
 				char *STR_LAUNCHPSP =  tempstr; //[144];//	= "Launch PSP ISO mounted through webMAN or mmCM";
 				language("STR_LAUNCHPSP", STR_LAUNCHPSP, "Launch PSP ISO mounted through webMAN or mmCM");
-#endif
+				#endif
 				sprintf(templn, "<Table key=\"cobra_psp_launcher\">"
 								XML_PAIR("icon","/dev_hdd0/game/%s/ICON0.PNG")
 								XML_PAIR("title","PSP Launcher")
 								XML_PAIR("info","%s") "%s",
 								isDir(PSP_LAUNCHER_REMASTERS) ? PSP_LAUNCHER_REMASTERS_ID : PSP_LAUNCHER_MINIS_ID,
-								STR_LAUNCHPSP, "</Table>"); xml_len[gPSP] += concat(myxml_psp, templn);
+								STR_LAUNCHPSP, "</Table>"); _concat(&myxml_psp, templn);
 			}
 		}
 		if(!(webman_config->cmask & DVD) || !(webman_config->cmask & BLU))
 		{
-			xml_len[gDVD] = sprintf(myxml_dvd, "<View id=\"seg_wm_dvd_items\"><Attributes>");
+			_concat(&myxml_dvd, "<View id=\"seg_wm_dvd_items\"><Attributes>");
 			if(webman_config->rxvid)
 			{
 				sprintf(templn, "<Table key=\"rx_video\">"
 								XML_PAIR("icon","%s")
 								XML_PAIR("title","%s")
 								XML_PAIR("child","segment") "%s",
-								wm_icons[gDVD], STR_VIDLG, STR_NOITEM_PAIR); xml_len[gDVD] += concat(myxml_dvd, templn);
+								wm_icons[gDVD], STR_VIDLG, STR_NOITEM_PAIR); _concat(&myxml_dvd, templn);
 			}
 		}
- #ifdef MOUNT_ROMS
-		if(webman_config->roms)
-		{
-			xml_len[gROM] =  sprintf(myxml_roms, "<View id=\"seg_wm_rom_items\"><Attributes>");
-		}
- #endif
-#endif
+		#endif
 	}
 
 	int fd;
@@ -463,39 +480,37 @@ static bool scan_mygames_xml(u64 conn_s_p)
 
 	char param[STD_PATH_LEN], icon[STD_PATH_LEN], subpath[STD_PATH_LEN], enc_dir_name[1024];
 
-	u8 is_net = 0;
+	u8 i0, is_net = 0;
 
 	// --- scan xml content ---
-	led(YELLOW, BLINK_FAST);
-
-	check_cover_folders(tempstr);
-
 	char localhost[24]; sprintf(localhost, "http://%s", local_ip);
 	char *proxy_plugin = (char*)WEB_LINK_PAIR;
-#ifdef WM_PROXY_SPRX
+	#ifdef WM_PROXY_SPRX
 	if(file_exists(WM_RES_PATH "/wm_proxy.sprx")) {proxy_plugin = (char*)XAI_LINK_PAIR, *localhost = NULL;}
-#endif
+	#endif
 
-#ifdef SLAUNCH_FILE
-	int fdsl = create_slaunch_file();
-#endif
-
-#if defined(PKG_LAUNCHER) || defined(MOUNT_ROMS)
-	f1_len = (webman_config->roms ? id_ROMS : webman_config->ps3l ? id_GAMEI : id_VIDEO) + 1;
-#endif
+	#if defined(PKG_LAUNCHER) || defined(MOUNT_ROMS)
+	f1_len = ((webman_config->nogrp && c_roms) ? id_ROMS : webman_config->ps3l ? id_GAMEI : id_VIDEO) + 1;
+	#endif
 
 	int ns = NONE; u8 uprofile = profile;
 
 	bool is_npdrm = webman_config->npdrm && (!isDir("/dev_hdd0/GAMEZ") && is_app_home_onxmb()); strcpy(paths[id_GAMEZ], is_npdrm ? "game" : "GAMEZ");
 
-#ifdef NET_SUPPORT
+	#ifdef NET_SUPPORT
 	int abort_connection = 0;
 	if(g_socket >= 0 && open_remote_dir(g_socket, "/", &abort_connection) < 0) do_umount(false);
-#endif
+	#endif
 
 	for(u8 f0 = 0; f0 < 16; f0++)  // drives: 0="/dev_hdd0", 1="/dev_usb000", 2="/dev_usb001", 3="/dev_usb002", 4="/dev_usb003", 5="/dev_usb006", 6="/dev_usb007", 7="/net0", 8="/net1", 9="/net2", 10="/net3", 11="/net4", 12="/ext", 13="/dev_sd", 14="/dev_ms", 15="/dev_cf"
 	{
 		if(check_drive(f0)) continue;
+
+		i0 = f0, is_net = IS_NET; 
+
+		#ifdef MOUNT_ROMS
+		if(scanning_roms && is_net) continue;
+		#endif
 
 		if(conn_s_p == START_DAEMON)
 		{
@@ -505,54 +520,71 @@ static bool scan_mygames_xml(u64 conn_s_p)
 			}
 		}
 
-#ifdef USE_NTFS
-		if(IS_NTFS && webman_config->ntfs) prepNTFS(0);
-#endif
-		is_net = IS_NET;
+		#ifdef USE_NTFS
+		if(!scanning_roms && IS_NTFS && webman_config->ntfs) prepNTFS(0);
+		#endif
 
 		if(!(is_net || IS_NTFS) && (isDir(drives[f0]) == false)) continue;
-//
-#ifdef NET_SUPPORT
+
+		#ifdef NET_SUPPORT
 		if((ns >= 0) && (ns!=g_socket)) sclose(&ns);
-#endif
+		#endif
+
 		ns = NONE; uprofile = profile;
 		for(u8 f1 = 0; f1 < f1_len; f1++) // paths: 0="GAMES", 1="GAMEZ", 2="PS3ISO", 3="BDISO", 4="DVDISO", 5="PS2ISO", 6="PSXISO", 7="PSXGAMES", 8="PSPISO", 9="ISO", 10="video", 11="GAMEI", 12="ROMS"
 		{
-#ifndef COBRA_ONLY
-			if(IS_ISO_FOLDER && !(IS_PS2_FOLDER)) continue; // 0="GAMES", 1="GAMEZ", 5="PS2ISO", 10="video"
-#endif
-			if(key >= max_xmb_items) break;
-
-			//if(IS_PS2_FOLDER && f0>0)  continue; // PS2ISO is supported only from /dev_hdd0
-#ifdef PKG_LAUNCHER
-			if(IS_GAMEI_FOLDER) {if(is_net || (IS_HDD0) || (IS_NTFS)) continue;}
-#endif
-			if(IS_VIDEO_FOLDER) {if(is_net) continue; else strcpy(paths[id_VIDEO], (IS_HDD0) ? "video" : "GAMES_DUP");}
-			if(IS_NTFS)  {if(f1 >= id_ISO) break; else if(IS_JB_FOLDER || (f1 == id_PSXGAMES)) continue;} // 0="GAMES", 1="GAMEZ", 7="PSXGAMES", 9="ISO", 10="video", 11="GAMEI", 12="ROMS"
-
-			if(is_npdrm && !IS_HDD0) {is_npdrm = false; strcpy(paths[id_GAMEZ], "GAMEZ");}
-
-#ifdef NET_SUPPORT
-			if(is_net)
+			if(scanning_roms)
 			{
-				if(f1 >= id_ISO) break; // ignore 9="ISO", 10="video", 11="GAMEI"
+				f1 = id_ROMS;
 			}
+			else
+			{
+#ifndef COBRA_ONLY
+				if(IS_ISO_FOLDER && !(IS_PS2_FOLDER)) continue; // 0="GAMES", 1="GAMEZ", 5="PS2ISO", 10="video"
 #endif
-			if(check_content_type(f1)) continue;
+				if(key >= max_xmb_items) break;
+
+				//if(IS_PS2_FOLDER && f0>0)  continue; // PS2ISO is supported only from /dev_hdd0
+#ifdef PKG_LAUNCHER
+				if(IS_GAMEI_FOLDER) {if(is_net || (IS_HDD0) || (IS_NTFS)) continue;}
+#endif
+				if(IS_VIDEO_FOLDER) {if(is_net) continue; else strcpy(paths[id_VIDEO], (IS_HDD0) ? "video" : "GAMES_DUP");}
+				if(IS_NTFS)  {if(f1 >= id_ISO) break; else if(IS_JB_FOLDER || (f1 == id_PSXGAMES)) continue;} // 0="GAMES", 1="GAMEZ", 7="PSXGAMES", 9="ISO", 10="video", 11="GAMEI", 12="ROMS"
+
+				if(is_npdrm && !IS_HDD0) {is_npdrm = false; strcpy(paths[id_GAMEZ], "GAMEZ");}
 
 #ifdef NET_SUPPORT
-			if(is_net && (netiso_svrid == (f0-7)) && (g_socket != -1)) ns = g_socket; /* reuse current server connection */ else
-			if(is_net && (ns<0)) ns = connect_to_remote_server(f0-7);
+				if(is_net)
+				{
+					if(f1 >= id_ISO) break; // ignore 9="ISO", 10="video", 11="GAMEI"
+				}
 #endif
-			if(is_net && (ns<0)) break;
-//
+				if(check_content_type(f1)) continue;
+
+#ifdef NET_SUPPORT
+				if(is_net && (netiso_svrid == (f0-7)) && (g_socket != -1)) ns = g_socket; /* reuse current server connection */ else
+				if(is_net && (ns<0)) ns = connect_to_remote_server(f0-7);
+#endif
+				if(is_net && (ns<0)) break;
+			}
+
 			bool ls; u8 li, subfolder; li=subfolder=0; ls=false; // single letter folder
 
 		subfolder_letter_xml:
 			subfolder = 0; uprofile = profile;
 		read_folder_xml:
 //
-#ifdef NET_SUPPORT
+			#ifdef MOUNT_ROMS
+			if(scanning_roms)
+			{
+				if(IS_NTFS)
+					{sprintf(param, "%s/USRDIR/cores/roms/%s", RETROARCH_DIR, roms_path[roms_index]); i0 = 0;}
+				else
+					sprintf(param, "%s/ROMS%s/%s", drives[f0], SUFIX(uprofile), roms_path[roms_index]);
+			}
+			else
+			#endif
+			#ifdef NET_SUPPORT
 			if(is_net)
 			{
 				char ll[4]; if(li) sprintf(ll, "/%c", '@'+li); else *ll = NULL;
@@ -561,7 +593,7 @@ static bool scan_mygames_xml(u64 conn_s_p)
 				if(li == 99) sprintf(param, "/%s%s", paths[f1], AUTOPLAY_TAG);
 			}
 			else
-#endif
+			#endif
 			{
 				if(IS_NTFS)
 					sprintf(param, "%s", WMTMP);
@@ -573,9 +605,8 @@ static bool scan_mygames_xml(u64 conn_s_p)
 			}
 
 #ifdef NET_SUPPORT
-				if(is_net && open_remote_dir(ns, param, &abort_connection) < 0) goto continue_reading_folder_xml; //continue;
+			if(is_net && open_remote_dir(ns, param, &abort_connection) < 0) goto continue_reading_folder_xml; //continue;
 #endif
-			//led(YELLOW, ON);
 			{
 				CellFsDirectoryEntry entry; u32 read_e;
 				int fd2 = 0, flen, plen;
@@ -639,7 +670,7 @@ static bool scan_mygames_xml(u64 conn_s_p)
 
 						sprintf(tempstr + read_e, "</Table>");
 
-						if(add_xmb_entry(f0, f1, plen + 6, tempstr, templn, skey[key].value, key, myxml_ps3, myxml_ps2, myxml_psx, myxml_psp, myxml_dvd, myxml_roms, data[v3_entry].name, item_count, xml_len, 0)) key++;
+						if(add_xmb_entry(f0, f1, plen + 6, tempstr, templn, skey[key].value, key, &myxml_ps3, &myxml_ps2, &myxml_psx, &myxml_psp, &myxml_dvd, data[v3_entry].name, item_count, 0)) key++;
 
 						v3_entry++;
 					}
@@ -745,21 +776,21 @@ next_xml_entry:
 							if(webman_config->info <= 1)
 							{
 								if((webman_config->info == 1) & HAS_TITLE_ID) {strcat(folder_name, " | "); strcat(folder_name, title_id);}
-								read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s/%s%s"), drives[f0], paths[f1], folder_name);
+								read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s/%s%s"), drives[i0], paths[f1], folder_name);
 							}
 							else if(webman_config->info == 2)
 							{
 								if(HAS_TITLE_ID)
-									read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s | %s"), title_id, drives[f0] + 5);
+									read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s | %s"), title_id, drives[i0] + 5);
 								else
-									read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s"), drives[f0] + 5);
+									read_e += sprintf(tempstr + read_e, XML_PAIR("info","%s"), drives[i0] + 5);
 
 								if(f1 < 2) read_e += sprintf(tempstr + read_e, " | JB");
 							}
 
 							sprintf(tempstr + read_e, "</Table>");
 
-							if(add_xmb_entry(f0, f1, plen + flen - 13, tempstr, templn, skey[key].value, key, myxml_ps3, myxml_ps2, myxml_psx, myxml_psp, myxml_dvd, myxml_roms, entry.entry_name.d_name, item_count, xml_len, subfolder)) key++;
+							if(add_xmb_entry(f0, f1, plen + flen - 13, tempstr, templn, skey[key].value, key, &myxml_ps3, &myxml_ps2, &myxml_psx, &myxml_psp, &myxml_dvd, entry.entry_name.d_name, item_count, subfolder)) key++;
 						}
 //////////////////////////////
 						if(subfolder) goto next_xml_entry;
@@ -775,7 +806,7 @@ next_xml_entry:
 			}
 //
 continue_reading_folder_xml:
-			if(f1 < id_ISO)
+			if(f1 < id_ISO && !IS_NTFS)
 			{
 				if(uprofile > 0) {subfolder = uprofile = 0; goto read_folder_xml;}
 				if(is_net && (f1 > id_GAMEZ))
@@ -790,30 +821,24 @@ continue_reading_folder_xml:
 #endif
 	}
 
-#ifdef SLAUNCH_FILE
-	close_slaunch_file(fdsl);
-#endif
-
-	if( !(webman_config->nogrp))
+	if( !scanning_roms && XMB_GROUPS )
 	{
 #ifndef PKG_LAUNCHER
-		if(!(webman_config->cmask & PS3)) {strcat(myxml_ps3, "</Attributes><Items>");}
+		if(!(webman_config->cmask & PS3)) {_concat(&myxml_ps3, "</Attributes><Items>");}
 #else
-		if(!(webman_config->cmask & PS3)) {strcat(myxml_ps3, "</Attributes><Items>"); if(pkg_launcher) strcat(myxml_ps3, QUERY_XMB("pkg_launcher", "xcb://localhost/query?limit=1&cond=Ae+Game:Common.dirPath /dev_hdd0/game+Ae+Game:Common.fileName " PKGLAUNCH_ID));}
+		if(!(webman_config->cmask & PS3)) {_concat(&myxml_ps3, "</Attributes><Items>"); if(pkg_launcher) _concat(&myxml_ps3, QUERY_XMB("pkg_launcher", "xcb://localhost/query?limit=1&cond=Ae+Game:Common.dirPath /dev_hdd0/game+Ae+Game:Common.fileName " PKGLAUNCH_ID));}
 #endif
-		if(!(webman_config->cmask & PS2)) {strcat(myxml_ps2, "</Attributes><Items>"); if(ps2_launcher) strcat(myxml_ps2, QUERY_XMB("ps2_classic_launcher", "xcb://127.0.0.1/query?limit=1&cond=Ae+Game:Game.titleId PS2U10000"));}
+		if(!(webman_config->cmask & PS2)) {_concat(&myxml_ps2, "</Attributes><Items>"); if(ps2_launcher) _concat(&myxml_ps2, QUERY_XMB("ps2_classic_launcher", "xcb://127.0.0.1/query?limit=1&cond=Ae+Game:Game.titleId PS2U10000"));}
 
 #ifdef COBRA_ONLY
-		if(!(webman_config->cmask & PS1)) {strcat(myxml_psx, "</Attributes><Items>");}
-		if(!(webman_config->cmask & PSP)) {strcat(myxml_psp, "</Attributes><Items>"); if(psp_launcher) strcat(myxml_psp, QUERY_XMB("cobra_psp_launcher", "xcb://127.0.0.1/query?cond=AGL+Game:Game.titleId " PSP_LAUNCHER_REMASTERS_ID " " PSP_LAUNCHER_MINIS_ID));}
-		if(!(webman_config->cmask & DVD) || !(webman_config->cmask & BLU)) {strcat(myxml_dvd, "</Attributes><Items>"); if(webman_config->rxvid) strcat(myxml_dvd, QUERY_XMB("rx_video", "#seg_wm_bdvd"));}
- #ifdef MOUNT_ROMS
-		if(  webman_config->roms       )  {strcat(myxml_roms, "</Attributes><Items>");}
- #endif
+		if(!(webman_config->cmask & PS1)) {_concat(&myxml_psx, "</Attributes><Items>");}
+		if(!(webman_config->cmask & PSP)) {_concat(&myxml_psp, "</Attributes><Items>"); if(psp_launcher) _concat(&myxml_psp, QUERY_XMB("cobra_psp_launcher", "xcb://127.0.0.1/query?cond=AGL+Game:Game.titleId " PSP_LAUNCHER_REMASTERS_ID " " PSP_LAUNCHER_MINIS_ID));}
+		if(!(webman_config->cmask & DVD) ||
+		   !(webman_config->cmask & BLU)) {_concat(&myxml_dvd, "</Attributes><Items>"); if(webman_config->rxvid) _concat(&myxml_dvd, QUERY_XMB("rx_video", "#seg_wm_bdvd"));}
 #endif
 	}
 	else
-		myxml_dvd[0] = NULL;
+		_alloc(&myxml_ngp, (char*)sysmem_dvd);
 
 	// --- sort scanned content
 
@@ -848,121 +873,119 @@ continue_reading_folder_xml:
 	}
 #endif
 
-	if(webman_config->nogrp)
+	if(!scanning_roms && webman_config->nogrp)
 	{
-		if(!add_xmbm_plus) strcat(myxml_items, ADD_XMB_ITEM("eject"));
+		if(!add_xmbm_plus) _concat(&myxml_ngp, ADD_XMB_ITEM("eject"));
 
-		if(!webman_config->nosetup)
+		add_custom_xml(&myxml, templn, tempstr);
+
+		if( ADD_SETUP )
 		{
 			if(add_xmbm_plus)
 #ifdef ENGLISH_ONLY
-				strcat(myxml_items, QUERY_XMB("setup", "xmb://localhost/dev_hdd0/game/XMBMANPLS/USRDIR/FEATURES/webMAN.xml#seg_webman_links_items"));
+				_concat(&myxml_ngp, QUERY_XMB("setup", "xmb://localhost/dev_hdd0/game/XMBMANPLS/USRDIR/FEATURES/webMAN.xml#seg_webman_links_items"));
 #else
 			{
 				sprintf(tempstr, QUERY_XMB("setup", "xmb://localhost%s#seg_webman_links_items"), templn);
-				strcat(myxml_items, tempstr);
+				_concat(&myxml_ngp, tempstr);
 			}
 #endif
 			else
-				strcat(myxml_items, ADD_XMB_ITEM("setup"));
+				_concat(&myxml_ngp, ADD_XMB_ITEM("setup"));
 		}
-
-		xml_len[gPS3] = strlen(myxml_items);
-	}
-	else
-	{
-		xml_len[gPS3] = strlen(myxml_ps3);
-		xml_len[gPSX] = strlen(myxml_psx);
-		xml_len[gPS2] = strlen(myxml_ps2);
-		xml_len[gPSP] = strlen(myxml_psp);
-		xml_len[gDVD] = strlen(myxml_dvd);
- #ifdef MOUNT_ROMS
-		xml_len[gROM] = strlen(myxml_roms);
- #endif
 	}
 
 	// --- add sorted items to xml
-	if( webman_config->nogrp )
+	if( webman_config->nogrp || scanning_roms)
 	{
+		u32 max_size = (BUFFER_SIZE - 1000);
+
 		for(u16 a = 0; a < key; a++)
 		{
-			if(xml_len[gPS3] >= (BUFFER_SIZE - 1000)) break;
+			if(myxml_ngp.size >= max_size) break;
 			sprintf(templn, ADD_XMB_ITEM("%s"), skey[a].value + XML_KEY_LEN, skey[a].value + XML_KEY_LEN);
-			xml_len[gPS3] += concat(myxml_items + xml_len[gPS3], templn);
+			_concat(&myxml_ngp, templn);
 		}
 	}
 	else
 	{
+		u32 max_size = (BUFFER_SIZE - 5000);
+
 		for(u16 a = 0; a < key; a++)
 		{
 			sprintf(templn, ADD_XMB_ITEM("%s"), skey[a].value + XML_KEY_LEN, skey[a].value + XML_KEY_LEN);
-			if(*skey[a].value == PS3_&& xml_len[gPS3] < (BUFFER_SIZE - 5000))
-				xml_len[gPS3] += concat(myxml_ps3 + xml_len[gPS3], templn);
+			if(*skey[a].value == PS3_&& myxml_ps3.size < max_size)
+				_concat(&myxml_ps3, templn);
 			else
-			if(*skey[a].value == PS2 && xml_len[gPS2] < (BUFFER_SIZE_PS2 - 128))
-				xml_len[gPS2] += concat(myxml_ps2 + xml_len[gPS2], templn);
+			if(*skey[a].value == PS2 && myxml_ps2.size < (BUFFER_SIZE_PS2 - 128))
+				_concat(&myxml_ps2, templn);
 #ifdef COBRA_ONLY
 			else
-			if(*skey[a].value == PS1 && xml_len[gPSX] < (BUFFER_SIZE_PSX - 128))
-				xml_len[gPSX] += concat(myxml_psx + xml_len[gPSX], templn);
+			if(*skey[a].value == PS1 && myxml_psx.size < (BUFFER_SIZE_PSX - 128))
+				_concat(&myxml_psx, templn);
 			else
-			if(*skey[a].value == PSP && xml_len[gPSP] < (BUFFER_SIZE_PSP - 128))
-				xml_len[gPSP] += concat(myxml_psp + xml_len[gPSP], templn);
+			if(*skey[a].value == PSP && myxml_psp.size < (BUFFER_SIZE_PSP - 128))
+				_concat(&myxml_psp, templn);
 			else
-			if(*skey[a].value == BLU && xml_len[gDVD] < (BUFFER_SIZE_DVD - 1200))
-				xml_len[gDVD] += concat(myxml_dvd + xml_len[gDVD], templn);
- #ifdef MOUNT_ROMS
-			else
-			if(*skey[a].value == DVD && xml_len[gROM] < (BUFFER_SIZE_ROM - 1200))
-				xml_len[gROM] += concat(myxml_roms + xml_len[gROM], templn);
- #endif
+			if(*skey[a].value == BLU && myxml_dvd.size < (BUFFER_SIZE_DVD - 1200))
+				_concat(&myxml_dvd, templn);
 #endif
 		}
 	}
-
-	// --- close xml items
-
-	if( !(webman_config->nogrp))
-	{
-		if(!(webman_config->cmask & PS3)) strcat(myxml_ps3 + xml_len[gPS3], "</Items></View>");
-		if(!(webman_config->cmask & PS2)) strcat(myxml_ps2 + xml_len[gPS2], "</Items></View>");
-#ifdef COBRA_ONLY
-		if(!(webman_config->cmask & PS1)) strcat(myxml_psx + xml_len[gPSX], "</Items></View>");
-		if(!(webman_config->cmask & PSP)) strcat(myxml_psp + xml_len[gPSP], "</Items></View>");
-		if(!(webman_config->cmask & DVD) || !(webman_config->cmask & BLU))
-		{
-			strcat(myxml_dvd + xml_len[gDVD], "</Items></View>");
-			if(webman_config->rxvid)
-			{
-				strcat(myxml_dvd + xml_len[gDVD],	"<View id=\"seg_wm_bdvd\">"
-													"<Items>"
-													QUERY_XMB("rx_video1", "xcb://localhost/query?table=MMS_MEDIA_TYPE_SYSTEM&genre=Video&sort=+StorageMedia:StorageMedia.sortOrder+StorageMedia:StorageMedia.timeInserted&cond=Ae+StorageMedia:StorageMedia.stat.mediaStatus %xCB_MEDIA_INSERTED+Ae+StorageMedia:StorageMedia.mediaFormat %xCB_MEDIA_FORMAT_DATA+AGL+StorageMedia:StorageMedia.type %xCB_MEDIA_TYPE_BDROM %xCB_MEDIA_TYPE_WM")
-													QUERY_XMB("rx_video2", "xcb://localhost/query?sort=+Game:Common.titleForSort&cond=AGL+Game:Game.titleId RXMOV0000 RXMOVZZZZ+An+Game:Game.category 2D+An+Game:Game.category BV+An+Game:Game.category HG")
-													"</Items>"
-													"</View>");
-			}
-		}
- #ifdef MOUNT_ROMS
-		if(webman_config->roms) strcat(myxml_roms + xml_len[gROM], "</Items></View>");
- #endif
-#endif
-	}
-
-#ifndef ENGLISH_ONLY
-	char *buffer = enc_dir_name;
-#endif
 
 	// --- build xml headers
-	sprintf(myxml,  "%s"
-					"<View id=\"seg_mygames\">"
-					"<Attributes>", XML_HEADER);
+#ifdef MOUNT_ROMS
+	myxml.size = sprintf(myxml.str, "%s"
+						"<View id=\"%s%s\">"
+						"<Attributes>", XML_HEADER, scanning_roms ? "seg_wm_rom_" : "seg_mygames", scanning_roms ? roms_path[roms_index] : "" );
 
+	if(scanning_roms) 
+	{
+		xml_file = enc_dir_name;
+		sprintf(xml_file, "%s/ROMS_%s.xml", HTML_BASE_PATH, roms_path[roms_index]);
+		cellFsUnlink(xml_file);
+		goto save_xml;
+	}
+#else
+	myxml.size = sprintf(myxml.str, "%s"
+						"<View id=\"%s\">"
+						"<Attributes>", XML_HEADER, "seg_mygames");
+#endif
+
+	// --- close view of xml groups
+	if( XMB_GROUPS )
+	{
+		if(!(webman_config->cmask & PS3)) _concat(&myxml_ps3, "</Items></View>");
+		if(!(webman_config->cmask & PS2)) _concat(&myxml_ps2, "</Items></View>");
+		#ifdef COBRA_ONLY
+		if(!(webman_config->cmask & PS1)) _concat(&myxml_psx, "</Items></View>");
+		if(!(webman_config->cmask & PSP)) _concat(&myxml_psp, "</Items></View>");
+		if(!(webman_config->cmask & DVD) || !(webman_config->cmask & BLU))
+		{
+			_concat(&myxml_dvd, "</Items></View>");
+			if(webman_config->rxvid)
+			{
+				_concat(&myxml_dvd,
+					"<View id=\"seg_wm_bdvd\">"
+					"<Items>"
+					QUERY_XMB("rx_video1", "xcb://localhost/query?table=MMS_MEDIA_TYPE_SYSTEM&genre=Video&sort=+StorageMedia:StorageMedia.sortOrder+StorageMedia:StorageMedia.timeInserted&cond=Ae+StorageMedia:StorageMedia.stat.mediaStatus %xCB_MEDIA_INSERTED+Ae+StorageMedia:StorageMedia.mediaFormat %xCB_MEDIA_FORMAT_DATA+AGL+StorageMedia:StorageMedia.type %xCB_MEDIA_TYPE_BDROM %xCB_MEDIA_TYPE_WM")
+					QUERY_XMB("rx_video2", "xcb://localhost/query?sort=+Game:Common.titleForSort&cond=AGL+Game:Game.titleId RXMOV0000 RXMOVZZZZ+An+Game:Game.category 2D+An+Game:Game.category BV+An+Game:Game.category HG")
+					"</Items>"
+					"</View>");
+			}
+		}
+		#endif
+	}
+
+	char *buffer = enc_dir_name;
+
+	// --- Add Eject Disc if webMAN.xml does not exist
 	if(!add_xmbm_plus)
 	{
-#ifndef ENGLISH_ONLY
+		#ifndef ENGLISH_ONLY
 		char *STR_EJECTDISC = buffer; //[32];//	= "Eject Disc";
 		language("STR_EJECTDISC", STR_EJECTDISC, "Eject Disc");
-#endif
+		#endif
 
 		sprintf(templn, "<Table key=\"eject\">"
 						XML_PAIR("icon","%s")
@@ -970,178 +993,273 @@ continue_reading_folder_xml:
 						XML_PAIR("info","%s") "%s"
 						XML_PAIR("module_action","%s/mount_ps3/unmount") "</Table>",
 						wm_icons[11], STR_EJECTDISC, STR_UNMOUNTGAME, proxy_plugin, localhost);
-		strcat(myxml, templn);
+		_concat(&myxml, templn);
 	}
 
-	if(!(webman_config->nogrp))
+	// --- Add Groups attribute tables
+	if( XMB_GROUPS )
 	{
-#ifndef ENGLISH_ONLY
+		#ifndef ENGLISH_ONLY
 		char *STR_PS3FORMAT = buffer; //[40];//	= "PS3 format games";
 		language("STR_PS3FORMAT", STR_PS3FORMAT, "PS3 format games");
-#endif
+		#endif
 		if( !(webman_config->cmask & PS3)) {sprintf(templn, "<Table key=\"wm_ps3\">"
-															XML_PAIR("icon","%s")
-															XML_PAIR("title","PLAYSTATION\xC2\xAE\x33")
-															XML_PAIR("info","%'i %s") "%s",
-															wm_icons[gPS3], item_count[gPS3], STR_PS3FORMAT, STR_NOITEM_PAIR); strcat(myxml, templn);}
-#ifndef ENGLISH_ONLY
+													XML_PAIR("icon","%s")
+													XML_PAIR("title","PLAYSTATION\xC2\xAE\x33")
+													XML_PAIR("info","%'i %s") "%s",
+													wm_icons[gPS3], item_count[gPS3], STR_PS3FORMAT,
+													STR_NOITEM_PAIR); _concat(&myxml, templn);}
+		#ifdef MOUNT_ROMS
+		if(c_roms)
+		{
+			#ifndef ENGLISH_ONLY
+			char *pos = strstr(buffer, "PS3"); if(pos) strncpy(pos, "ROM", 3); else *buffer = NULL;
+			#else
+			*buffer = NULL;
+			#endif
+											sprintf(templn, "<Table key=\"wm_rom\">"
+													XML_PAIR("icon%s", "%s")
+													XML_PAIR("title","ROMS")
+													XML_PAIR("info","%s") "%s",
+													covers_exist[7] ? "" : "_rsc",
+													covers_exist[7] ? WM_ICONS_PATH "/icon_wm_album_emu.png" : "item_tex_ps3util",
+													buffer, STR_NOITEM_PAIR); _concat(&myxml, templn);
+		}
+		#endif
+		#ifndef ENGLISH_ONLY
 		char *STR_PS2FORMAT = buffer; //[48];//	= "PS2 format games";
 		language("STR_PS2FORMAT", STR_PS2FORMAT, "PS2 format games");
-#endif
+		#endif
 		if( !(webman_config->cmask & PS2)) {sprintf(templn, "<Table key=\"wm_ps2\">"
-															XML_PAIR("icon","%s")
-															XML_PAIR("title","PLAYSTATION\xC2\xAE\x32")
-															XML_PAIR("info","%'i %s") "%s",
-															wm_icons[gPS2], item_count[gPS2], STR_PS2FORMAT, STR_NOITEM_PAIR); strcat(myxml, templn);}
-#ifdef COBRA_ONLY
+													XML_PAIR("icon","%s")
+													XML_PAIR("title","PLAYSTATION\xC2\xAE\x32")
+													XML_PAIR("info","%'i %s") "%s",
+													wm_icons[gPS2], item_count[gPS2], STR_PS2FORMAT,
+													STR_NOITEM_PAIR); _concat(&myxml, templn);}
+	 #ifdef COBRA_ONLY
 
-#ifndef ENGLISH_ONLY
+		#ifndef ENGLISH_ONLY
 		char *STR_PS1FORMAT = buffer; //[48];//	= "PSOne format games";
 		language("STR_PS1FORMAT", STR_PS1FORMAT, "PSOne format games");
-#endif
+		#endif
 		if( !(webman_config->cmask & PS1)) {sprintf(templn, "<Table key=\"wm_psx\">"
-															XML_PAIR("icon","%s")
-															XML_PAIR("title","PLAYSTATION\xC2\xAE")
-															XML_PAIR("info","%'i %s") "%s",
-															wm_icons[gPSX], item_count[gPSX], STR_PS1FORMAT, STR_NOITEM_PAIR);strcat(myxml, templn);}
-#ifndef ENGLISH_ONLY
+													XML_PAIR("icon","%s")
+													XML_PAIR("title","PLAYSTATION\xC2\xAE")
+													XML_PAIR("info","%'i %s") "%s",
+													wm_icons[gPSX], item_count[gPSX], STR_PS1FORMAT,
+													STR_NOITEM_PAIR); _concat(&myxml, templn);}
+		#ifndef ENGLISH_ONLY
 		char *STR_PSPFORMAT = buffer; //[48];//	= "PSP\xE2\x84\xA2 format games";
 		language("STR_PSPFORMAT", STR_PSPFORMAT, "PSP\xE2\x84\xA2 format games");
-#endif
+		#endif
 		if( !(webman_config->cmask & PSP)) {sprintf(templn, "<Table key=\"wm_psp\">"
-															XML_PAIR("icon","%s")
-															XML_PAIR("title","PLAYSTATION\xC2\xAEPORTABLE")
-															XML_PAIR("info","%'i %s") "%s",
-															wm_icons[gPSP], item_count[gPSP], STR_PSPFORMAT, STR_NOITEM_PAIR);strcat(myxml, templn);}
-#ifndef ENGLISH_ONLY
+													XML_PAIR("icon","%s")
+													XML_PAIR("title","PLAYSTATION\xC2\xAEPORTABLE")
+													XML_PAIR("info","%'i %s") "%s",
+													wm_icons[gPSP], item_count[gPSP], STR_PSPFORMAT,
+													STR_NOITEM_PAIR); _concat(&myxml, templn);}
+		#ifndef ENGLISH_ONLY
 		char *STR_VIDFORMAT = buffer; //[56];//	= "Blu-ray\xE2\x84\xA2 and DVD";
-		char *STR_VIDEO = buffer + 100; //[40];//		= "Video content";
+		char *STR_VIDEO = buffer + 100; //[40];//	= "Video content";
 
 		language("STR_VIDFORMAT", STR_VIDFORMAT, "Blu-ray\xE2\x84\xA2 and DVD");
 		language("STR_VIDEO", STR_VIDEO, "Video content");
-#endif
+		#endif
 		if( !(webman_config->cmask & DVD) ||
 			!(webman_config->cmask & BLU)) {sprintf(templn, "<Table key=\"wm_dvd\">"
-															XML_PAIR("icon","%s")
-															XML_PAIR("title","%s")
-															XML_PAIR("info","%'i %s") "%s",
-															wm_icons[gDVD], STR_VIDFORMAT, item_count[gDVD], STR_VIDEO, STR_NOITEM_PAIR); strcat(myxml, templn);}
- #ifdef MOUNT_ROMS
-		if(webman_config->roms && (item_count[gROM] > 0))
-		{
-											sprintf(templn, "<Table key=\"wm_rom\">"
-															XML_PAIR("icon%s", "%s")
-															XML_PAIR("title","ROMS")
-															XML_PAIR("info","%'i %s") "%s",
-															covers_exist[7] ? "" : "_rsc",
-															covers_exist[7] ? WM_ICONS_PATH "/icon_wm_album_emu.png" : "item_tex_ps3util",
-															item_count[gROM], "ROMS", STR_NOITEM_PAIR);strcat(myxml, templn);
-		}
- #endif
-#endif
+													XML_PAIR("icon","%s")
+													XML_PAIR("title","%s")
+													XML_PAIR("info","%'i %s") "%s",
+													wm_icons[gDVD], STR_VIDFORMAT, item_count[gDVD], STR_VIDEO,
+													STR_NOITEM_PAIR); _concat(&myxml, templn);}
+	 #endif
 	}
 
-	if(!webman_config->nosetup)
+	// --- Add Setup
+	if( ADD_SETUP )
 	{
-#ifndef ENGLISH_ONLY
+		#ifndef ENGLISH_ONLY
 		char *STR_WMSETUP2 = buffer; //[56];//	= "Setup webMAN options";
 		language("STR_WMSETUP2", STR_WMSETUP2, "Setup webMAN options");
-#endif
+		#endif
 		sprintf(templn, "<Table key=\"setup\">"
 						 XML_PAIR("icon","%s")
 						 XML_PAIR("title","%s")
 						 XML_PAIR("info","%s") "%s",
 						 add_xmbm_plus ? "/dev_hdd0/game/XMBMANPLS/USRDIR/IMAGES/multiman.png" : wm_icons[10],
-						 STR_WMSETUP, STR_WMSETUP2, WEB_LINK_PAIR); strcat(myxml, templn);
+						 STR_WMSETUP, STR_WMSETUP2, WEB_LINK_PAIR); _concat(&myxml, templn);
 
 		if(add_xmbm_plus)
-			strcat(myxml, XML_PAIR("child","segment"));
+			_concat(&myxml, XML_PAIR("child","segment"));
 		else
-			{sprintf(templn, XML_PAIR("module_action","%s/setup.ps3"), localhost); strcat(myxml, templn);}
+			{sprintf(templn, XML_PAIR("module_action","%s/setup.ps3"), localhost); _concat(&myxml, templn);}
 
-		strcat(myxml, "</Table>");
+		_concat(&myxml, "</Table>");
 	}
 
-#ifndef ENGLISH_ONLY
+	#ifndef ENGLISH_ONLY
 	close_language();
-#endif
+	#endif
 
-	if(!(webman_config->nogrp))
+	// --- Add groups queries (setup + eject + categories)
+	if( XMB_GROUPS )
 	{
-		strcat(myxml, "</Attributes><Items>");
-		if( !(webman_config->nosetup) )
+		_concat(&myxml, "</Attributes><Items>");
+		if( ADD_SETUP )
 		{
 			if(add_xmbm_plus)
-#ifdef ENGLISH_ONLY
-				strcat(myxml, QUERY_XMB("setup", "xmb://localhost/dev_hdd0/game/XMBMANPLS/USRDIR/FEATURES/webMAN.xml#seg_webman_links_items"));
-#else
+			#ifdef ENGLISH_ONLY
+				_concat(&myxml, QUERY_XMB("setup", "xmb://localhost/dev_hdd0/game/XMBMANPLS/USRDIR/FEATURES/webMAN.xml#seg_webman_links_items"));
+			#else
 			{
 				sprintf(templn, QUERY_XMB("setup", "xmb://localhost/dev_hdd0/game/XMBMANPLS/USRDIR/FEATURES/webMAN%s.xml#seg_webman_links_items"), lang_code);
-				strcat(myxml, templn);
+				_concat(&myxml, templn);
 			}
-#endif
+			#endif
 			else
-				strcat(myxml, ADD_XMB_ITEM("setup"));
+				_concat(&myxml, ADD_XMB_ITEM("setup"));
 		}
 
-		if(!add_xmbm_plus) strcat(myxml, ADD_XMB_ITEM("eject"));
+		if(!add_xmbm_plus) _concat(&myxml, ADD_XMB_ITEM("eject"));
 
-		if(!(webman_config->cmask & PS3)) strcat(myxml, QUERY_XMB("wm_ps3", "#seg_wm_ps3_items"));
-		if(!(webman_config->cmask & PS2)) strcat(myxml, QUERY_XMB("wm_ps2", "#seg_wm_ps2_items"));
-#ifdef COBRA_ONLY
-		if(!(webman_config->cmask & PS1)) strcat(myxml, QUERY_XMB("wm_psx", "#seg_wm_psx_items"));
-		if(!(webman_config->cmask & PSP)) strcat(myxml, QUERY_XMB("wm_psp", "#seg_wm_psp_items"));
+		if(!(webman_config->cmask & PS3)) _concat(&myxml, QUERY_XMB("wm_ps3", "#seg_wm_ps3_items"));
+		if(!(webman_config->cmask & PS2)) _concat(&myxml, QUERY_XMB("wm_ps2", "#seg_wm_ps2_items"));
+	 #ifdef COBRA_ONLY
+		if(!(webman_config->cmask & PS1)) _concat(&myxml, QUERY_XMB("wm_psx", "#seg_wm_psx_items"));
+		if(!(webman_config->cmask & PSP)) _concat(&myxml, QUERY_XMB("wm_psp", "#seg_wm_psp_items"));
 		if(!(webman_config->cmask & DVD) ||
-		   !(webman_config->cmask & BLU)) strcat(myxml, QUERY_XMB("wm_dvd", "#seg_wm_dvd_items"));
- #ifdef MOUNT_ROMS
-		if(  webman_config->roms        ) strcat(myxml, QUERY_XMB("wm_rom", "#seg_wm_rom_items"));
- #endif
-#endif
-
-		strcat(myxml, "</Items></View>");
+		   !(webman_config->cmask & BLU)) _concat(&myxml, QUERY_XMB("wm_dvd", "#seg_wm_dvd_items"));
+		#ifdef MOUNT_ROMS
+		if(  c_roms                     ) _concat(&myxml, QUERY_XMB("wm_rom", "xmb://localhost" HTML_BASE_PATH "/ROMS.xml#seg_wm_rom_items"));
+		#endif
+	 #endif
+		add_custom_xml(&myxml, templn, tempstr);
+		_concat(&myxml, "</Items></View>");
 	}
 
+#ifdef MOUNT_ROMS
+save_xml:
+	if(scanning_roms && (key == 0)) ; // do not create empty xml
+	else 
+#endif
 	// --- save xml file
-	int fdxml = 0, slen;
-	if(cellFsOpen(MY_GAMES_XML, CELL_FS_O_CREAT | CELL_FS_O_TRUNC | CELL_FS_O_WRONLY, &fdxml, NULL, 0) == CELL_FS_SUCCEEDED)
+	if(cellFsOpen(xml_file, CELL_FS_O_CREAT | CELL_FS_O_TRUNC | CELL_FS_O_WRONLY, &fdxml, NULL, 0) == CELL_FS_SUCCEEDED)
 	{
-		cellFsWrite(fdxml, (char*)myxml, strlen(myxml), NULL);
+		cellFsWrite(fdxml, (char*)myxml.str, myxml.size, NULL);
 
-		if( (webman_config->nogrp))
+		int slen;
+
+		if(scanning_roms || webman_config->nogrp)
 		{
-			cellFsWrite(fdxml, (char*)myxml_ps3, strlen(myxml_ps3), NULL);
+			cellFsWrite(fdxml, (char*)myxml_ps3.str, myxml_ps3.size, NULL);
 			cellFsWrite(fdxml, (char*)"</Attributes><Items>", 20, NULL);
-			cellFsWrite(fdxml, (char*)myxml_items, strlen(myxml_items), NULL);
-			slen = sprintf(myxml, "%s%s", "</Items></View>", "</XMBML>\r\n");
+			cellFsWrite(fdxml, (char*)myxml_ngp.str, myxml_ngp.size, NULL);
+
+			slen = sprintf(buffer, "</Items></View></XMBML>\r\n");
 		}
 		else
 		{
-			if(!(webman_config->cmask & PS3)) cellFsWrite(fdxml, (char*)myxml_ps3, strlen(myxml_ps3), NULL);
-			if(!(webman_config->cmask & PS2)) cellFsWrite(fdxml, (char*)myxml_ps2, strlen(myxml_ps2), NULL);
+			if(!(webman_config->cmask & PS3)) cellFsWrite(fdxml, (char*)myxml_ps3.str, myxml_ps3.size, NULL);
+			if(!(webman_config->cmask & PS2)) cellFsWrite(fdxml, (char*)myxml_ps2.str, myxml_ps2.size, NULL);
 #ifdef COBRA_ONLY
-			if(!(webman_config->cmask & PS1)) cellFsWrite(fdxml, (char*)myxml_psx, strlen(myxml_psx), NULL);
-			if(!(webman_config->cmask & PSP)) cellFsWrite(fdxml, (char*)myxml_psp, strlen(myxml_psp), NULL);
-			if(!(webman_config->cmask & DVD) || !(webman_config->cmask & BLU)) cellFsWrite(fdxml, (char*)myxml_dvd, strlen(myxml_dvd), NULL);
- #ifdef MOUNT_ROMS
-			if(webman_config->roms) cellFsWrite(fdxml, (char*)myxml_roms, strlen(myxml_roms), NULL);
- #endif
+			if(!(webman_config->cmask & PS1)) cellFsWrite(fdxml, (char*)myxml_psx.str, myxml_psx.size, NULL);
+			if(!(webman_config->cmask & PSP)) cellFsWrite(fdxml, (char*)myxml_psp.str, myxml_psp.size, NULL);
+			if(!(webman_config->cmask & DVD) ||
+			   !(webman_config->cmask & BLU)) cellFsWrite(fdxml, (char*)myxml_dvd.str, myxml_dvd.size, NULL);
 #endif
-			slen = sprintf(myxml, "</XMBML>\r\n");
+			slen = sprintf(buffer, "</XMBML>\r\n");
 		}
 
-		cellFsWrite(fdxml, (char*)myxml, slen, NULL);
+		cellFsWrite(fdxml, (char*)buffer, slen, NULL);
 		cellFsClose(fdxml);
 
 		cellFsChmod(MY_GAMES_XML, MODE);
 	}
+
+#ifdef MOUNT_ROMS
+	if(scanning_roms || (c_roms && XMB_GROUPS))
+	{
+		if(scanning_roms) 
+		{
+			roms_count[roms_index] = key;
+			roms_index++;
+		}
+		else
+		{
+			scanning_roms = true;
+			cellFsUnlink(HTML_BASE_PATH "/ROMS.xml");
+		}
+
+		if(roms_index < ROM_PATHS) goto scan_roms; // loop
+		scanning_roms = false;
+
+
+		// ---- Build ROMS.xml
+		_alloc(&myxml, sysmem_buf);
+		_concat(&myxml, XML_HEADER);
+		_concat(&myxml, "<View id=\"seg_wm_rom_items\"><Attributes>");
+
+		#ifndef ENGLISH_ONLY
+		close_language(); lang_roms = 1;
+		#endif
+
+		// ---- Add roms categories
+		for(u8 i = 0; i < ROM_PATHS; i++)
+		{
+			if(roms_count[i])
+			{
+				#ifndef ENGLISH_ONLY
+				language(roms_path[i], tempstr, roms_path[i]);
+				#endif
+
+				sprintf(templn, "<Table key=\"%s\">"
+								XML_PAIR("icon%s", "%s")
+								XML_PAIR("title","%s")
+								XML_PAIR("info","%'i %s")
+								"</Table>", 
+								roms_path[i],
+								covers_exist[7] ? "" : "_rsc",
+								covers_exist[7] ? WM_ICONS_PATH "/icon_wm_album_emu.png" : "item_tex_ps3util",
+								#ifndef ENGLISH_ONLY
+								fh ? tempstr : 
+								#endif
+								roms_path[i], roms_count[i], (roms_count[i] == 1) ? "ROM" : "ROMS"); _concat(&myxml, templn);
+			}
+		}
+
+		#ifndef ENGLISH_ONLY
+		close_language();
+		#endif
+
+		_concat(&myxml, "</Attributes><Items>");
+
+		// ---- Add roms queries
+		for(u8 i = 0; i < ROM_PATHS; i++)
+		{
+			if(roms_count[i])
+			{
+				sprintf(templn, QUERY_XMB("%s", "xmb://localhost%s/ROMS_%s.xml#seg_wm_rom_%s"), roms_path[i], roms_path[i], HTML_BASE_PATH, roms_path[i], roms_path[i]);
+				_concat(&myxml, templn);
+			}
+		}
+
+		_concat(&myxml, "</Items></View></XMBML>\r\n");
+
+		save_file(HTML_BASE_PATH "/ROMS.xml", myxml.str, myxml.size);
+	}
+#endif
+
+#ifdef SLAUNCH_FILE
+	close_slaunch_file(fdsl);
+#endif
 
 #ifdef LAUNCHPAD
 	bool launchpad_xml = !(webman_config->launchpad_xml) && file_exists(LAUNCHPAD_FILE_XML);
 
 	if(launchpad_xml)
 	{
-		*myxml_ps3 = *param = *tempstr = *templn = NULL;
-		game_listing(myxml_ps3, templn, param, tempstr, LAUNCHPAD_MODE, false);
+		*sysmem_buf = *param = *tempstr = *templn = NULL;
+		game_listing(sysmem_buf, templn, param, tempstr, LAUNCHPAD_MODE, false);
 	}
 #endif
 
@@ -1168,4 +1286,40 @@ static void update_xml_thread(u64 conn_s_p)
 
 	refreshing_xml = 0;
 	sys_ppu_thread_exit(0);
+}
+
+static void refresh_xml(char *msg)
+{
+	if(refreshing_xml) return;
+	refreshing_xml = 1;
+
+#ifdef USE_NTFS
+	root_check = true;
+#endif
+
+	setPluginActive();
+
+	webman_config->profile = profile; save_settings();
+
+	sprintf(msg, "%s XML%s: %s", STR_REFRESH, SUFIX2(profile), STR_SCAN2);
+	show_msg(msg);
+
+	// refresh XML
+	sys_ppu_thread_t t_id;
+	sys_ppu_thread_create(&t_id, handleclient_www, (u64)REFRESH_CONTENT, THREAD_PRIO_HIGH, THREAD_STACK_SIZE_WEB_CLIENT, SYS_PPU_THREAD_CREATE_NORMAL, THREAD_NAME_CMD);
+
+	// refresh SND0 settings for new installed games only with combo SELECT+R3+L1+R1 (reload_xmb)
+	CellPadData pad_data = pad_read();
+	if(pad_data.len > 0 && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == (CELL_PAD_CTRL_L1 | CELL_PAD_CTRL_L1)))
+	{
+		mute_snd0(true);
+	}
+
+	// wait until complete
+	while(refreshing_xml && working) sys_ppu_thread_sleep(1);
+
+	sprintf(msg, "%s XML%s: OK", STR_REFRESH, SUFIX2(profile));
+	show_msg(msg);
+
+	setPluginInactive();
 }

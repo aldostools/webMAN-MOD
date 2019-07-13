@@ -132,21 +132,21 @@
 #define HV_PAGE_SIZE				0x0C					// 4k = 0x1000 (1 << 0x0c)
 //#define HV_START_OFFSET			0x363000				// remove lv2 protection
 //#define HV_OFFSET					0x000A78				// at address 0x363a78
-#define HV_START_OFFSET_355			0x363a78				// 3.55 lv2 protection
+#define HV_START_OFFSET_355			0x363A78				// 3.55 lv2 protection
 #define HV_START_OFFSET_421			0x370A28				// 4.21 lv2 protection
 #define HV_START_OFFSET_430			0x370AA8				// 4.30 lv2 protection
-#define HV_START_OFFSET_440			0x370AA8				// 4.40 lv2 protection
-#define HV_START_OFFSET_450			0x370AA8				// 4.50 lv2 protection
+//#define HV_START_OFFSET_440		0x370AA8				// 4.40 lv2 protection
+//#define HV_START_OFFSET_450		0x370AA8				// 4.50 lv2 protection
 #define HV_START_OFFSET_455			0x370F28				// 4.55 lv2 protection
-#define HV_START_OFFSET_460			0x370F28				// 4.60 lv2 protection
-#define HV_START_OFFSET_465			0x370F28				// 4.65 lv2 protection
-#define HV_START_OFFSET_470			0x370F28				// 4.70 lv2 protection
-#define HV_START_OFFSET_475			0x370F28				// 4.75 lv2 protection
-#define HV_START_OFFSET_480			0x370F28				// 4.80 lv2 protection
-#define HV_START_OFFSET_481			0x370F28				// 4.81 lv2 protection
-#define HV_START_OFFSET_482			0x370F28				// 4.82 lv2 protection
-#define HV_START_OFFSET_483			0x370F28				// 4.83 lv2 protection
-#define HV_START_OFFSET_484			0x370F28				// 4.84 lv2 protection
+//#define HV_START_OFFSET_460		0x370F28				// 4.60 lv2 protection
+//#define HV_START_OFFSET_465		0x370F28				// 4.65 lv2 protection
+//#define HV_START_OFFSET_470		0x370F28				// 4.70 lv2 protection
+//#define HV_START_OFFSET_475		0x370F28				// 4.75 lv2 protection
+//#define HV_START_OFFSET_480		0x370F28				// 4.80 lv2 protection
+//#define HV_START_OFFSET_481		0x370F28				// 4.81 lv2 protection
+//#define HV_START_OFFSET_482		0x370F28				// 4.82 lv2 protection
+//#define HV_START_OFFSET_483		0x370F28				// 4.83 lv2 protection
+//#define HV_START_OFFSET_484		0x370F28				// 4.84 lv2 protection
 
 /*
 #define	HV_START_OFFSET2			0x16f000				// set lv2 access rights for sys_storage

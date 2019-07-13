@@ -795,16 +795,6 @@ static bool gui_allowed(bool popup)
 
 static void slaunch_thread(uint64_t arg)
 {
-	int val_lang = 1;
-	xsetting_0AF1F161()->GetSystemLanguage(&val_lang);
-
-	if(val_lang == 7)
-	{
-		vshtask_notify("sLaunch Error!\nRussian language is not supported.");
-		beep(3);
-		sys_ppu_thread_exit(0); return;
-	}
-
 	if(!arg)
 	{
 		sys_timer_sleep(12);										// wait 12s and not interfere with boot process

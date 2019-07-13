@@ -1,7 +1,7 @@
 #ifdef COBRA_ONLY
 static int parse_lba(const char *templn, bool use_pregap)
 {
-	char *time=strrchr(templn, ' '); if(!time) return FAILED;
+	char *time = strrchr(templn, ' '); if(!time) return FAILED;
 	char tcode[10];
 
 	int tcode_len = snprintf(tcode, 9, "%s", time + 1); tcode[8] = NULL;
@@ -29,17 +29,15 @@ static int get_line(char *templn, const char *cue_buf, const int buf_size, const
 		if(lp<buf_size && cue_buf[lp] && cue_buf[lp]!='\n' && cue_buf[lp]!='\r')
 		{
 			templn[l] = cue_buf[lp];
-			templn[l+1] = NULL;
+			templn[l + 1] = NULL;
 		}
 		else
 		{
 			templn[l] = NULL;
 		}
-		if(cue_buf[lp]=='\n' || cue_buf[lp]=='\r') line_found = 1;
-		lp++;
-		if(cue_buf[lp]=='\n' || cue_buf[lp]=='\r') lp++;
+		while(cue_buf[lp]=='\n' || cue_buf[lp]=='\r') {line_found = 1, lp++;}
 
-		if(templn[l]==0) break; //EOF
+		if(templn[l] == NULL) break; //EOF
 	}
 
 	if(!line_found) return NONE;

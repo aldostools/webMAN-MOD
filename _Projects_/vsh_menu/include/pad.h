@@ -52,7 +52,7 @@ static int32_t get_vsh_toc(void)
 ***********************************************************************/
 static int32_t get_vsh_pad_obj(void)
 {
-	uint32_t (*base)(uint32_t) = sys_io_3733EA3C;               // get pointer to cellPadGetData()
+	uint32_t (*base)(uint32_t) = (void*)sys_io_3733EA3C;        // get pointer to cellPadGetData()
 	int16_t idx = *(uint32_t*)(*(uint32_t*)base) & 0x0000FFFF;  // get got_entry idx from first instruction,
 	int32_t got_entry = (idx + get_vsh_toc());                  // get got_entry of io_pad_object
 	return (int32_t)(*(int32_t*)got_entry);                     // return io_pad_object address

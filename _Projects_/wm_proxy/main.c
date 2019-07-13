@@ -18,6 +18,9 @@ SYS_MODULE_EXIT(prx_stop);
 int prx_start(size_t args, void *argp);
 int prx_stop(void);
 
+extern char *stdc_C5C09834(const char *str1, const char *str2);							// strstr()
+inline char* strstr(const char *str1, const char *str2) {return stdc_C5C09834(str1, str2);}
+
 static int (*vshtask_notify)(int, const char *) = NULL;
 
 static void * getNIDfunc(const char * vsh_module, uint32_t fnid)
@@ -51,7 +54,7 @@ static void * getNIDfunc(const char * vsh_module, uint32_t fnid)
 static void show_msg(const char* msg)
 {
 	//if(!vshtask_notify)
-		vshtask_notify = (void*)((int)getNIDfunc("vshtask", 0xA02D46E7));
+		vshtask_notify = getNIDfunc("vshtask", 0xA02D46E7);
 
 	//if(strlen(msg)>128) msg[128]=0;
 
@@ -88,26 +91,25 @@ static void *wm_plugin_functions[4] =
 
 static int setInterface(unsigned int view)
 {
-	plugin_SetInterface = (void*)((int)getNIDfunc("paf",0xA1DC401));
-	plugin_SetInterface2 = (void*)((int)getNIDfunc("paf",0x3F7CB0BF));
+	plugin_SetInterface  = getNIDfunc("paf", 0xA1DC401);
+	plugin_SetInterface2 = getNIDfunc("paf", 0x3F7CB0BF);
 	plugin_SetInterface2(view, 1, (void*)wm_plugin_functions);
 	return 0;
 }
 
 static int connect_to_webman(void)
 {
-	struct sockaddr_in sin;
-	int s;
-
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = 0x7F000001;	//127.0.0.1 (localhost)
-	sin.sin_port = htons(80);			//http port (80)
-
-	s = socket(AF_INET, SOCK_STREAM, 0);
+	int s = socket(AF_INET, SOCK_STREAM, 0);
 	if(s < 0)
 	{
 		return -1;
 	}
+
+	struct sockaddr_in sin;
+
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = 0x7F000001;	//127.0.0.1 (localhost)
+	sin.sin_port = htons(80);			//http port (80)
 
 	struct timeval tv;
 	tv.tv_usec = 0;
@@ -136,27 +138,36 @@ static void sclose(int *socket_e)
 	}
 }
 
+#define HTML_RECV_SIZE	2048
+#define HTML_RECV_LAST	2045
+
 static void wm_plugin_action(const char * action)
 {
 	int s = connect_to_webman();
 	if(s >= 0)
 	{
-		char proxy_action[512];
+		char proxy_action[HTML_RECV_SIZE];
 		memcpy(proxy_action, "GET ", 4);
 
 		u32 pa = 4;
 
-		if(*action != '/') action += 16; // using http://127.0.0.1/
+		if(*action == 'G') action += 4; // skip GET
+		if(*action != '/') action += 16; // using http://127.0.0.1/ or http://localhost/
+
 		if(*action == '/')
 		{
-			for(;*action && (pa < 505); action++)
+			u8 is_path = !strstr(action, ".ps") && !strstr(action, "_ps");
+
+			for(;*action && (pa < HTML_RECV_LAST); action++)
 			{
-				if(*action != 0x20)
-					proxy_action[pa++] = *action;
-				else
+				if(*action == 0x20)
+					proxy_action[pa++] = 0x2B;
+				else if((*action == 0x2B) && is_path)
 				{
-					memcpy(proxy_action + pa, "%20", 3); pa += 3;
+					memcpy(proxy_action + pa, "%2B", 3); pa += 3;
 				}
+				else
+					proxy_action[pa++] = *action;
 			}
 
 			memcpy(proxy_action + pa, "\r\n\0", 3); pa +=2;

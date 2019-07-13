@@ -11,7 +11,7 @@ static int (*DoUnk13_)(int*, int*, char*, int, void *) = 0;
 static int ps3_interface_function13_hook(int* r3, int* r4, char* filename, int r6, void * key)
 {
 	char buffer[MAX_PATH_LEN];
-	sprintf(buffer, "Filename: %s\nSecure File ID: %08X%08X%08X%08X\n", filename, *(int*)key, *((int*)key + 1), *((int*)key + 2), *((int*)key + 3));
+	sprintf(buffer, "Filename: %s\nSecure File ID: %08X%08X%08X%08X", filename, *(int*)key, *((int*)key + 1), *((int*)key + 2), *((int*)key + 3));
 	save_file("/dev_hdd0/secureid.log", buffer, APPEND_TEXT);
 
 	return DoUnk13_(r3, r4, filename, r6, key);
@@ -30,7 +30,7 @@ static int ps3_savedata_plugin_init_hook(void * view)
 	{
 		DoUnk13_ = ps3_savedata_interface->DoUnk13;
 		ps3_savedata_interface->DoUnk13 = ps3_interface_function13_hook;
-		save_file("/dev_hdd0/secureid.log", "Secure File Id Hooked\n", APPEND_TEXT);
+		save_file("/dev_hdd0/secureid.log", "Secure File Id Hooked", APPEND_TEXT);
 	}
 
 	return ps3_savedata_plugin_init_bk(view);

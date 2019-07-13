@@ -8,6 +8,8 @@
 class AbstractFile
 {
 public:
+	virtual ~AbstractFile() {}
+
 	virtual int open(const char *path, int flags) = 0;
 	virtual int close(void) = 0;
 	virtual ssize_t read(void *buf, size_t nbyte) = 0;

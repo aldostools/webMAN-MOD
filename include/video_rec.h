@@ -151,14 +151,11 @@ static void show_rec_format(const char *msg)
 
 static bool rec_start(const char *param)
 {
-	char *pos; u8 n;
+	char value[8];
 
 	// set video format
-	pos = strstr(param, "video=");
-	if(pos)
+	if(get_param("video=", value, param, 4))
 	{
-		char value[8];
-		get_value(value, pos + 6, 4);
 		rec_video_format = convertH(value);
 	}
 	else
@@ -199,17 +196,16 @@ static bool rec_start(const char *param)
 		}
 	}
 
+	u8 n;
+
 	// validate video format (use default if invalid)
 	u32 video_formats[34] = {CELL_REC_PARAM_VIDEO_FMT_MPEG4_SMALL_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_SMALL_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_MIDDLE_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_MIDDLE_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_LARGE_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_LARGE_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_LARGE_1024K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_LARGE_1536K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MPEG4_LARGE_2048K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_SMALL_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_SMALL_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_MIDDLE_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_MIDDLE_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_MIDDLE_1024K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_MP_MIDDLE_1536K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_SMALL_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_SMALL_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_MIDDLE_512K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_MIDDLE_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_MIDDLE_1024K_30FPS, CELL_REC_PARAM_VIDEO_FMT_AVC_BL_MIDDLE_1536K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_SMALL_5000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_MIDDLE_5000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_LARGE_11000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_HD720_11000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_HD720_20000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_MJPEG_HD720_25000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_SMALL_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_MIDDLE_768K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_LARGE_1536K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_LARGE_2048K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_HD720_2048K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_HD720_5000K_30FPS, CELL_REC_PARAM_VIDEO_FMT_M4HD_HD720_11000K_30FPS};
 	for(n = 0; n < sizeof(video_formats); n++) if(rec_video_format == video_formats[n]) break;
 	if(n >= sizeof(video_formats)) rec_video_format = CELL_REC_PARAM_VIDEO_FMT_M4HD_HD720_5000K_30FPS;
 
 	// set audio format
-	pos = strstr(param, "audio=");
-	if(pos)
+	if(get_param("audio=", value, param, 4))
 	{
-		char value[8];
-		get_value(value, pos + 6, 4);
 		rec_audio_format = convertH(value);
 	}
 	else
@@ -301,9 +297,10 @@ static void toggle_video_rec(const char *param)
 		if(!reco_open)
 		{
 			// get functions pointer for sub_163EB0() aka reco_open()
-			reco_open = vshmain_BEF63A14; // base pointer, the export nearest to sub_163EB0()
+			//reco_open = (void*)vshmain_BEF63A14; // base pointer, the export nearest to sub_163EB0()
+			//reco_open -= (50 * 8); // reco_open_opd (50 opd's above vshmain_BEF63A14_opd)
 
-			reco_open -= (50*8); // reco_open_opd (50 opd's above vshmain_BEF63A14_opd)
+			reco_open = getNIDfunc("vshmain", 0xBEF63A14, -(50 * 8));
 
 			// fetch recording utility vsh options struct (build address from instructions...)
 			u32 addr = (*(u32*)(*(u32*)reco_open+0xC) & 0x0000FFFF) -1;

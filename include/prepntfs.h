@@ -45,7 +45,6 @@ static int prepNTFS(u8 clear)
 	cellFsChmod(WMTMP, S_IFDIR | 0777);
 	cellFsUnlink((char*)WMTMP "/games.html");
 	int fd = NONE;
-	u64 read = 0;
 	char path[STD_PATH_LEN], subpath[STD_PATH_LEN], sufix[8], filename[STD_PATH_LEN]; char *path0 = filename;
 
 	check_ntfs_volumes();
@@ -54,10 +53,14 @@ static int prepNTFS(u8 clear)
 	{
 		dlen = sprintf(path, "%s/", WMTMP);
 		char *ext, *path_file = path + dlen;
-		while(!cellFsReaddir(fd, &dir, &read) && read)
+		
+		CellFsDirectoryEntry dir; u32 read_f;
+		char *entry_name = dir.entry_name.d_name;
+		
+		while(!cellFsGetDirectoryEntries(fd, &dir, sizeof(dir), &read_f) && read_f)
 		{
-			ext = strstr(dir.d_name, ".ntfs[");
-			if(ext && (clear || (mountCount <= 0) || (!IS(ext, ".ntfs[BDFILE]") && !IS(ext, ".ntfs[PS2ISO]") && !IS(ext, ".ntfs[PSPISO]")))) {sprintf(path_file, "%s", dir.d_name); cellFsUnlink(path);}
+			ext = strstr(entry_name, ".ntfs[");
+			if(ext && (clear || (mountCount <= 0) || (!IS(ext, ".ntfs[BDFILE]") && !IS(ext, ".ntfs[PS2ISO]") && !IS(ext, ".ntfs[PSPISO]")))) {sprintf(path_file, "%s", entry_name); cellFsUnlink(path);}
 		}
 		cellFsClosedir(fd);
 	}
@@ -67,8 +70,8 @@ static int prepNTFS(u8 clear)
 
 	if(mountCount <= 0) {mountCount = NTFS_UNMOUNTED; goto exit_prepntfs;}
 	{
-		sys_memory_container_t mc_app = get_app_memory_container();
-		if(mc_app) sys_memory_allocate_from_container(_64KB_, mc_app, SYS_MEMORY_PAGE_SIZE_64K, &addr);
+		sys_memory_container_t vsh_mc = get_vsh_memory_container();
+		if(vsh_mc) sys_memory_allocate_from_container(_64KB_, vsh_mc, SYS_MEMORY_PAGE_SIZE_64K, &addr);
 		if(!addr && sys_memory_allocate(_64KB_, SYS_MEMORY_PAGE_SIZE_64K, &addr) != CELL_OK) goto exit_prepntfs;
 	}
 
@@ -168,7 +171,7 @@ next_ntfs_entry:
 								else if(parts > 0)
 								{
 									num_tracks = 1;
-									struct stat bufn; size_t cd_sector_size = 0;
+									struct stat bufn; int cd_sector_size = 0, cd_sector_size_param = 0;
 
 										 if(m == mPS3) emu_mode = EMU_PS3;
 									else if(m == mBLU) emu_mode = EMU_BD;
@@ -184,13 +187,18 @@ next_ntfs_entry:
 										fd = ps3ntfs_open(path, O_RDONLY, 0);
 										if(fd >= 0)
 										{
-											char buffer[0x10]; buffer[0xD] = '\0';
-											ps3ntfs_seek64(fd, 0x9320LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2352; else {
-											ps3ntfs_seek64(fd, 0x8020LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2048; else {
-											ps3ntfs_seek64(fd, 0x9220LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2336; else {
-											ps3ntfs_seek64(fd, 0x9920LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2448; }}}
+											if(sysmem || sys_memory_allocate(_64KB_, SYS_MEMORY_PAGE_SIZE_64K, &sysmem) == CELL_OK)
+											{
+												char *buffer = (char*)sysmem;
+												ps3ntfs_seek64(fd, 0, SEEK_SET);
+												ps3ntfs_read(fd, (void *)buffer, _48KB_);
+												cd_sector_size = detect_cd_sector_size(buffer);
+											}
 											ps3ntfs_close(fd);
 										}
+
+										if(cd_sector_size & 0xf) cd_sector_size_param = cd_sector_size<<8;
+										else if(cd_sector_size != 2352) cd_sector_size_param = cd_sector_size<<4;
 
 										strcpy(path + plen - 3, "CUE");
 
@@ -231,7 +239,7 @@ next_ntfs_entry:
 											continue;
 										}
 
-										p_args->num_tracks = num_tracks | (cd_sector_size<<4);
+										p_args->num_tracks = num_tracks | cd_sector_size_param;
 
 										scsi_tracks = (ScsiTrackDescriptor *)(plugin_args + sizeof(rawseciso_args) + (2 * (parts * sizeof(u32))));
 

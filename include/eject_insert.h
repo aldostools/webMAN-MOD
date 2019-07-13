@@ -74,22 +74,6 @@ static void reset_usb_ports(char *_path)
 	if((usb6 >= 8) && (indx != usb6)) fake_insert_event(USB_MASS_STORAGE_2(usb6), DEVICE_TYPE_USB);
 	if((usb7 >= 8) && (indx != usb7)) fake_insert_event(USB_MASS_STORAGE_2(usb7), DEVICE_TYPE_USB);
 }
-
-/*
-static u32 in_cobra(u32 *mode)
-{
-	system_call_2(SC_COBRA_SYSCALL8, (u32) 0x7000, (u32)mode);
-	return_to_user_prog(u32);
-}
-*/
-
-/*
-static u64 syscall_837(const char *device, const char *format, const char *point, u32 a, u32 b, u32 c, void *buffer, u32 len)
-{
-	system_call_8(SC_FS_MOUNT, (u64)device, (u64)format, (u64)point, a, b, c, (u64)buffer, len);
-	return_to_user_prog(u64);
-}
-*/
 #endif
 
 static void eject_insert(u8 eject, u8 insert)
@@ -103,9 +87,9 @@ static void eject_insert(u8 eject, u8 insert)
 	if(eject)
 	{
 		memset(atapi_cmnd, 0, 56);
-		atapi_cmnd[0x00] = 0x1b;
-		atapi_cmnd[0x01] = 0x01;
-		atapi_cmnd[0x04] = 0x02;
+		atapi_cmnd[0x00] = 0x1b; // OPERATION CODE (1Bh)
+		atapi_cmnd[0x01] = 0x01; // IMMED (Immediate) bit
+		atapi_cmnd[0x04] = 0x02; // LOEJ (2) + START (0) = Eject Disc
 		atapi_cmnd[0x23] = 0x0c;
 
 		// Eject disc
@@ -117,9 +101,9 @@ static void eject_insert(u8 eject, u8 insert)
 	if(insert)
 	{
 		memset(atapi_cmnd, 0, 56);
-		atapi_cmnd[0x00] = 0x1b;
-		atapi_cmnd[0x01] = 0x01;
-		atapi_cmnd[0x04] = 0x03;
+		atapi_cmnd[0x00] = 0x1b; // OPERATION CODE (1Bh)
+		atapi_cmnd[0x01] = 0x01; // IMMED (Immediate) bit
+		atapi_cmnd[0x04] = 0x03; // LOEJ (2) + START (1) = Load Disc
 		atapi_cmnd[0x23] = 0x0c;
 
 		// Insert disc
@@ -127,4 +111,21 @@ static void eject_insert(u8 eject, u8 insert)
 	}
 
 	{system_call_1(SC_STORAGE_CLOSE, dev_id);}
+}
+
+static void usb_keep_awake(u8 sector)
+{
+	u32 r, usb_handle = NONE;
+
+	char tmp[_2KB_];
+	for(u8 i = 0; i < 6; i++)
+	{
+		u8 f0 = (u8)val(drives[i + 1] + 8);
+		if(sys_storage_open(((f0 < 6) ? USB_MASS_STORAGE_1(f0) : USB_MASS_STORAGE_2(f0)), 0, &usb_handle, 0) == CELL_OK)
+		{
+			sys_storage_read(usb_handle, 0, sector, 1, tmp, &r, 0);
+			sys_storage_close(usb_handle);
+			//sprintf(tmp, "/dev_usb00%i: Read %i sectors @ %i offset", f0, r, sector); show_msg(tmp);
+		}
+	}
 }

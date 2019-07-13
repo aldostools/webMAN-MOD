@@ -1,3 +1,5 @@
+#define ENABLE_INGAME_SCREENSHOT	((int*)getNIDfunc("vshmain",0x981D7E9F,0))[0] -= 0x2C;
+
 //int (*_cellGcmIoOffsetToAddress)(u32, void**) = NULL;
 int (*vshtask_notify)(int, const char *) = NULL;
 int (*View_Find)(const char *) = NULL;
@@ -49,10 +51,10 @@ static void * getNIDfunc(const char * vsh_module, u32 fnid, s32 offset)
 	return 0;
 }
 
-static sys_memory_container_t get_app_memory_container(void)
+static sys_memory_container_t get_vsh_memory_container(void)
 {
-	if(IS_INGAME || webman_config->mc_app) return 0;
-	return vsh_memory_container_by_id(1);
+	if(!webman_config->vsh_mc || IS_INGAME) return 0;
+	return vsh_memory_container_by_id(webman_config->vsh_mc);
 }
 
 static void show_msg(char* msg)
@@ -90,7 +92,7 @@ static void enable_ingame_screenshot(void)
 
 	if(vshmain_is_ss_enabled() == 0)
 	{
-		set_SSHT_ = (u32*)&opd;
+		set_SSHT_ = (void*)&opd;
 		memcpy(set_SSHT_, vshmain_is_ss_enabled, 8);
 		opd[0] -= 0x2C; // Sub before vshmain_981D7E9F sets Screenshot Flag
 		set_SSHT_(1);	// enable screenshot
@@ -181,7 +183,10 @@ static bool explore_exec_push(u32 usecs, u8 focus_first)
 			focus_first_item();
 		}
 		else
-			explore_interface->ExecXMBcommand("exec_push", 0, 0);
+		{
+			gTick.tick =  rTick.tick + 1; // notify in-game
+			explore_interface->ExecXMBcommand("exec_push", 0, 0); 
+		}
 
 		return true;
 	}
@@ -273,7 +278,7 @@ static bool is_app_home_onxmb(void)
 	{
 		char *buffer = (char*)sysmem;
 		size_t read_e = read_file((char*)"/dev_flash/vsh/resource/explore/xmb/category_game.xml", buffer, _8KB_, 0);
-		has_app_home = ((read_e > 100) && (!strstr(buffer, "<!--")) && (strstr(buffer, "seg_gamedebug") != NULL));
+		has_app_home = ((read_e > 100) && (strstr(buffer, "seg_gamedebug") != NULL));
 		sys_memory_free(sysmem);
 	}
 

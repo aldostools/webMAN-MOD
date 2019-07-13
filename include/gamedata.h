@@ -45,7 +45,7 @@ static int set_gamedata_status(u8 status, bool do_mount)
 			}
 
 			sprintf(gamei_path, "%s/GAMEI", drives[n]);
-			cellFsMkdir(gamei_path, MODE); if(!isDir(gamei_path)) n = 99;
+			cellFsMkdir(gamei_path, DMODE); if(!isDir(gamei_path)) n = 99;
 		}
 
 		if(n < 7)

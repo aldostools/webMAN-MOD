@@ -44,10 +44,10 @@ static char STR_HOME[8] = "Home";
 #define STR_COMBOS		"Disable all PAD shortcuts"
 #define STR_MMCOVERS	"Disable multiMAN covers"
 #define STR_ACCESS		"Disable remote access to FTP/WWW services"
-#define STR_NOSETUP		"Disable webMAN Setup entry in \"webMAN Games\""
+#define STR_NOSETUP		"Disable " WM_APPNAME " Setup entry in \"" WM_APPNAME " Games\""
 #define STR_NOSPOOF		"Disable firmware version spoofing"
-#define STR_NOGRP		"Disable grouping of content in \"webMAN Games\""
-#define STR_NOWMDN		"Disable startup notification of WebMAN on the XMB"
+#define STR_NOGRP		"Disable grouping of content in \"" WM_APPNAME " Games\""
+#define STR_NOWMDN		"Disable startup notification of " WM_APPNAME " on the XMB"
 #ifdef NOSINGSTAR
  #define STR_NOSINGSTAR	"Remove SingStar icon"
 #endif
@@ -96,24 +96,24 @@ static char STR_HOME[8] = "Home";
 #define STR_SETTINGSUPD	"Settings updated.<br><br>Click <a href=\"/restart.ps3\">here</a> to restart your PLAYSTATION®3 system."
 #define STR_ERROR		"Error!"
 
-#define STR_MYGAMES		"webMAN Games"
-#define STR_LOADGAMES	"Load games with webMAN"
+#define STR_MYGAMES		WM_APPNAME " Games"
+#define STR_LOADGAMES	"Load games with " WM_APPNAME
 #define STR_FIXING		"Fixing"
 
-#define STR_WMSETUP		"webMAN Setup"
-#define STR_WMSETUP2	"Setup webMAN options"
+#define STR_WMSETUP		WM_APPNAME " Setup"
+#define STR_WMSETUP2	"Setup " WM_APPNAME " options"
 
 #define STR_EJECTDISC	"Eject Disc"
 #define STR_UNMOUNTGAME	"Unmount current game"
 
-#define STR_WMSTART		"webMAN loaded!"
-#define STR_WMUNL		"webMAN unloaded!"
+#define STR_WMSTART		WM_APPNAME " loaded!"
+#define STR_WMUNL		WM_APPNAME " unloaded!"
 #define STR_CFWSYSALRD	"CFW Syscalls already disabled"
 #define STR_CFWSYSRIP	"Removal History files & CFW Syscalls in progress..."
 #define STR_RMVCFWSYS	"History files & CFW Syscalls deleted OK!"
 #define STR_RMVCFWSYSF	"Failed to remove CFW Syscalls"
 
-#define STR_RMVWMCFG	"webMAN config reset in progress..."
+#define STR_RMVWMCFG	WM_APPNAME " config reset in progress..."
 #define STR_RMVWMCFGOK	"Done! Restart within 3 seconds"
 
 #define STR_PS3FORMAT	"PS3 format games"
@@ -124,7 +124,7 @@ static char STR_HOME[8] = "Home";
 #define STR_VIDFORMAT	"Blu-ray\xE2\x84\xA2 and DVD"
 #define STR_VIDEO		"Video content"
 
-#define STR_LAUNCHPSP	"Launch PSP ISO mounted through webMAN or mmCM"
+#define STR_LAUNCHPSP	"Launch PSP ISO mounted through " WM_APPNAME " or mmCM"
 #define STR_LAUNCHPS2	"Launch PS2 Classic"
 
 #define STR_GAMEUM		"Game unmounted."
@@ -388,13 +388,15 @@ static u32 get_system_language(u8 *lang)
 }
 
 #define CHUNK_SIZE 512
-#define GET_NEXT_BYTE  {if(p < CHUNK_SIZE) c = buffer[p++]; else {cellFsRead(fd, buffer, CHUNK_SIZE, &bytes_read); c = *buffer, p = 1;} lang_pos++;}
+#define GET_NEXT_BYTE  {if(p >= CHUNK_SIZE)  {cellFsRead(fd, buffer, CHUNK_SIZE, &bytes_read); p = 0;} c = buffer[p++], lang_pos++;}
+
+static u8 lang_roms = 0;
 
 static bool language(const char *key_name, char *label, const char *default_str)
 {
-	u8 c, i, key_len = strlen(key_name);
 	u64 bytes_read = 0;
 	static size_t p = 0, lang_pos = 0, size = 0;
+	u8 c, i, key_len = strlen(key_name);
 
 	sprintf(label, "%s", default_str);
 
@@ -405,16 +407,25 @@ static bool language(const char *key_name, char *label, const char *default_str)
 
 	if(fh == 0)
 	{
-		if(webman_config->lang > 22 && (webman_config->lang != 99)) webman_config->lang = 0;
-
-		const char lang_codes[24][3] = {"EN", "FR", "IT", "ES", "DE", "NL", "PT", "RU", "HU", "PL", "GR", "HR", "BG", "IN", "TR", "AR", "CN", "KR", "JP", "ZH", "DK", "CZ", "SK", "XX"};
 		char lang_path[34];
 
-		i = webman_config->lang; if(i > 23) i = 23;
+		if(lang_roms)
+		{
+			sprintf(lang_path, "%s/LANG_EMUS.TXT", WM_LANG_PATH);
+			if(file_exists(lang_path) == false)
+				sprintf(lang_path, "%s/LANG_ROMS.TXT", WM_LANG_PATH);
+		}
+		else
+		{
+			if(webman_config->lang > 22 && (webman_config->lang != 99)) webman_config->lang = 0;
 
-		sprintf(lang_code, "_%s", lang_codes[i]);
-		sprintf(lang_path, "%s/LANG%s.TXT", WM_LANG_PATH, lang_code);
+			const char lang_codes[24][2] = {"EN", "FR", "IT", "ES", "DE", "NL", "PT", "RU", "HU", "PL", "GR", "HR", "BG", "IN", "TR", "AR", "CN", "KR", "JP", "ZH", "DK", "CZ", "SK", "XX"};
 
+			i = webman_config->lang; if(i > 23) i = 23;
+
+			sprintf(lang_code, "_%.2s", lang_codes[i]);
+			sprintf(lang_path, "%s/LANG%s.TXT", WM_LANG_PATH, lang_code);
+		}
 		struct CellFsStat buf;
 
 		if(cellFsStat(lang_path, &buf) != CELL_FS_SUCCEEDED) return false; size = (size_t)buf.st_size;
@@ -429,7 +440,7 @@ static bool language(const char *key_name, char *label, const char *default_str)
 	int fd = fh;
 
 	do {
-		for(i = 0; i < key_len; )
+		for(i = 0; i < key_len;)
 		{
 			{ GET_NEXT_BYTE }
 
@@ -437,6 +448,8 @@ static bool language(const char *key_name, char *label, const char *default_str)
 
 			if(i == key_len)
 			{
+				if(buffer[p] > ' ') break;
+
 				size_t str_len = 0; u8 copy = 0;
 
 				// set value
@@ -466,7 +479,7 @@ static bool language(const char *key_name, char *label, const char *default_str)
 
 static void close_language(void)
 {
-	if(fh) cellFsClose(fh); fh = 0;
+	if(fh) cellFsClose(fh); lang_roms = fh = 0;
 }
 
 #undef CHUNK_SIZE
@@ -517,17 +530,17 @@ static void update_language(void)
 		language("STR_SETTINGSUPD", STR_SETTINGSUPD, STR_SETTINGSUPD);
 		language("STR_ERROR", STR_ERROR, "Error!");
 
-		language("STR_MYGAMES", STR_MYGAMES, "webMAN Games");
-		language("STR_LOADGAMES", STR_LOADGAMES, "Load games with webMAN");
+		language("STR_MYGAMES", STR_MYGAMES, WM_APPNAME " Games");
+		language("STR_LOADGAMES", STR_LOADGAMES, "Load games with " WM_APPNAME);
 
 		language("STR_FIXING", STR_FIXING, "Fixing");
 
-		language("STR_WMSETUP", STR_WMSETUP, "webMAN Setup");
+		language("STR_WMSETUP", STR_WMSETUP, WM_APPNAME " Setup");
 
 		language("STR_UNMOUNTGAME", STR_UNMOUNTGAME, "Unmount current game");
 
-		language("STR_WMSTART", STR_WMSTART, "webMAN loaded!");
-		language("STR_WMUNL", STR_WMUNL, "webMAN unloaded!");
+		language("STR_WMSTART", STR_WMSTART, WM_APPNAME " loaded!");
+		language("STR_WMUNL", STR_WMUNL, WM_APPNAME " unloaded!");
 		language("STR_CFWSYSALRD", STR_CFWSYSALRD, "CFW Syscalls already disabled");
 
 		language("STR_GAMEUM", STR_GAMEUM, "Game unmounted.");

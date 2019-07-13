@@ -1,2 +1,1 @@
-/dev_hdd0/plugins/webftp_server_noncobra.sprx
-/dev_hdd0/plugins/psnpatch.sprx
+/dev_hdd0/plugins/webftp_server.sprx

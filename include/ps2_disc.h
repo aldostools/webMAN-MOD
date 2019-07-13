@@ -31,9 +31,9 @@ static bool mount_ps2disc(char *path)
 	add_to_map("/dev_ps2disc", path);
 
 	u64 map_data  = (MAP_BASE);
-	u64 map_paths = (MAP_BASE) + (max_mapped+1) * 0x20;
+	u64 map_paths = (MAP_BASE) + (max_mapped + 1) * 0x20;
 
-	for(u16 n = 0; n < 0x400; n+=8) pokeq(map_data + n, 0);
+	for(u16 n = 0; n < 0x400; n + =8) pokeq(map_data + n, 0);
 
 	for(u8 n = 0; n < max_mapped; n++)
 	{
@@ -42,11 +42,11 @@ static bool mount_ps2disc(char *path)
 		if(map_paths > 0x80000000007FE800ULL) break;
 		pokeq(map_data + (n * 0x20) + 0x10, map_paths);
 		src_len = string_to_lv2(file_to_map[n].src, map_paths);
-		map_paths += (len + 8) & 0x7f8;
+		map_paths += src_len; //(src_len + 8) & 0x7f8;
 
 		pokeq(map_data + (n * 0x20) + 0x18, map_paths);
 		dst_len = string_to_lv2(file_to_map[n].dst, map_paths);
-		map_paths += (dst_len + 8) & 0x7f8;
+		map_paths += dst_len; //(dst_len + 8) & 0x7f8;
 
 		pokeq(map_data + (n * 0x20) + 0x00, src_len);
 		pokeq(map_data + (n * 0x20) + 0x08, dst_len);
@@ -54,9 +54,9 @@ static bool mount_ps2disc(char *path)
 
  #endif //#ifdef COBRA_ONLY
 
-	if(!isDir("/dev_ps2disc")) sys_ppu_thread_sleep(2);
-	if(isDir("/dev_ps2disc")) return true;
-	return false;
+	wait_for("/dev_ps2disc", 2);
+
+	return isDir("/dev_ps2disc");
 }
 
 #endif //#ifdef PS2_DISC

@@ -6,6 +6,7 @@
  UNLOAD WM    : L3+R3+R2
 
  PLAY_DISC    : L2+START                        *or* Custom Combo -> /dev_hdd0/tmp/wm_combo/wm_custom_l2_start
+ PLAY APP_HOME: R2+START                        *or* Custom Combo -> /dev_hdd0/tmp/wm_combo/wm_custom_r2_start
 
  PREV GAME    : SELECT+L1                       *or* Custom Combo -> /dev_hdd0/tmp/wm_combo/wm_custom_select_l1
  NEXT GAME    : SELECT+R1                       *or* Custom Combo -> /dev_hdd0/tmp/wm_combo/wm_custom_select_r1
@@ -105,7 +106,7 @@
 #ifdef WM_CUSTOM_COMBO
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == (CELL_PAD_CTRL_L2 | CELL_PAD_CTRL_R2)) // L2+R2
 						{
-							if(do_custom_combo("l2_r2") == false) continue;
+							if(do_custom_combo("l2_r2")) continue;
 						}
 #endif
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] && (++init_delay < 5)) {sys_ppu_thread_usleep(100000); continue;}
@@ -116,15 +117,38 @@
 						break;
 					}
 #endif
-					if(!(webman_config->combo2 & PLAY_DISC) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] == CELL_PAD_CTRL_START) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == CELL_PAD_CTRL_L2))
+					if(!(webman_config->combo2 & PLAY_DISC) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] == CELL_PAD_CTRL_START))
 					{
 						// L2+START = Play Disc
+						// R2+START = Play app_home/PS3_GAME
+						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == CELL_PAD_CTRL_L2)
+						{
 #ifdef WM_CUSTOM_COMBO
-						if(do_custom_combo("l2_start") == false) continue;
+							if(do_custom_combo("l2_start")) continue;
 #endif
-						char category[16], seg_name[40]; *category = *seg_name = NULL;
-						launch_disc(category, seg_name, true); // L2+START
-						break;
+							char category[8], seg_name[20]; *category = *seg_name = NULL;
+							launch_disc(category, seg_name, true); // L2+START
+							break;
+						}
+#ifdef COBRA_ONLY
+						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == CELL_PAD_CTRL_R2)
+						{
+#ifdef WM_CUSTOM_COMBO
+							if(do_custom_combo("r2_start")) continue;
+#endif
+							if(file_exists("/app_home/PS3_GAME/USRDIR/EBOOT.BIN") == false)
+							{
+								if(isDir(webman_config->home_url)) set_apphome(webman_config->home_url);
+								else if(islike(webman_config->home_url, "http")) open_browser(webman_config->home_url, 0);
+#ifdef WM_REQUEST
+								else if(*webman_config->home_url == '/') handle_file_request(webman_config->home_url); // web command
+#endif
+							}
+							char category[8], seg_name[16]; *category = *seg_name = NULL;
+							if(is_app_home_onxmb()) {mount_unk = APP_GAME; launch_disc(category, seg_name, true);}
+							break;
+						}
+#endif
 					}
 
 					if((pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] & CELL_PAD_CTRL_SELECT))
@@ -156,7 +180,7 @@
 							char STR_RMVWMCFG[96];//	= "webMAN config reset in progress...";
 							char STR_RMVWMCFGOK[112];//	= "Done! Restart within 3 seconds";
 
-							language("STR_RMVWMCFG", STR_RMVWMCFG, "webMAN config reset in progress...");
+							language("STR_RMVWMCFG", STR_RMVWMCFG, WM_APPNAME " config reset in progress...");
 							language("STR_RMVWMCFGOK", STR_RMVWMCFGOK, "Done! Restart within 3 seconds");
 
 							close_language();
@@ -334,11 +358,9 @@
 								CellRtcTick pTick; u32 dd, hh, mm, ss; char tmp[256];
 
 								cellRtcGetCurrentTick(&pTick);
-								get_temperature(0, &t1); // CPU
-								get_temperature(1, &t2); // RSX
 
 								u8 speed = fan_speed;
-								if(fan_ps2_mode) speed = (int)(255.f*(float)(webman_config->ps2temp + 1) / 100.f); else
+								if(fan_ps2_mode) speed = (int)(255.f*(float)(webman_config->ps2_rate + 1) / 100.f); else
 								if((webman_config->fanc == DISABLED) && (get_fan_policy_offset > 0))
 								{
 									u8 st, mode, unknown;
@@ -367,7 +389,17 @@
 								char cfw_info[20];
 								get_cobra_version(cfw_info);
 
-								char smax[32]; if(fan_ps2_mode) sprintf(smax, "   PS2 Mode"); else if(max_temp) sprintf(smax, "   MAX: %i°C", max_temp); else if(webman_config->fanc == DISABLED) sprintf(smax, "   SYSCON"); else memset(smax, 0, 16);
+								char smax[32];
+								if(fan_ps2_mode) sprintf(smax, "   PS2 Mode");
+								else if(webman_config->fanc == FAN_AUTO2)
+									sprintf(smax, "   MAX: AUTO");
+								else if(max_temp)
+									sprintf(smax, "   MAX: %i°C", max_temp);
+								else if(webman_config->fanc == DISABLED)
+									sprintf(smax, "   SYSCON"); else memset(smax, 0, 16);
+
+								get_temperature(0, &t1); // CPU
+								get_temperature(1, &t2); // RSX
 
 								sprintf(tmp, "CPU: %i°C  RSX: %i°C  FAN: %i%%   \n"
 											 "%s: %id %02d:%02d:%02d%s\n"
@@ -415,17 +447,17 @@
 								{
 									if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) max_temp+=5; else max_temp+=1;
 									if(max_temp > 85) max_temp = 85;
-									webman_config->temp1 = max_temp;
+									webman_config->dyn_temp = max_temp;
 									sprintf(msg, "%s\n%s %i°C", STR_FANCH0, STR_FANCH1, max_temp);
 								}
 								else
 								{
-									if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) webman_config->manu+=5; else webman_config->manu+=1;
-									webman_config->manu = RANGE(webman_config->manu, 20, 95); //%
-									webman_config->temp0 = (u8)(((float)(webman_config->manu+1) * 255.f)/100.f);
-									webman_config->temp0 = RANGE(webman_config->temp0, 0x33, MAX_FANSPEED);
-									fan_control(webman_config->temp0, 0);
-									sprintf(msg, "%s\n%s %i%%", STR_FANCH0, STR_FANCH2, webman_config->manu);
+									if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) webman_config->man_rate += 5; else webman_config->man_rate += 1;
+									webman_config->man_rate = RANGE(webman_config->man_rate, 20, 95); //%
+									webman_config->man_speed = PERCENT_TO_8BIT(webman_config->man_rate);
+									webman_config->man_speed = RANGE(webman_config->man_speed, 0x33, MAX_FANSPEED);
+									set_fan_speed(webman_config->man_speed);
+									sprintf(msg, "%s\n%s %i%%", STR_FANCH0, STR_FANCH2, webman_config->man_rate);
 								}
 								save_settings();
 								show_msg(msg);
@@ -449,16 +481,16 @@
 								if(max_temp) //auto mode
 								{
 									if(max_temp > 30) {if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) max_temp-=5; else max_temp-=1;}
-									webman_config->temp1 = max_temp;
+									webman_config->dyn_temp = max_temp;
 									sprintf(msg, "%s\n%s %i°C", STR_FANCH0, STR_FANCH1, max_temp);
 								}
 								else
 								{
-									if(webman_config->manu>20) {if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) webman_config->manu-=5; else webman_config->manu-=1;}
-									webman_config->temp0 = (u8)(((float)(webman_config->manu+1) * 255.f)/100.f);
-									webman_config->temp0 = RANGE(webman_config->temp0, 0x33, MAX_FANSPEED);
-									fan_control(webman_config->temp0, 0);
-									sprintf(msg, "%s\n%s %i%%", STR_FANCH0, STR_FANCH2, webman_config->manu);
+									if(webman_config->man_rate>20) {if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R2) webman_config->man_rate -= 5; else webman_config->man_rate -= 1;}
+									webman_config->man_speed = PERCENT_TO_8BIT(webman_config->man_rate);
+									webman_config->man_speed = RANGE(webman_config->man_speed, 0x33, MAX_FANSPEED);
+									set_fan_speed(webman_config->man_speed);
+									sprintf(msg, "%s\n%s %i%%", STR_FANCH0, STR_FANCH2, webman_config->man_rate);
 								}
 								save_settings();
 								show_msg(msg);
@@ -656,7 +688,6 @@
 					{
 						// L3+R2+X     = Shutdown
 						// L3+R2+O     = Lpar restart
-						// L3+R2+START = Enable/disable fancontrol
 
 						if(!(webman_config->combo & SHUT_DOWN) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == (CELL_PAD_CTRL_R2 | CELL_PAD_CTRL_CROSS))) // L3+R2+X (shutdown)
 						{
@@ -674,18 +705,23 @@
 							working = 0;
 							{ del_turnoff(2); } // 2 beeps
 
-							{system_call_3(SC_SYS_POWER, SYS_REBOOT, NULL, 0);}
+#ifdef COBRA_ONLY
+							if(is_mamba)
+								vsh_reboot();
+							else
+#endif
+								{system_call_3(SC_SYS_POWER, SYS_REBOOT, NULL, 0);}
 
 							sys_ppu_thread_exit(0);
 						}
-						else if(!(webman_config->combo & DISABLEFC) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] == (CELL_PAD_CTRL_R2 | CELL_PAD_CTRL_START))) // L3+R2+START (enable/disable fancontrol)
-						{
-							// L3+R2+START = Enable/disable fancontrol
-							enable_fan_control(TOGGLE_MODE, msg);
+					}
+					else if(!(webman_config->combo & DISABLEFC) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] == (CELL_PAD_CTRL_L3 | CELL_PAD_CTRL_START)) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] == CELL_PAD_CTRL_R2 )) // L3+R2+START (enable/disable fancontrol)
+					{
+						// L3+R2+START = Enable/disable fancontrol
+						enable_fan_control(TOGGLE_MODE, msg);
 
-							n = 0;
-							break;
-						}
+						n = 0;
+						break;
 					}
 					else
 					if((pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL1] == CELL_PAD_CTRL_L3) && (pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R1))
@@ -764,9 +800,9 @@
 								else if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_R1)
 									{open_browser((char*)"http://127.0.0.1/index.ps3", 0); show_msg((char*)STR_MYGAMES);}     // L2+R2+R1+O
 								else if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_L1)
-									{open_browser((char*)"http://127.0.0.1/cpursx.ps3", 0); show_msg((char*)"webMAN Info");}  // L2+R2+L1+O
+									{open_browser((char*)"http://127.0.0.1/cpursx.ps3", 0); show_msg((char*)WM_APPNAME " Info");}  // L2+R2+L1+O
 								else
-									{open_browser((char*)"http://127.0.0.1/", 0); show_msg((char*)"webMAN " WM_VERSION);}     // L2+R2+O
+									{open_browser((char*)"http://127.0.0.1/", 0); show_msg((char*)WM_APP_VERSION);}           // L2+R2+O
 #endif
 							}
 						}
@@ -812,7 +848,7 @@
 #endif
 							{
 #ifndef LITE_EDITION
-								enable_ingame_screenshot();
+								if(!payload_ps3hen) enable_ingame_screenshot();
 #endif
 #ifdef SPOOF_CONSOLEID
 								show_idps(msg);

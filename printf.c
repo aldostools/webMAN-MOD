@@ -270,11 +270,11 @@
 #define ISDIGIT(ch) ('0' <= (unsigned char)ch && (unsigned char)ch <= '9')
 #endif	/* !defined(ISDIGIT) */
 
-#define OUTCHAR(str, len, size, ch)                                          \
-do {                                                                         \
-	if (len + 1 < size)                                                  \
-		str[len] = ch;                                               \
-	(len)++;                                                             \
+#define OUTCHAR(str, len, size, ch) \
+do {                                \
+	if (len + 1 < size)             \
+		str[len] = ch;              \
+	(len)++;                        \
 } while (/* CONSTCOND */ 0)
 
 static void fmtstr(char *, size_t *, size_t, const char *, int, int, int);

@@ -1,16 +1,14 @@
 #define SC_FS_LINK						(810)
-
-#define SC_STORAGE_OPEN 				(600)
-#define SC_STORAGE_CLOSE 				(601)
-#define SC_STORAGE_INSERT_EJECT			(616)
+#define SC_FS_MOUNT 					(837)
+#define SC_FS_UMOUNT					(838)
 
 #define NO_MSG							NULL
 
-int file_copy(const char *file1, char *file2, u64 maxbytes);
-static void _file_copy(const char *file1, char *file2);
+int file_copy(char *file1, char *file2, u64 maxbytes);
 
 static bool copy_in_progress = false;
 static bool dont_copy_same_size = true; // skip copy the file if it already exists in the destination folder with the same file size
+static bool allow_sc36 = true; // used to skip decrypt dev_bdvd files in file_copy function if it's called from folder_copy
 
 static u32 copied_count = 0;
 
@@ -31,7 +29,7 @@ enum scan_operations
 	SCAN_COPY   = 2,
 	SCAN_MOVE   = 3,
 	SCAN_RENAME = 4,
-	SCAN_COPYBK = 5
+	SCAN_COPYBK = 5		// rename source to source + .bak after copy
 };
 
 #ifdef USE_NTFS
@@ -60,6 +58,7 @@ static u32 ftp_ntfs_transfer_in_progress = 0;
 
 static void check_ntfs_volumes(void)
 {
+	root_check = false;
 
 	if((mountCount > 0) && (!ftp_ntfs_transfer_in_progress))
 	{
@@ -193,16 +192,40 @@ static void mkdir_tree(char *path)
 	{
 		path[10] = ':';
 		for(u16 p = 12; p < path_len; p++)
-			if(path[p] == '/') {path[p] = NULL; ps3ntfs_mkdir(path + 5, MODE); path[p] = '/';}
+			if(path[p] == '/') {path[p] = NULL; ps3ntfs_mkdir(path + 5, DMODE); path[p] = '/';}
 	}
 	else
 #endif
 	{
 		for(u16 p = 12; p < path_len; p++)
-			if(path[p] == '/') {path[p] = NULL; cellFsMkdir(path, MODE); path[p] = '/';}
+			if(path[p] == '/') {path[p] = NULL; cellFsMkdir(path, DMODE); path[p] = '/';}
 	}
 }
 #endif
+
+static void mkdirs(char *param)
+{
+	cellFsMkdir(TMP_DIR, DMODE);
+	cellFsMkdir(WMTMP, DMODE);
+	cellFsMkdir("/dev_hdd0/packages", DMODE);
+	//cellFsMkdir("/dev_hdd0/GAMES",  DMODE);
+	//cellFsMkdir("/dev_hdd0/PS3ISO", DMODE);
+	//cellFsMkdir("/dev_hdd0/DVDISO", DMODE);
+	//cellFsMkdir("/dev_hdd0/BDISO",  DMODE);
+	//cellFsMkdir("/dev_hdd0/PS2ISO", DMODE);
+	//cellFsMkdir("/dev_hdd0/PSXISO", DMODE);
+	//cellFsMkdir("/dev_hdd0/PSPISO", DMODE);
+
+	sprintf(param, "/dev_hdd0");
+	for(u8 i = 0; i < 9; i++)
+	{
+		if(i == 1 || i == 7) continue; // skip /GAMEZ & /PSXGAMES
+		sprintf(param + 9 , "/%s", paths[i]);
+		cellFsMkdir(param, DMODE);
+	}
+
+	param[9] = NULL; // <- return /dev_hdd0
+}
 
 size_t read_file(const char *file, char *data, size_t size, s32 offset)
 {
@@ -224,17 +247,21 @@ size_t read_file(const char *file, char *data, size_t size, s32 offset)
 
 int save_file(const char *file, const char *mem, s64 size)
 {
-	int fd = 0; u32 flags = CELL_FS_O_CREAT | CELL_FS_O_TRUNC | CELL_FS_O_WRONLY;
-	cellFsChmod(file, MODE);
+	bool crlf = (size == APPEND_TEXT); // auto add new line
 
-	if( size < 0 )  {flags = CELL_FS_O_APPEND | CELL_FS_O_CREAT | CELL_FS_O_WRONLY; size = (size == APPEND_TEXT) ? SAVE_ALL : -size;} else
+	u32 flags = CELL_FS_O_CREAT | CELL_FS_O_TRUNC | CELL_FS_O_WRONLY;
+	if( size < 0 )  {flags = CELL_FS_O_APPEND | CELL_FS_O_CREAT | CELL_FS_O_WRONLY; size = crlf ? SAVE_ALL : -size;} else
 	if(!extcmp(file, "/PARAM.SFO", 10)) flags = CELL_FS_O_CREAT | CELL_FS_O_WRONLY;
 
+	cellFsChmod(file, MODE); // set permissions for overwrite
+
+	int fd = 0; 
 	if(cellFsOpen(file, flags, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 	{
 		if((size <= SAVE_ALL) && mem) size = strlen(mem);
 
 		if(size) cellFsWrite(fd, (void *)mem, size, NULL);
+		if(crlf) cellFsWrite(fd, (void *)"\r\n", 2, NULL);
 		cellFsClose(fd);
 
 		cellFsChmod(file, MODE);
@@ -328,7 +355,7 @@ static int file_concat(const char *file1, char *file2)
 }
 */
 
-int file_copy(const char *file1, char *file2, u64 maxbytes)
+int file_copy(char *file1, char *file2, u64 maxbytes)
 {
 	struct CellFsStat buf, buf2;
 	int fd1, fd2;
@@ -374,6 +401,9 @@ int file_copy(const char *file1, char *file2, u64 maxbytes)
 		return FAILED;
 	}
 
+	u16 flen1 = 0;
+	bool check_666 = false;
+
 	if(islike(file2, "/dev_hdd0/"))
 	{
 		if(islike(file1, "/dev_hdd0/"))
@@ -381,11 +411,19 @@ int file_copy(const char *file1, char *file2, u64 maxbytes)
 			cellFsUnlink(file2); copied_count++;
 			return sysLv2FsLink(file1, file2);
 		}
+		else
+			check_666 = islike(file1, "/dev_usb");
+
+		if(check_666)
+		{
+			flen1 = strlen(file1) - 6;
+			check_666 = islike(file1 + flen1, ".666"); if(check_666 && !islike(file1 + flen1, ".66600")) return 0;
+		}
 
 		if(buf.st_size > get_free_space("/dev_hdd0")) return FAILED;
 	}
 
-	if(islike(file1, "/dvd_bdvd"))
+	if(allow_sc36 && islike(file1, "/dvd_bdvd"))
 		{system_call_1(36, (u64) "/dev_bdvd");} // decrypt dev_bdvd files
 
 #ifdef USE_NTFS
@@ -403,14 +441,19 @@ int file_copy(const char *file1, char *file2, u64 maxbytes)
 		return buf.st_size;
 	}
 
+	u64 pos = 0;
+	u8 merge_part = 0;
+
+merge_next:
+
 	if(is_ntfs1 || cellFsOpen(file1, CELL_FS_O_RDONLY, &fd1, NULL, 0) == CELL_FS_SUCCEEDED)
 	{
 		sys_addr_t sysmem = NULL; u64 chunk_size = (buf.st_size <= _64KB_) ? _64KB_ : _256KB_;
 
 		if(g_sysmem) sysmem = g_sysmem; else
 		{
-			sys_memory_container_t mc_app = get_app_memory_container();
-			if(mc_app)	sys_memory_allocate_from_container(chunk_size, mc_app, SYS_MEMORY_PAGE_SIZE_64K, &sysmem);
+			sys_memory_container_t vsh_mc = get_vsh_memory_container();
+			if(vsh_mc)	sys_memory_allocate_from_container(chunk_size, vsh_mc, SYS_MEMORY_PAGE_SIZE_64K, &sysmem);
 		}
 
 		if(!sysmem) chunk_size = _64KB_;
@@ -426,7 +469,7 @@ int file_copy(const char *file1, char *file2, u64 maxbytes)
 				part++; part_size = 0xFFFF0000ULL; //4Gb - 64kb
 			}
 
-			u64 read = 0, written = 0, pos = 0;
+			u64 read = 0, written = 0;
 			char *chunk = (char*)sysmem;
 			u16 flen = strlen(file2);
 next_part:
@@ -483,6 +526,16 @@ next_part:
 					sys_ppu_thread_usleep(1000);
 				}
 
+				if(check_666 && !copy_aborted && (merge_part < 99)) 
+				{
+					sprintf(file1 + flen1, ".666%02i", ++merge_part);
+
+					if(file_exists(file1))
+					{
+						cellFsClose(fd1);
+						goto merge_next;
+					}
+				}
 
 #ifdef USE_NTFS
 				if(is_ntfs2) ps3ntfs_close(fd2);
@@ -500,20 +553,12 @@ next_part:
 				}
 				else if((part > 0) && (size > 0))
 				{
-					if(part < 10)
-						file2[flen-1] = '0' + part;
-					else if(file2[flen-2] == '.')
-					{
-						file2[flen-1] = '0' + (u8)(part / 10);
-						file2[flen  ] = '0' + (u8)(part % 10);
-						file2[flen+1] = 0;
-					}
+					if(file2[flen - 2] == '.')
+						sprintf(file2 + flen - 2, ".%i", part);
 					else
-					{
-						file2[flen-2] = '0' + (u8)(part / 10);
-						file2[flen-1] = '0' + (u8)(part % 10);
-					}
-					part++; part_size = 0xFFFF0000ULL;
+						sprintf(file2 + flen - 2, "%02i", part);
+
+					part++; part_size = 0xFFFF0000ULL; pos = 0;
 					goto next_part;
 				}
 				else
@@ -526,7 +571,7 @@ next_part:
 		}
 
 #ifdef USE_NTFS
-		if(is_ntfs2) ps3ntfs_close(fd2);
+		if(is_ntfs1) ps3ntfs_close(fd1);
 		else
 #endif
 		cellFsClose(fd1);
@@ -535,11 +580,12 @@ next_part:
 	return ret;
 }
 
-void _file_copy(const char *file1, char *file2)
+static void _file_copy(char *file1, char *file2)
 {
-	dont_copy_same_size = false; // force copy files with the same size
+	if(file_exists(file1) == false) return;
+	dont_copy_same_size = false; // force copy file with the same size than existing file
 	file_copy(file1, file2, COPY_WHOLE_FILE);
-	dont_copy_same_size = true;  // restore default mode
+	dont_copy_same_size = true;  // restore default mode (assume file is already copied if existing file has same size)
 }
 
 #ifdef COPY_PS3
@@ -566,43 +612,55 @@ static int folder_copy(const char *path1, char *path2)
 		cellFsChmod(path1, DMODE);
 	}
 
+	bool is_root = IS(path1, "/");
+
 	if(is_ntfs || cellFsOpendir(path1, &fd) == CELL_FS_SUCCEEDED)
 	{
+		if(islike(path1, "/dvd_bdvd"))
+			{allow_sc36 = false; system_call_1(36, (u64) "/dev_bdvd");} // decrypt dev_bdvd files
+
 #ifdef USE_NTFS
 		if(is_ntfs_path(path2))
-			ps3ntfs_mkdir(path2 + 5, MODE);
+			ps3ntfs_mkdir(path2 + 5, DMODE);
 		else
 #endif
 			cellFsMkdir(path2, DMODE);
 
 		CellFsDirent dir; u64 read_e;
+		CellFsDirectoryEntry entry; u32 read_f;
+		char *entry_name = (is_root) ? dir.d_name : entry.entry_name.d_name;
 
 		char source[STD_PATH_LEN];
 		char target[STD_PATH_LEN];
 
 		if(!g_sysmem)
 		{
-			sys_memory_container_t mc_app = get_app_memory_container();
-			if(mc_app)	sys_memory_allocate_from_container(_256KB_, mc_app, SYS_MEMORY_PAGE_SIZE_64K, &g_sysmem);
+			sys_memory_container_t vsh_mc = get_vsh_memory_container();
+			if(vsh_mc)	sys_memory_allocate_from_container(_256KB_, vsh_mc, SYS_MEMORY_PAGE_SIZE_64K, &g_sysmem);
 		}
+
+		u16 plen1 = sprintf(source, "%s", path1);
+		u16 plen2 = sprintf(target, "%s", path2);
 
 		while(working)
 		{
 #ifdef USE_NTFS
 			if(is_ntfs)
 			{
-				if(ps3ntfs_dirnext(pdir, dir.d_name, &bufn)) break;
-				if(dir.d_name[0]=='$' && path1[12] == 0) continue;
+				if(ps3ntfs_dirnext(pdir, entry_name, &bufn)) break;
+				if(entry_name[0]=='$' && path1[12] == 0) continue;
 			}
 			else
 #endif
-			if((cellFsReaddir(fd, &dir, &read_e) != CELL_FS_SUCCEEDED) || (read_e == 0)) break;
+			if(is_root && ((cellFsReaddir(fd, &dir, &read_e) != CELL_FS_SUCCEEDED) || (read_e == 0))) break;
+			else
+			if(cellFsGetDirectoryEntries(fd, &entry, sizeof(entry), &read_f) || !read_f) break;
 
 			if(copy_aborted) break;
-			if(dir.d_name[0] == '.' && (dir.d_name[1] == '.' || dir.d_name[1] == NULL)) continue;
+			if(entry_name[0] == '.' && (entry_name[1] == '.' || entry_name[1] == NULL)) continue;
 
-			sprintf(source, "%s/%s", path1, dir.d_name);
-			sprintf(target, "%s/%s", path2, dir.d_name);
+			sprintf(source + plen1, "/%s", entry_name);
+			sprintf(target + plen2, "/%s", entry_name);
 
 			if(isDir(source))
 			{
@@ -619,7 +677,7 @@ static int folder_copy(const char *path1, char *path2)
 		if(is_ntfs) ps3ntfs_dirclose(pdir);
 		else
 #endif
-		cellFsClosedir(fd);
+		cellFsClosedir(fd); allow_sc36 = true;
 
 		if(copy_aborted) return FAILED;
 	}
@@ -681,35 +739,43 @@ static int scan(const char *path, u8 recursive, const char *wildcard, enum scan_
 	}
 #endif
 
+	bool is_root = IS(path, "/");
+
 	if(is_ntfs || cellFsOpendir(path, &fd) == CELL_FS_SUCCEEDED)
 	{
 		CellFsDirent dir; u64 read_e;
+		CellFsDirectoryEntry entry_d; u32 read_f;
+		char *entry_name = (is_root) ? dir.d_name : entry_d.entry_name.d_name;
 
 		char entry[STD_PATH_LEN], dest_entry[STD_PATH_LEN];
 
-		size_t path_len = strlen(path);
+		u16 path_len = sprintf(entry, "%s", path);
 		bool p_slash = (path_len > 1) && (path[path_len - 1] == '/');
 
 		if(fop > 1) {mkdir_tree(dest); if(!isDir(dest)) return FAILED;} // fop: 2 = copy, 3 = move, 4 = rename/move in same fs
+
+		u16 dest_len = sprintf(dest_entry, "%s", dest);
 
 		while(working)
 		{
 #ifdef USE_NTFS
 			if(is_ntfs)
 			{
-				if(ps3ntfs_dirnext(pdir, dir.d_name, &bufn)) break;
-				if(dir.d_name[0]=='$' && path[12] == 0) continue;
+				if(ps3ntfs_dirnext(pdir, entry_name, &bufn)) break;
+				if(entry_name[0]=='$' && path[12] == 0) continue;
 			}
 			else
 #endif
-			if((cellFsReaddir(fd, &dir, &read_e) != CELL_FS_SUCCEEDED) || (read_e == 0)) break;
+			if(is_root && ((cellFsReaddir(fd, &dir, &read_e) != CELL_FS_SUCCEEDED) || (read_e == 0))) break;
+			else
+			if(cellFsGetDirectoryEntries(fd, &entry_d, sizeof(entry_d), &read_f) || !read_f) break;
 
 			if(copy_aborted) break;
-			if(dir.d_name[0] == '.' && (dir.d_name[1] == '.' || dir.d_name[1] == NULL)) continue;
+			if(entry_name[0] == '.' && (entry_name[1] == '.' || entry_name[1] == NULL)) continue;
 
-			if(p_slash) sprintf(entry, "%s%s", path, dir.d_name); else sprintf(entry, "%s/%s", path, dir.d_name);
+			if(p_slash) sprintf(entry + path_len, "%s", entry_name); else sprintf(entry + path_len, "/%s", entry_name);
 
-			if(fop > 1) {sprintf(dest_entry, "%s/%s", dest, dir.d_name);} // fop: 2 = copy, 3 = move, 4 = rename/move in same fs
+			if(fop > 1) {sprintf(dest_entry + dest_len, "/%s", entry_name);} // fop: 2 = copy, 3 = move, 4 = rename/move in same fs
 
 			if(isDir(entry))
 				{if(recursive) scan(entry, recursive, wildcard, fop, dest);}
@@ -721,7 +787,6 @@ static int scan(const char *path, u8 recursive, const char *wildcard, enum scan_
 			{
 				if(!dest || *dest != '/') break;
 
-				strcat(entry, "\r\n");
 				save_file(dest, entry, APPEND_TEXT);
 			}
 			else if(fop == SCAN_COPY || fop == SCAN_COPYBK)
@@ -887,6 +952,14 @@ int wait_for(const char *path, u8 timeout)
 	return wait_path(path, timeout, true);
 }
 
+/*
+static u64 syscall_837(const char *device, const char *format, const char *point, u32 a, u32 b, u32 c, void *buffer, u32 len)
+{
+	system_call_8(SC_FS_MOUNT, (u64)device, (u64)format, (u64)point, a, b, c, (u64)buffer, len);
+	return_to_user_prog(u64);
+}
+*/
+
 static void mount_device(const char *dev_name, const char *sys_dev_name, const char *file_system)
 {
 	if(!sys_admin) return;
@@ -955,7 +1028,7 @@ static bool do_custom_combo(const char *filename)
 
 	if(file_exists(combo_file))
 	{
-		_file_copy(combo_file, (char*)WMREQUEST_FILE);
+		_file_copy((char*)combo_file, (char*)WMREQUEST_FILE);
 
 		handle_file_request(NULL);
 		return true;
@@ -970,14 +1043,15 @@ static void delete_history(bool delete_folders)
 
 	if(cellFsOpendir("/dev_hdd0/home", &fd) == CELL_FS_SUCCEEDED)
 	{
-		CellFsDirent dir; u64 read_e;
+		CellFsDirectoryEntry dir; u32 read_e;
+		char *entry_name = dir.entry_name.d_name;
 
-		while(working && (cellFsReaddir(fd, &dir, &read_e) == CELL_FS_SUCCEEDED) && (read_e > 0))
+		while(working && (!cellFsGetDirectoryEntries(fd, &dir, sizeof(dir), &read_e) && read_e))
 		{
-			unlink_file("/dev_hdd0/home", dir.d_name, "/etc/boot_history.dat");
-			unlink_file("/dev_hdd0/home", dir.d_name, "/etc/community/CI.TMP");
-			unlink_file("/dev_hdd0/home", dir.d_name, "/community/MI.TMP");
-			unlink_file("/dev_hdd0/home", dir.d_name, "/community/PTL.TMP");
+			unlink_file("/dev_hdd0/home", entry_name, "/etc/boot_history.dat");
+			unlink_file("/dev_hdd0/home", entry_name, "/etc/community/CI.TMP");
+			unlink_file("/dev_hdd0/home", entry_name, "/community/MI.TMP");
+			unlink_file("/dev_hdd0/home", entry_name, "/community/PTL.TMP");
 		}
 		cellFsClosedir(fd);
 	}

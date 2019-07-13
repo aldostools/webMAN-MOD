@@ -1,5 +1,8 @@
-#define ITEM_CHECKED			" checked"
-#define ITEM_SELECTED			" selected"
+#define ITEM_CHECKED			" checked=\"checked\""
+#define ITEM_SELECTED			" selected=\"selected\""
+
+#define IS_MARKED(key)			(strstr(param, key) != NULL)
+#define IS_UNMARKED(key)		!strstr(param, key)
 
 #define HTML_URL				"<a href=\"%s\">%s</a>"
 #define HTML_URL2				"<a href=\"%s%s\">%s</a>"
@@ -38,18 +41,12 @@
 								"<meta http-equiv=\"Cache-Control\" content=\"no-cache\">" \
 								"<meta name=\"viewport\" content=\"width=device-width,initial-scale=0.6,maximum-scale=1.0\">"  /* size: 264 */
 
-#define HTML_HEADER_SIZE		264
-
-#define HTTP_RESPONSE_TITLE_LEN	90 /* strlen(HTML_RESPONSE_TITLE + HTML_BODY) = 26 + 64 */
-
-#define HTML_RESPONSE_TITLE		"webMAN " WM_VERSION "<hr><h2>" /* size: 26 */
+#define HTML_RESPONSE_TITLE		WM_APP_VERSION EDITION "<hr><h2>"
 
 #define HTML_BODY				"<body bgcolor=\"#101010\" text=\"#c0c0c0\">" \
 								"<font face=\"Courier New\">" /* size: 64 */
 
 #define HTML_BODY_END			"</font></body></html>" /* size: 21 */
-
-#define HTML_BODY_END_SIZE		21
 
 #define HTML_BLU_SEPARATOR		"<hr color=\"#0099FF\"/>"
 #define HTML_RED_SEPARATOR		"<hr color=\"#FF0000\"/>"
@@ -89,15 +86,27 @@ static bool _IS(const char *a, const char *b)
 	return (strcasecmp(a, b) == 0);	// compare two strings. returns true if they are identical (case insensitive)
 }
 
+static char *last_dest = NULL; // for fast concat (avoids find last byte)
+static char *prev_dest = NULL;
+
 static size_t concat(char *dest, const char *src)
 {
-	while (*dest) dest++;
+	if(last_dest && (dest == prev_dest))
+		dest = last_dest;
+	else
+		prev_dest = dest;
+
+	while (*dest) dest++; // find last byte
 
 	size_t size = 0;
 
-	while ((*dest++ = *src++)) size++;
+	last_dest = dest;
 
-	return size;
+	while ((*dest++ = *src++)) size++;  // append src
+
+	last_dest += size;
+
+	return size; // return size of src
 }
 
 static char *to_upper(char *text)
@@ -132,7 +141,7 @@ static char h2a(const char hex)
 
 static inline void urldec(char *url, char *original)
 {
-	if(strchr(url, '+') || strchr(url, '%'))
+	if((strchr(url, '+') != NULL) || (strchr(url, '%') != NULL))
 	{
 		strcpy(original, url); // return original url
 
@@ -145,7 +154,7 @@ static inline void urldec(char *url, char *original)
 				url[pos] = url[i];
 			else
 			{
-				url[pos] = 0; u8 n = 2;
+				url[pos] = 0; u8 n = 2; if(url[i+1]=='u') {i++, n+=2;}
 				while(n--)
 				{
 					url[pos] <<= 4, c = (url[++i] | 0x20);
@@ -170,7 +179,7 @@ static bool urlenc_ex(char *dst, const char *src, bool gurl)
 
 	for(i = 0; src[i]; i++, j++)
 	{
-		if(src[i] & 0x80)
+		if((unsigned char)src[i] & 0x80)
 		{
 			dst[j++] = '%';
 			dst[j++] = h2a((unsigned char)src[i]>>4);
@@ -182,13 +191,16 @@ static bool urlenc_ex(char *dst, const char *src, bool gurl)
 			dst[j++] = '3';
 			dst[j] = (src[i] & 0xf) + '7'; // A | F
 		}
-		else if((src[i]==' ' && gurl) || src[i]=='\'' || src[i]=='"' || src[i]=='%' || src[i]=='&' || src[i]=='+')
+		else if(src[i]==' ')
+			dst[j] = '+';
+		else if(src[i]=='\'' || src[i]=='"' || src[i]=='%' || src[i]=='&' || src[i]=='+' || src[i]=='#')
 		{
 			dst[j++] = '%';
 			dst[j++] = '2';
 			dst[j] = (src[i] == '+') ? 'B' : '0' + (src[i] & 0xf);
 		}
-		else dst[j] = src[i];
+		else
+			dst[j] = src[i];
 	}
 	dst[j] = '\0';
 
@@ -203,12 +215,12 @@ static bool urlenc(char *dst, const char *src)
 static size_t htmlenc(char *dst, char *src, u8 cpy2src)
 {
 	size_t j = 0;
-	char tmp[8]; u8 t, c;
+	char tmp[10]; u8 t, c;
 	for(size_t i = 0; src[i]; i++)
 	{
-		if(src[i] & 0x80)
+		if((unsigned char)src[i] >= 0x7F || (unsigned char)src[i] < 0x20)
 		{
-			t = sprintf(tmp, "&#%i;", (int)(unsigned char)src[i]); c = 0;
+			t = sprintf(tmp, "&#x%X;", (unsigned char)src[i]); c = 0;
 			while(t--) {dst[j++] = tmp[c++];}
 		}
 		else dst[j++] = src[i];
@@ -223,22 +235,47 @@ static size_t htmlenc(char *dst, char *src, u8 cpy2src)
 
 static size_t utf8enc(char *dst, char *src, u8 cpy2src)
 {
-	size_t j = 0; u16 c;
+	size_t j = 0; unsigned int c;
 	for(size_t i = 0; src[i]; i++)
 	{
 		c = ((unsigned char)src[i] & 0xFFFF);
 
-		if(!(c & 0xff80)) dst[j++]=c;
-		else if(!(c & 0xf800))
+		if(c <= 0x7F)
+			dst[j++] = c;
+		else if(c <= 0x7FF)
 		{
-			dst[j++]=0xC0|(c>>6);
-			dst[j++]=0x80|(0x3F&c);
+			dst[j++] = 0xC0 | (c>>06);
+			dst[j++] = 0x80 | (0x3F & c);
 		}
-		else
+		else if(c <= 0xFFFF)
 		{
-			dst[j++]=0xE0|(0x0F&(c>>12));
-			dst[j++]=0x80|(0x3F&(c>>06));
-			dst[j++]=0x80|(0x3F&(c    ));
+			dst[j++] = 0xE0 | (0x0F & (c>>12));
+			dst[j++] = 0x80 | (0x3F & (c>>06));
+			dst[j++] = 0x80 | (0x3F &  c);
+		}
+		else if(c <= 0x1FFFFF)
+		{
+			dst[j++] = 0xF0 | (0x0F & (c>>18));
+			dst[j++] = 0x80 | (0x3F & (c>>12));
+			dst[j++] = 0x80 | (0x3F & (c>>06));
+			dst[j++] = 0x80 | (0x3F &  c);
+		}
+		else if(c <= 0x3FFFFFF)
+		{
+			dst[j++] = 0xF8 | (0x0F & (c>>24));
+			dst[j++] = 0x80 | (0x3F & (c>>18));
+			dst[j++] = 0x80 | (0x3F & (c>>12));
+			dst[j++] = 0x80 | (0x3F & (c>>06));
+			dst[j++] = 0x80 | (0x3F &  c);
+		}
+		else if(c <= 0x7fffffff)
+		{
+			dst[j++] = 0xFC | (0x0F & (c>>30));
+			dst[j++] = 0x80 | (0x3F & (c>>24));
+			dst[j++] = 0x80 | (0x3F & (c>>18));
+			dst[j++] = 0x80 | (0x3F & (c>>12));
+			dst[j++] = 0x80 | (0x3F & (c>>06));
+			dst[j++] = 0x80 | (0x3F &  c);
 		}
 	}
 
@@ -252,17 +289,53 @@ static size_t utf8enc(char *dst, char *src, u8 cpy2src)
 static size_t utf8dec(char *dst, char *src, u8 cpy2src)
 {
 	size_t j = 0;
-	u8 c;
+	unsigned char c;
 	for(size_t i = 0; src[i] != '\0'; i++, j++)
 	{
-		c = ((unsigned char)src[i]&0xFF);
-		if(c < 0x80)
-			dst[j] = c;
-		else if(c & 0x20)
-			dst[j] = (((src[i++] & 0x1F)<<6) + (c & 0x3F));
-		else
+		c = (unsigned char)src[i];
+		if( (c & 0x80) == 0 )
 		{
-			dst[j] = ((src[i++] & 0xF)<<12) + ((src[i++] & 0x3F)<<6) + (c & 0x3F);
+			dst[j] = c;
+		}
+		else if( (c & 0xE0) == 0xC0 )
+		{
+			dst[j] = ((c & 0x1F)<<6) |
+					 (src[i+1] & 0x3F);
+			i+=1;
+		}
+		else if( (c & 0xF0) == 0xE0 )
+		{
+			dst[j]  = ((c & 0xF)<<12);
+			dst[j] |= ((src[i+1] & 0x3F)<<6);
+			dst[j] |= ((src[i+2] & 0x3F));
+			i+=2;
+		}
+		else if ( (c & 0xF8) == 0xF0 )
+		{
+			dst[j]  = ((c & 0x7)<<18);
+			dst[j] |= ((src[i+1] & 0x3F)<<12);
+			dst[j] |= ((src[i+2] & 0x3F)<<06);
+			dst[j] |= ((src[i+3] & 0x3F));
+			i+=3;
+		}
+		else if ( (c & 0xFC) == 0xF8 )
+		{
+			dst[j]  = ((c & 0x3)<<24);
+			dst[j] |= ((src[i+1] & 0x3F)<<18);
+			dst[j] |= ((src[i+2] & 0x3F)<<12);
+			dst[j] |= ((src[i+3] & 0x3F)<<06);
+			dst[j] |= ((src[i+4] & 0x3F));
+			i+=4;
+		}
+		else if ( (c & 0xFE) == 0xFC )
+		{
+			dst[j]  = ((c & 0x1)<<30);
+			dst[j] |= ((src[i+1] & 0x3F)<<24);
+			dst[j] |= ((src[i+2] & 0x3F)<<18);
+			dst[j] |= ((src[i+3] & 0x3F)<<12);
+			dst[j] |= ((src[i+4] & 0x3F)<<06);
+			dst[j] |= ((src[i+5] & 0x3F));
+			i+=5;
 		}
 	}
 
@@ -298,7 +371,7 @@ static size_t add_check_box(const char *name, bool disabled, const char *label, 
 static size_t add_option_item(int value, const char *label, bool selected, char *buffer)
 {
 	char templn[MAX_LINE_LEN];
-	sprintf(templn, "<option value=\"%i\"%s/>%s</option>", value, selected?ITEM_SELECTED : "", label);
+	sprintf(templn, "<option value=\"%i\"%s/>%s</option>", value, selected ? ITEM_SELECTED : "", label);
 	return concat(buffer, templn);
 }
 
@@ -306,7 +379,7 @@ static size_t add_option_item(int value, const char *label, bool selected, char 
 static size_t add_string_item(const char *value, const char *label, bool selected, char *buffer)
 {
 	char templn[MAX_LINE_LEN];
-	sprintf(templn, "<option value=\"%s\"%s/>%s</option>", value, selected?ITEM_SELECTED : "", label);
+	sprintf(templn, "<option value=\"%s\"%s/>%s</option>", value, selected ? ITEM_SELECTED : "", label);
 	return concat(buffer, templn);
 }
 #endif
@@ -315,15 +388,16 @@ static size_t prepare_header(char *buffer, const char *param, u8 is_binary)
 {
 	bool set_base_path = false;
 
-	size_t slen = sprintf(buffer, "HTTP/1.1 200 OK\r\n"
-								  "Content-Type: "); char *header = buffer + slen;
+	size_t slen = sprintf(buffer,	"HTTP/1.1 200 OK\r\n"
+									"Access-Control-Allow-Origin: *\r\n"
+									"Content-Type: "); char *header = buffer + slen;
 
 	int flen = strlen(param);
 
 	// get mime type
 	if(is_binary == BINARY_FILE)
 	{
-		char *ext = (char*)param + MAX(flen - 4, 0), *ext5 = (char*)param + MAX(flen - 5, 0);
+		const char *ext = (char*)param + MAX(flen - 4, 0), *ext5 = (char*)param + MAX(flen - 5, 0);
 
 		if(_IS(ext, ".png"))
 			strcat(header, "image/png");
@@ -467,17 +541,35 @@ static s64 val(const char *c)
 	return(result * multiplier);
 }
 
-static u16 get_value(char *text, char *url, u16 size)
+static u16 get_value(char *value, const char *url, u16 max_size)
 {
 	u16 n;
-	for(n = 0; n < size; n++)
+	for(n = 0; n < max_size; n++)
 	{
 		if(url[n] == '&' || url[n] == 0) break;
-		if(url[n] == '+') url[n] = ' ';
-		text[n] = url[n];
+		value[n] = url[n];
 	}
-	text[n] = NULL;
+	value[n] = NULL;
 	return n;
+}
+
+static u16 get_param(const char *name, char *value, const char *url, u16 max_size)
+{
+	if(!value || !max_size) return 0;
+
+	u8 name_len = strlen(name);
+
+	if(name_len)
+	{
+		char *pos = strstr(url, name);
+		if(pos) 
+		{
+			if(name[name_len - 1] != '=') name_len++;
+			return get_value(value, pos + name_len, max_size);
+		}
+	}
+
+	return 0;
 }
 
 static u32 get_valuen32(const char *param, const char *label)
@@ -491,9 +583,11 @@ static u32 get_valuen32(const char *param, const char *label)
 	return 0;
 }
 
-static u16 get_valuen16(const char *param, const char *label)
+static u16 get_port(const char *param, const char *label, u16 default_port)
 {
-	return RANGE((u16)get_valuen32(param, label), 0, 65535);
+	u16 port = RANGE((u16)get_valuen32(param, label), 0, 65535);
+	if(port == 0) port = default_port;
+	return port;
 }
 
 static u8 get_valuen(const char *param, const char *label, u8 min_value, u8 max_value)

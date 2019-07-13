@@ -33,7 +33,7 @@ static void lv1_poke_cfw( u64 addr, u64 value)
 }
 
 #ifdef COBRA_ONLY
-static void lv1_poke_ps3mapi( u64 addr, u64 value)
+static void lv1_poke_ps3mapi(u64 addr, u64 value)
 {
 	system_call_4(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_LV1_POKE, addr, value);
 }
@@ -87,10 +87,14 @@ static void (*pokeq)(u64, u64) = lv2_poke_cfw;
 static u64  (*peek_lv1)(u64) = lv1_peek_cfw;
 static void (*poke_lv1)(u64, u64) = lv1_poke_cfw;
 
+static u64 peek(u64 addr)
+{
+	return peekq(addr | 0x8000000000000000ULL);
+}
 ///////////////// LV2 POKE32 //////////////////////
 static void lv2_poke_fan_hen(u64 addr, u64 value)
 {
-	{system_call_3(SC_COBRA_SYSCALL8, 0x7003ULL, addr, value);} // advanced poke (requires restore original value)
+	system_call_2(SC_POKE_LV2, addr, value); //{system_call_3(SC_COBRA_SYSCALL8, 0x7003ULL, addr, value);} // advanced poke (requires restore original value)
 }
 
 ///////////////////////////////////////////////////
@@ -110,7 +114,7 @@ static u32 lv2peek32(u64 addr)
 */
 
 #ifndef COBRA_ONLY
-static void remove_lv2_memory_protection(void)
+static inline void remove_lv2_memory_protection(void)
 {
 	u64 HV_START_OFFSET = 0;
 
@@ -127,12 +131,12 @@ static void remove_lv2_memory_protection(void)
 	else
 	if(c_firmware>=4.30f && c_firmware<=4.53f)
 	{
-		HV_START_OFFSET = HV_START_OFFSET_430;
+		HV_START_OFFSET = HV_START_OFFSET_430; // same for 4.30-4.53
 	}
 	else
 	if(c_firmware>=4.55f /*&& c_firmware<=4.84f*/)
 	{
-		HV_START_OFFSET = HV_START_OFFSET_460;
+		HV_START_OFFSET = HV_START_OFFSET_455; // same for 4.55-4.84
 	}
 
 	if(!HV_START_OFFSET) return;
@@ -173,10 +177,12 @@ static void install_peek_poke(void)
 	}
 }
 
+#define MAX_PATH_MAP	384
+
 typedef struct
 {
-	char src[384];
-	char dst[384];
+	char src[MAX_PATH_MAP];
+	char dst[MAX_PATH_MAP];
 } redir_files_struct;
 
 static redir_files_struct file_to_map[10];
@@ -200,22 +206,24 @@ static void add_to_map(const char *path1, const char *path2)
 
 static u16 string_to_lv2(char* path, u64 addr)
 {
-	u16 len  = (strlen(path) + 8) & 0x7f8;
-	len = RANGE(len, 8, 384);
-	u16 len2 = strlen(path); if(len2 > len) len2 = len;
+	u16 plen = strlen(path); 
+	u16 len  = (plen + 8) & 0x7f8;
 
-	u8 data2[384];
-	u8* data = data2;
-	memset(data, 0, 384);
-	memcpy(data, path, len2);
+	len = RANGE(len, 8, MAX_PATH_MAP);
+	if(plen > len) plen = len;
 
-	u64 val = 0x0000000000000000ULL;
+	u8 path_buf[MAX_PATH_MAP];
+	u8 *data  = path_buf;
+
+	memcpy(data, path, plen);
+	memset(data + plen, 0, MAX_PATH_MAP - plen);
+
+	u64 *data2 = (u64 *)path_buf;
 	for(u64 n = 0; n < len; n += 8)
 	{
-		memcpy(&val, &data[n], 8);
-		pokeq(addr + n, val);
+		pokeq(addr + n, data2[n]);
 	}
-	return len2;
+	return len;
 }
 #endif
 
@@ -255,29 +263,3 @@ static void Hex2Bin(const char* src, char* target)
 }
 
 #endif
-
-/*
-s32 lv2_get_platform_info(struct platform_info *info)
-{
-	system_call_1(SC_GET_PLATFORM_INFO, (u64) info);
-	return_to_user_prog(s32);
-}
-
-s32 lv2_get_target_type(u64 *type)
-{
-	lv2syscall1(985, (u64) type);
-	return_to_user_prog(s32);
-}
-
-u64 find_syscall_table()
-{
-	u64 targettype;
-	lv2_get_target_type(&targettype);
-
-	for(u64 i = 0x8000000000340000ULL; i<0x8000000000400000ULL; i+=4)
-	{
-		if(peekq(i) == 0x3235352E3235352EULL) return (i + (targettype == 2) ? 0x1228 : 0x1220);
-	}
-	return 0;
-}
-*/

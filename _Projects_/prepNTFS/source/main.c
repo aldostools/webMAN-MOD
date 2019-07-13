@@ -97,6 +97,7 @@ int main(int argc, const char* argv[])
 	char direntry[MAX_PATH_LEN];
 	char filename[MAX_PATH_LEN];
 	bool has_dirs, is_iso = false;
+	int cd_sector_size, cd_sector_size_param; 
 	char *ext;
 	u16 flen;
 
@@ -372,7 +373,8 @@ next_ntfs_entry:
 
 								if (parts > 0)
 								{
-									int cd_sector_size; cd_sector_size = 2352;
+									cd_sector_size = 2352;
+									cd_sector_size_param = 0;
 
 									num_tracks = 1;
 									if(m == PS3ISO) emu_mode = EMU_PS3; else
@@ -387,12 +389,19 @@ next_ntfs_entry:
 										fd = ps3ntfs_open(path, O_RDONLY, 0);
 										if(fd >= 0)
 										{
-											char buffer[0x10]; buffer[0xD] = '\0';
-											ps3ntfs_seek64(fd, 0x9320LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2352; else {
-											ps3ntfs_seek64(fd, 0x8020LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2048; else {
-											ps3ntfs_seek64(fd, 0x9220LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2336; else {
-											ps3ntfs_seek64(fd, 0x9920LL, SEEK_SET); ps3ntfs_read(fd, (void *)buffer, 0xC); if(memcmp(buffer, "PLAYSTATION ", 0xC) == 0) cd_sector_size = 2448; }}}
+											char buffer[20];
+											u16 sec_size[7] = {2352, 2048, 2336, 2448, 2328, 2340, 2368};
+											for(u8 n = 0; n < 7; n++)
+											{
+												ps3ntfs_seek64(fd, ((sec_size[n]<<4) + 0x18), SEEK_SET);
+												ps3ntfs_read(fd, (void *)buffer, 20);
+												if(  (memcmp(buffer + 8, "PLAYSTATION ", 0xC) == 0) ||
+													((memcmp(buffer + 1, "CD001", 5) == 0) && buffer[0] == 0x01) ) {cd_sector_size = sec_size[n]; break;}
+											}
 											ps3ntfs_close(fd);
+
+											if(cd_sector_size & 0xf) cd_sector_size_param = cd_sector_size<<8;
+											else if(cd_sector_size != 2352) cd_sector_size_param = cd_sector_size<<4;
 										}
 
 										// parse CUE file
@@ -438,10 +447,7 @@ next_ntfs_entry:
 
 										if (parts == max) continue;
 
-										if(cd_sector_size == 2352)
-											p_args->num_tracks = num_tracks;
-										else
-											p_args->num_tracks = num_tracks | (cd_sector_size<<4);
+										p_args->num_tracks = num_tracks | cd_sector_size_param;
 
 										scsi_tracks = (ScsiTrackDescriptor *)(plugin_args + sizeof(rawseciso_args) + (2 * parts * sizeof(uint32_t)));
 

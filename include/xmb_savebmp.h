@@ -117,7 +117,7 @@ static void saveBMP(char *path, bool notify_bmp)
 	init_graphic();
 
 	// calc buffer sizes
-	u32 line_frame_size = w * 4;
+	u32 line_frame_size = (w * 4);
 
 	// alloc buffers
 	u64 *line_frame = (u64*)sysmem;
@@ -151,13 +151,11 @@ static void saveBMP(char *path, bool notify_bmp)
 
 		idx = 0;
 
-		for(k = 0; k < w; k++)
+		for(k = 0; k < line_frame_size; k+=4, idx+=3)
 		{
-			bmp_buf[idx]   = tmp_buf[(k)*4+3];  // R
-			bmp_buf[idx+1] = tmp_buf[(k)*4+2];  // G
-			bmp_buf[idx+2] = tmp_buf[(k)*4+1];  // B
-
-			idx+=3;
+			bmp_buf[idx]   = tmp_buf[k + 3];  // R
+			bmp_buf[idx+1] = tmp_buf[k + 2];  // G
+			bmp_buf[idx+2] = tmp_buf[k + 1];  // B
 		}
 
 		// write bmp data

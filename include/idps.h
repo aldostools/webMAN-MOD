@@ -8,6 +8,10 @@ u64 PSID[2] = {0, 0};
 #define SC_GET_IDPS 					(870)
 #define SC_GET_PSID 					(872)
 
+#define FLASH_DEVICE_NAND					0x0100000000000001ULL
+#define FLASH_DEVICE_NOR					0x0100000000000004ULL
+#define FLASH_FLAGS							0x22ULL
+
 u64 idps_offset1 = 0;
 u64 idps_offset2 = 0;
 u64 psid_offset  = 0;
@@ -110,23 +114,26 @@ static void spoof_idps_psid(void)
 
 static void get_eid0_idps(void)
 {
+	get_idps_psid();
+
 	if(eid0_idps[0]) return;
 
-	u64 buffer[0x40], start_sector;
+	u64 buffer[0x40], start_sector = 0x178; // NOR
 	u32 read;
-	sys_device_handle_t source;
-	if(sys_storage_open(0x100000000000004ULL, 0, &source, 0) != 0)
+	sys_device_handle_t dev_id;
+	if(sys_storage_open(FLASH_DEVICE_NOR, 0, &dev_id, 0) != CELL_OK)
 	{
-		start_sector = 0x204;
-		sys_storage_close(source);
-		sys_storage_open(0x100000000000001ULL, 0, &source, 0);
+		sys_storage_close(dev_id);
+		sys_storage_open(FLASH_DEVICE_NAND, 0, &dev_id, 0);
+		start_sector = 0x204; // NAND
 	}
-	else start_sector = 0x178;
-	sys_storage_read(source, 0, start_sector, 1, buffer, &read, 0);
-	sys_storage_close(source);
+	sys_storage_read(dev_id, 0, start_sector, 1, buffer, &read, FLASH_FLAGS);
+	sys_storage_close(dev_id);
 
 	eid0_idps[0] = buffer[0x0E];
 	eid0_idps[1] = buffer[0x0F];
+
+	if((eid0_idps[0] & 0xFFFFFFFFFFF0FF00ULL) != 0x0000000100800000ULL) eid0_idps[0] = eid0_idps[1] = 0;
 }
 
 static void show_idps(char *msg)
@@ -134,7 +141,6 @@ static void show_idps(char *msg)
 	if(!sys_admin) return;
 
 	get_eid0_idps();
-	get_idps_psid();
 
 	#define SEP "\n                  "
 	sprintf(msg, "IDPS EID0 : %016llX%s"
@@ -147,6 +153,71 @@ static void show_idps(char *msg)
 
 	show_msg(msg);
 	sys_ppu_thread_sleep(2);
+}
+
+static void save_idps_psid(bool is_psid, bool is_idps, char *header, char *param)
+{
+	char *filename = param + 9, *act_dat = header;
+	bool is_default = (*filename != '/') || (is_psid & is_idps);
+
+	show_idps(header);
+
+	*act_dat = NULL; int i = 0;
+
+	cellFsUnlink("/dev_hdd0/psid.hex");
+	cellFsUnlink("/dev_hdd0/idps.hex");
+	cellFsUnlink("/dev_hdd0/act.dat");
+
+	if(is_psid)
+	{
+		for(i = 1; i >= 0; i--)
+		{
+			if(is_default) {sprintf(filename, "%s/psid.hex", drives[i]); sprintf(act_dat, "%s/act.dat", drives[i]);}
+			save_file(filename, (char*)&PSID[0], 16);
+			if(file_exists(filename)) break; is_default = true;
+		}
+	}
+
+	if(is_idps)
+	{
+		for(i = 1; i >= 0; i--)
+		{
+			if(is_default) {sprintf(filename, "%s/idps.hex", drives[i]); sprintf(act_dat, "%s/act.dat", drives[i]);}
+			save_file(filename, (char*)&IDPS[0], 16);
+			if(file_exists(filename)) break; is_default = true;
+		}
+	}
+
+	if(*act_dat)
+	{
+		sprintf(filename, "%s/home/%08i/exdata/act.dat", drives[0], xsetting_CC56EB2D()->GetCurrentUserNumber());
+		_file_copy(filename, act_dat);
+	}
+
+	*param = NULL;
+
+	if(is_default) 
+	{
+		if(file_exists(act_dat))
+		{
+			add_breadcrumb_trail(param, act_dat); strcat(param, " from: ");
+			sprintf(header, "%s/home/%08i", drives[0], xsetting_CC56EB2D()->GetCurrentUserNumber());
+			add_breadcrumb_trail(param, header); strcat(param, "<br>");
+		}
+	}
+	else
+		strcpy(header, filename); // show custom filename
+
+	if(is_idps)
+	{
+		if(is_default) sprintf(header, "%s/idps.hex", drives[i]);
+		if(file_exists(header)) {add_breadcrumb_trail(param, header); sprintf(header, " • %016llX%016llX<br>", IDPS[0], IDPS[1]); strcat(param, header);}
+	}
+	if(is_psid)
+	{
+		if(is_default) sprintf(header, "%s/psid.hex", drives[i]);
+		if(file_exists(header)) {add_breadcrumb_trail(param, header); sprintf(header, " • %016llX%016llX<br>", PSID[0], PSID[1]); strcat(param, header);}
+	}
 }
 
 #endif // #ifdef SPOOF_CONSOLEID

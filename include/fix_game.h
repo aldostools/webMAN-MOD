@@ -221,16 +221,18 @@ static void fix_game_folder(char *path)
 #endif
 
 		struct CellFsStat s;
-		CellFsDirent dir; u64 read_e;
 
-		while(working && (cellFsReaddir(fd, &dir, &read_e) == CELL_FS_SUCCEEDED) && (read_e > 0))
+		CellFsDirectoryEntry dir; u32 read_e;
+		char *entry_name = dir.entry_name.d_name;
+
+		while(working && (!cellFsGetDirectoryEntries(fd, &dir, sizeof(dir), &read_e) && read_e))
 		{
 			if(fix_aborted) break;
-			if(dir.d_name[0] == '.') continue;
+			if(entry_name[0] == '.') continue;
 
-			sprintf(fix_game_path[plevel], "%s/%s", path, dir.d_name);
+			sprintf(fix_game_path[plevel], "%s/%s", path, entry_name);
 
-			if(!extcasecmp(dir.d_name, ".sprx", 5) || !extcasecmp(dir.d_name, ".self", 5) || IS(dir.d_name, "EBOOT.BIN"))
+			if(!extcasecmp(entry_name, ".sprx", 5) || !extcasecmp(entry_name, ".self", 5) || IS(entry_name, "EBOOT.BIN"))
 			{
 				if(cellFsStat(fix_game_path[plevel], &s) != CELL_FS_SUCCEEDED || s.st_size < 0x500) continue;
 
@@ -244,7 +246,7 @@ static void fix_game_folder(char *path)
 					cellFsRead(fdw, (void *)&offset, 4, &bytes_read); offset-=0x78;
 
 				retry_offset:
-					if(offset < 0x90 || offset > 0x800) offset=!extcasecmp(dir.d_name, ".sprx", 5) ? 0x258 : 0x428;
+					if(offset < 0x90 || offset > 0x800) offset=!extcasecmp(entry_name, ".sprx", 5) ? 0x258 : 0x428;
 					cellFsLseek(fdw, offset, CELL_FS_SEEK_SET, &bytes_read);
 					cellFsRead(fdw, (void *)&ps3_sys_version, 8, NULL);
 
@@ -318,7 +320,7 @@ static void fix_iso(char *iso_file, u64 maxbytes, bool patch_update)
 
 		u16 start, offset;
 
-		while(size > 0ULL)
+		while(size)
 		{
 			if(fix_aborted) break;
 
@@ -332,6 +334,7 @@ static void fix_iso(char *iso_file, u64 maxbytes, bool patch_update)
 				if(lba)
 				{
 					lba*=0x800ULL, fix_sfo = false;
+
 					cellFsLseek(fd, lba, CELL_FS_SEEK_SET, &bytes_read);
 					cellFsRead(fd, (void *)&chunk, chunk_size, &bytes_read); if(!bytes_read) break;
 
@@ -372,11 +375,11 @@ static void fix_iso(char *iso_file, u64 maxbytes, bool patch_update)
 					sys_ppu_thread_usleep(1000);
 					if(fix_aborted) goto exit_fix;
 
-					if(t==0) lba = getlba(chunk, chunk_size, "EBOOT.BIN;1", 11, &start);
-					if(t==1) lba = getlba(chunk, chunk_size, ".SELF;1", 7, &start);
-					if(t==2) lba = getlba(chunk, chunk_size, ".self;1", 7, &start);
-					if(t==3) lba = getlba(chunk, chunk_size, ".SPRX;1", 7, &start);
-					if(t==4) lba = getlba(chunk, chunk_size, ".sprx;1", 7, &start);
+					if(t == 0) lba = getlba(chunk, chunk_size, "EBOOT.BIN;1", 11, &start); else
+					if(t == 1) lba = getlba(chunk, chunk_size, ".SELF;1", 7, &start);      else
+					if(t == 2) lba = getlba(chunk, chunk_size, ".self;1", 7, &start);      else
+					if(t == 3) lba = getlba(chunk, chunk_size, ".SPRX;1", 7, &start);      else
+					if(t == 4) lba = getlba(chunk, chunk_size, ".sprx;1", 7, &start);
 
 					if(lba)
 					{
@@ -386,10 +389,11 @@ static void fix_iso(char *iso_file, u64 maxbytes, bool patch_update)
 						if(IS_EBOOT) fix_eboot = false;
 
 						lba *= 0x800ULL;
+
 						cellFsLseek(fd, lba, CELL_FS_SEEK_SET, &bytes_read);
 						cellFsRead(fd, (void *)&chunk, chunk_size, &bytes_read); if(!bytes_read) break;
 
-						memcpy(&offset, chunk + 0xC, 4); offset-=0x78;
+						memcpy(&offset, chunk + 0xC, 4); offset -= 0x78;
 
 						for(u8 retry = 0; retry < 3; retry++)
 						{
@@ -402,7 +406,7 @@ static void fix_iso(char *iso_file, u64 maxbytes, bool patch_update)
 						if(ps3_sys_version > CFW_420 && ps3_sys_version < MAX_CFW)
 						{
 							ps3_sys_version = CFW_420;
-							cellFsLseek(fd, lba+offset, CELL_FS_SEEK_SET, &bytes_read);
+							cellFsLseek(fd, lba + offset, CELL_FS_SEEK_SET, &bytes_read);
 							cellFsWrite(fd, (void *)(&ps3_sys_version), 8, NULL);
 						}
 						else goto exit_fix;

@@ -1,4 +1,10 @@
 #ifdef SLAUNCH_FILE
+
+static bool custom_icon = false; // override default cover mode using index.ps3?cover=<cover type> (icon0, mm, disc, online)
+static int create_slaunch_file(void);
+static void add_slaunch_entry(int fd, const char *neth, const char *path, const char *filename, const char *icon, const char *name, const char *id, u8 f1);
+static void close_slaunch_file(int fd);
+
 typedef struct // 1MB for 2000+1 titles
 {
 	u8  type;
@@ -45,11 +51,11 @@ static void add_slaunch_entry(int fd, const char *neth, const char *path, const 
 				(slaunch.type == TYPE_PSP) ? id_PSPISO :
 				(slaunch.type == TYPE_VID) ? id_BDISO  : id_ROMS;
 
-		sprintf(enc_filename, "%s%s/", "/dev_usb000/PICTURE/", paths[f1]); cellFsMkdir(enc_filename, MODE);
+		sprintf(enc_filename, "%s%s/", "/dev_usb000/PICTURE/", paths[f1]); cellFsMkdir(enc_filename, DMODE);
 		strcat(enc_filename, filename);
 		strcat(enc_filename, strcasestr(icon, ".png") ? ".PNG" : ".JPG");
 
-		if(file_exists(enc_filename) == false) file_copy(icon, enc_filename, COPY_WHOLE_FILE);
+		if(file_exists(enc_filename) == false) file_copy((char*)icon, enc_filename, COPY_WHOLE_FILE);
 	}
 #endif
 

@@ -9,6 +9,7 @@
 // #include <string.h>
 // #include <cell/hash/libmd5.h>
 
+#define COBRA_ONLY
 #define _COBRA_C
 
 #include "cobra.h"
@@ -794,7 +795,6 @@ int cobra_get_disc_type(unsigned int *real_disctype, unsigned int *effective_dis
 
 					default:
 						*iso_disctype = DISC_TYPE_UNKNOWN;
-
 				}
 			}
 		}
@@ -1493,6 +1493,9 @@ int cobra_unset_psp_umd(void)
 	cellFsUnlink(PSPL_PATH1 "/PIC1.PNG");
 	cellFsUnlink(PSPL_PATH2 "/PIC1.PNG");
 
+	cellFsUnlink(PSPL_PATH1 "/PIC0.PNG");
+	cellFsUnlink(PSPL_PATH2 "/PIC0.PNG");
+
 	sys_map_path(PSPL_PATH1 "/USRDIR/MINIS.EDAT", NULL);
 	sys_map_path(PSPL_PATH2 "/USRDIR/MINIS.EDAT", NULL);
 	sys_map_path(PSPL_PATH1 "/USRDIR/MINIS2.EDAT", NULL);
@@ -1537,9 +1540,9 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 
 	//memcpy(title_id, sector + 0x373, 10); title_id[10] = 0;
 
-	char *root;
+	 uint8_t do_eject = 0;
 
-	root = umd_root;
+	char *root = umd_root;
 
 	if (!root)
 	{
@@ -1555,7 +1558,7 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 
 		char *files[1];
 
-		files[0] = path;
+		files[0] = (char *)path;
 		ret = sys_storage_ext_mount_dvd_discfile(1, files);
 		if (ret != 0)
 		{
@@ -1578,7 +1581,7 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 			return EIO;
 		}
 
-		root = (char*)"/dev_bdvd";
+		root = (char*)"/dev_bdvd/PSP_GAME"; do_eject = 1;
 	}
 	else
 	{
@@ -1593,23 +1596,30 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 	uint8_t code = 0;
 
 	char umd_file[256];
-	snprintf(umd_file, sizeof(umd_file), "%s/PSP_GAME/ICON0.PNG", root);
+	sprintf(umd_file, "%s/ICON0.PNG", root);
+
+	uint8_t pspl1 = (cellFsStat(PSPL_PATH1, &stat) == CELL_FS_SUCCEEDED);
+	uint8_t pspl2 = (cellFsStat(PSPL_PATH1, &stat) == CELL_FS_SUCCEEDED);
 
 	if(file_copy(umd_file, icon_save_path, 0) >= CELL_FS_SUCCEEDED)
 	{
-		sys_map_path(PSPL_ICON1, icon_save_path);
-		sys_map_path(PSPL_ICON2, icon_save_path);
+		if(pspl1) sys_map_path(PSPL_ICON1, icon_save_path);
+		if(pspl2) sys_map_path(PSPL_ICON2, icon_save_path);
 
-		snprintf(umd_file, sizeof(umd_file), "%s/PSP_GAME/PIC1.PNG", root);
+		sprintf(umd_file, "%s/PIC1.PNG", root);
 
-		if(cellFsStat(PSPL_PATH1, &stat) == CELL_FS_SUCCEEDED) file_copy(umd_file, (char*)PSPL_PATH1  "/PIC1.PNG", 0);
-		if(cellFsStat(PSPL_PATH2, &stat) == CELL_FS_SUCCEEDED) file_copy(umd_file, (char*)PSPL_PATH2 "/PIC1.PNG", 0);
+		if(pspl1) file_copy(umd_file, (char*)PSPL_PATH1 "/PIC1.PNG", 0);
+		if(pspl2) file_copy(umd_file, (char*)PSPL_PATH2 "/PIC1.PNG", 0);
 
-		snprintf(umd_file, sizeof(umd_file), "%s/PSP_GAME/SYSDIR/EBOOT.OLD", root);
+		sprintf(umd_file, "%s/PIC0.PNG", root);
 
+		if(pspl1) file_copy(umd_file, (char*)PSPL_PATH1 "/PIC0.PNG", 0);
+		if(pspl2) file_copy(umd_file, (char*)PSPL_PATH2 "/PIC0.PNG", 0);
+
+		sprintf(umd_file, "%s/SYSDIR/EBOOT.OLD", root);
 		if (cellFsStat(umd_file, &stat) != CELL_FS_SUCCEEDED)
 		{
-			snprintf(umd_file, sizeof(umd_file), "%s/PSP_GAME/SYSDIR/EBOOT.BIN", root);
+			sprintf(umd_file, "%s/SYSDIR/EBOOT.BIN", root);
 		}
 		else
 		{
@@ -1619,7 +1629,7 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 		uint32_t header[0xD4/4];
 		if (read_file(umd_file, (char*)&header, sizeof(header), 0) == sizeof(header))
 		{
-			if (header[0] == 0x7E505350) /* "~PSP" */
+			if (header[0] == 0x7E505350) // "~PSP"
 			{
 				unsigned int i;
 
@@ -1646,26 +1656,23 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 			}
 		}
 
+		if (do_eject)
+		{
+			cobra_send_fake_disc_eject_event();
+			sys_storage_ext_umount_discfile();
+
+			if (real_disctype != DISC_TYPE_NONE)
+				cobra_send_fake_disc_insert_event();
+		}
+
+		sys_psp_set_umdfile(path, title_id, prometheus);
+		sys_psp_set_decrypt_options(decrypt_patch, tag, keys, code, 0, NULL, 0);
+
 		ret = CELL_FS_SUCCEEDED;
 	}
 	else
 	{
 		ret = EIO;
-	}
-
-	if (!umd_root)
-	{
-		cobra_send_fake_disc_eject_event();
-		sys_storage_ext_umount_discfile();
-
-		if (real_disctype != DISC_TYPE_NONE)
-			cobra_send_fake_disc_insert_event();
-	}
-
-	if (ret == CELL_FS_SUCCEEDED)
-	{
-		sys_psp_set_umdfile(path, title_id, prometheus);
-		sys_psp_set_decrypt_options(decrypt_patch, tag, keys, code, 0, NULL, 0);
 	}
 
 	return ret;
@@ -1794,7 +1801,7 @@ int cobra_set_psp_umd(char *path, char *umd_root, char *icon_save_path)
 				cellFsRead(fd, header, sizeof(header), &read);
 				if (read == sizeof(header))
 				{
-					if (header[0] == 0x7E505350)
+					if (header[0] == 0x7E505350) // "~PSP"
 					{
 						unsigned int i;
 

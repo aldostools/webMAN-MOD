@@ -3,6 +3,8 @@ include $(CELL_MK_DIR)/sdk.makedef.mk
 
 BUILD_TYPE     	= release
 
+ROOT_PATH = ../..
+
 LIBSTUB_DIR		= ./lib
 PRX_DIR			= .
 INSTALL			= cp
@@ -14,16 +16,14 @@ CRT_HEAD                += $(shell ppu-lv2-gcc -print-file-name'='crtbegin.o)
 CRT_TAIL                += $(shell ppu-lv2-gcc -print-file-name'='crtend.o)
 CRT_HEAD                += $(shell ppu-lv2-gcc -print-file-name'='ecrtn.o)
 
-ROOT_PATH = ../..
-
 PPU_SRCS = libc.c main.c 
 PPU_PRX_TARGET = wm_proxy.prx
 PPU_PRX_LDFLAGS += $(PRX_LDFLAGS_EXTRA)
 PPU_PRX_STRIP_FLAGS = -s
-PPU_PRX_LDLIBS 	= -lnet_stub -lio_stub
+PPU_PRX_LDLIBS 	= -lstdc_export_stub -lnet_stub -lio_stub
 
 PPU_CFLAGS += -Os -fno-builtin-printf -nodefaultlibs -fmerge-all-constants -std=gnu99 -Wno-shadow -Wno-unused-parameter
-#-ffunction-sections -fdata-sections
+#				-ffunction-sections -fdata-sections
 
 CLEANFILES = $(PRX_DIR)/$(PPU_SPRX_TARGET)
 

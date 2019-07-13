@@ -122,7 +122,6 @@ bool rec_start()
 
 	game_interface->DoUnk8(g);
 
-
 	cellFsMkdir((char*)"/dev_hdd0/VIDEO", 0777);
 
 	sprintf((char *)&recOpt[0x6], "%s/%s_%04d.%02d.%02d_%02d_%02d.mp4",
@@ -133,30 +132,28 @@ bool rec_start()
 
 	if(View_Find("rec_plugin") != 0)
 	{
-
-				rec_interface = (rec_plugin_interface *)plugin_GetInterface(View_Find("rec_plugin"), 1);
+		rec_interface = (rec_plugin_interface *)plugin_GetInterface(View_Find("rec_plugin"), 1);
 
 		if(rec_interface != 0)
 		{
-						rec_interface->start();
+			rec_interface->start();
 			return true;
 		}
 		else
 		{
-						return false;
+			return false;
 		}
 	}
 	else
 	{
-				reco_open(-1); //reco_open((vsh_E7C34044(1) == -1 ) ? vsh_E7C34044(0) : vsh_E7C34044(1));
+		reco_open(-1); //reco_open((vsh_E7C34044(1) == -1 ) ? vsh_E7C34044(0) : vsh_E7C34044(1));
 		sys_timer_sleep(3);
 
 		if(View_Find("rec_plugin") != 0)
 		{
-
 			rec_interface = (rec_plugin_interface *)plugin_GetInterface(View_Find("rec_plugin"), 1);
 
-						rec_interface->start();
+			rec_interface->start();
 			return true;
 		}
 		else
@@ -184,7 +181,7 @@ static void video_rec_thread(uint64_t arg)
 	int32_t nickname_len;
 
 	xsetting_0AF1F161()->GetSystemNickname(nickname, &nickname_len);
-		//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	// get functionspointer for sub_163EB0() aka reco_open()
 	reco_open = vshmain_BEF63A14; // base pointer, the export nearest to sub_163EB0()
@@ -209,7 +206,7 @@ static void video_rec_thread(uint64_t arg)
 				{
 					if(recording == false)
 					{
-					  // not recording yet
+						// not recording yet
 						vshtask_notify("Recording started.");
 
 						if(rec_start() == false)

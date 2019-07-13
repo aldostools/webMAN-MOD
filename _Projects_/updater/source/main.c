@@ -21,6 +21,10 @@
 #define BUTTON_R2            0x02	/* force update images */
 #define BUTTON_L2            0x01	/* force update images */
 
+#define CELL_FS_S_IFDIR      0040000	/* directory */
+#define MODE                 0777
+#define DMODE                (CELL_FS_S_IFDIR | MODE)
+
 #define APP_DIR              "/dev_hdd0/game/UPDWEBMOD"
 #define APP_USRDIR           APP_DIR "/USRDIR"
 
@@ -111,7 +115,7 @@ int file_copy(char* path, char* path2)
 	ret = sysLv2FsOpen(path, 0, &fd, S_IRWXU | S_IRWXG | S_IRWXO, NULL, 0);
 	if(ret) goto skip;
 
-	ret = sysLv2FsOpen(path2, SYS_O_WRONLY | SYS_O_CREAT | SYS_O_TRUNC, &fd2, 0777, NULL, 0);
+	ret = sysLv2FsOpen(path2, SYS_O_WRONLY | SYS_O_CREAT | SYS_O_TRUNC, &fd2, MODE, NULL, 0);
 	if(ret) {sysLv2FsClose(fd);goto skip;}
 
 	mem = malloc(0x100000);
@@ -373,7 +377,13 @@ int main()
 
 	if(button & (BUTTON_L1)) full = true; else
 	if(button & (BUTTON_CROSS | BUTTON_CIRCLE)) lite = true; else
-	if((is_ps3hen() == 0x1337) || (!(button & BUTTON_R1) && (sysLv2FsStat(PLUGINS_DIR "/webftp_server.sprx", &stat) == SUCCESS) && (stat.st_size > 285000))) full = true;
+	if(	(!(button & BUTTON_R1) && (sysLv2FsStat(PLUGINS_DIR "/webftp_server.sprx", &stat) == SUCCESS) && (stat.st_size > 285000)) ||
+		(is_ps3hen() == 0x1337) || 
+		(sysLv2FsStat("/dev_flash/hen/PS3HEN.BIN", &stat) == SUCCESS) ||
+		(sysLv2FsStat(HDDROOT_DIR "/hen/PS3HEN.BIN", &stat) == SUCCESS) ||
+		(sysLv2FsStat("/dev_usb000/PS3HEN.BIN", &stat) == SUCCESS) ||
+		(sysLv2FsStat("/dev_usb001/PS3HEN.BIN", &stat) == SUCCESS)
+		) full = true;
 	if(button & (BUTTON_L2 | BUTTON_R2)) update_images = true;
 //---
 
@@ -381,31 +391,31 @@ int main()
 					 ((sysLv2FsStat(HDDROOT_DIR "/boot_plugins_kernel_nocobra.txt", &stat) == SUCCESS) || (sysLv2FsStat(PLUGINS_DIR "/boot_plugins_kernel_nocobra _dex.txt", &stat) == SUCCESS));
 
 	// Create webman folders
-	sysLv2FsMkdir(TMP_DIR,   0777);
-	sysLv2FsMkdir(LANG_DIR,  0777);
-	sysLv2FsMkdir(COMBO_DIR, 0777);
-	sysLv2FsMkdir(ICONS_DIR, 0777);
-	sysLv2FsMkdir(RES_DIR,   0777);
+	sysLv2FsMkdir(TMP_DIR,   DMODE);
+	sysLv2FsMkdir(LANG_DIR,  DMODE);
+	sysLv2FsMkdir(COMBO_DIR, DMODE);
+	sysLv2FsMkdir(ICONS_DIR, DMODE);
+	sysLv2FsMkdir(RES_DIR,   DMODE);
 
-	sysLv2FsMkdir(HDDROOT_DIR "/xmlhost", 0777);
-	sysLv2FsMkdir(XMLHOST_DIR, 0777);
+	sysLv2FsMkdir(HDDROOT_DIR "/xmlhost", DMODE);
+	sysLv2FsMkdir(XMLHOST_DIR, DMODE);
 
-	sysLv2FsMkdir(HDDROOT_DIR "/game", 0777);
-	sysLv2FsMkdir(XMLMANPLS_DIR, 0777);
-	sysLv2FsMkdir(XMLMANPLS_DIR "/USRDIR", 0777);
-	sysLv2FsMkdir(XMLMANPLS_IMAGES_DIR, 0777);
-	sysLv2FsMkdir(XMLMANPLS_FEATS_DIR, 0777);
+	sysLv2FsMkdir(HDDROOT_DIR "/game", DMODE);
+	sysLv2FsMkdir(XMLMANPLS_DIR, DMODE);
+	sysLv2FsMkdir(XMLMANPLS_DIR "/USRDIR", DMODE);
+	sysLv2FsMkdir(XMLMANPLS_IMAGES_DIR, DMODE);
+	sysLv2FsMkdir(XMLMANPLS_FEATS_DIR, DMODE);
 
 	// Create backup folders
-	sysLv2FsMkdir(HDDROOT_DIR "/packages", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/PS3ISO", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/PSXISO", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/PS2ISO", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/PSPISO", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/DVDISO", 0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/BDISO",  0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/GAMES",  0777);
-	sysLv2FsMkdir(HDDROOT_DIR "/ROMS",   0777);
+	sysLv2FsMkdir(HDDROOT_DIR "/packages", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/PS3ISO", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/PSXISO", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/PS2ISO", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/PSPISO", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/DVDISO", DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/BDISO",  DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/GAMES",  DMODE);
+	sysLv2FsMkdir(HDDROOT_DIR "/ROMS",   DMODE);
 
 	// remove language files (old location)
 	sysLv2FsUnlink(TMP_DIR "/LANG_EN.TXT");
@@ -457,6 +467,7 @@ int main()
 	sysLv2FsUnlink(LANG_DIR "/LANG_RU.TXT");
 	sysLv2FsUnlink(LANG_DIR "/LANG_TR.TXT");
 	sysLv2FsUnlink(LANG_DIR "/LANG_ZH.TXT");
+	sysLv2FsUnlink(LANG_DIR "/LANG_ROMS.TXT");
 
 	// remove old files
 	sysLv2FsUnlink(APP_USRDIR "/webftp_server_rebug_cobra_multi19.sprx");
@@ -496,11 +507,15 @@ int main()
 	file_copy(APP_USRDIR "/lang/LANG_TR.TXT", LANG_DIR "/LANG_TR.TXT");
 	file_copy(APP_USRDIR "/lang/LANG_ZH.TXT", LANG_DIR "/LANG_ZH.TXT");
 
+	file_copy(APP_USRDIR "/lang/LANG_ROMS.TXT", LANG_DIR "/LANG_ROMS.TXT");
+
 	// copy html
-	sysLv2FsMkdir(XMLHOST_DIR, 0777);
+	sysLv2FsMkdir(XMLHOST_DIR, DMODE);
 	file_copy(APP_USRDIR "/html/mobile.html",    XMLHOST_DIR "/mobile.html");
 	file_copy(APP_USRDIR "/html/background.gif", XMLHOST_DIR "/background.gif");
 	file_copy(APP_USRDIR "/html/sman.htm",       XMLHOST_DIR "/sman.htm");
+	file_copy(APP_USRDIR "/html/sman.css",       XMLHOST_DIR "/sman.css");
+	file_copy(APP_USRDIR "/html/sman.js",        XMLHOST_DIR "/sman.js");
 
 	// copy javascripts
 	file_copy(APP_USRDIR "/html/jquery.min.js",    XMLHOST_DIR "/jquery.min.js");  // jQuery v3.1.1
@@ -529,7 +544,7 @@ int main()
 	}
 
 	// copy new icons
-	sysLv2FsMkdir(TMP_DIR "/wm_icons", 0777);
+	sysLv2FsMkdir(TMP_DIR "/wm_icons", DMODE);
 
 	file_copy(APP_USRDIR "/icons/icon_wm_album_ps3.png", ICONS_DIR "/icon_wm_album_ps3.png");
 	file_copy(APP_USRDIR "/icons/icon_wm_album_psx.png", ICONS_DIR "/icon_wm_album_psx.png");
@@ -549,6 +564,10 @@ int main()
 	file_copy(APP_USRDIR "/icons/icon_wm_settings.png" , ICONS_DIR "/icon_wm_settings.png");
 	file_copy(APP_USRDIR "/icons/icon_wm_eject.png"    , ICONS_DIR "/icon_wm_eject.png"   );
 
+	file_copy(APP_USRDIR "/icons/video.png" , ICONS_DIR "/video.png");
+	file_copy(APP_USRDIR "/icons/photo.png" , ICONS_DIR "/photo.png");
+	file_copy(APP_USRDIR "/icons/music.png" , ICONS_DIR "/music.png");
+
 	if((sysLv2FsStat(APP_USRDIR "/multiman.png", &stat) == SUCCESS) && (stat.st_size == 9894))
 		file_copy(APP_USRDIR "/icons/icon_wm_root.png" , ICONS_DIR "/icon_wm_root.png"    );
 	else
@@ -563,7 +582,7 @@ int main()
 	// webMAN ADD-ONS
 	file_copy(APP_USRDIR "/addons/boot_mamba.pkg", RES_DIR "/boot_mamba.pkg");
 	file_copy(APP_USRDIR "/addons/prepNTFS.pkg", RES_DIR "/prepNTFS.pkg");
-	file_copy(APP_USRDIR "/addons/PS2_CONFIG.pkg", RES_DIR "/PS2_CONFIG.pkg");
+//	file_copy(APP_USRDIR "/addons/PS2_CONFIG.pkg", RES_DIR "/PS2_CONFIG.pkg");
 	file_copy(APP_USRDIR "/addons/PSP_Minis_Launcher.pkg", RES_DIR "/PSP_Minis_Launcher.pkg");
 	file_copy(APP_USRDIR "/addons/PSP_Remasters_Launcher.pkg"	, RES_DIR "/PSP_Remasters_Launcher.pkg");
 	file_copy(APP_USRDIR "/addons/Reload_XMB.pkg", RES_DIR "/Reload_XMB.pkg");
@@ -573,19 +592,23 @@ int main()
 	file_copy(APP_USRDIR "/addons/wm_theme_rebugification.pkg"	, RES_DIR "/wm_theme_rebugification.pkg");
 	file_copy(APP_USRDIR "/addons/wm_theme_flowerification.pkg"	, RES_DIR "/wm_theme_flowerification.pkg");
 
-	if(sysLv2FsStat(PS2CONFIG_USRDIR, &stat) != SUCCESS)
+	sysLv2FsMkdir(PS2CONFIG_DIR, DMODE);
+	sysLv2FsMkdir(PS2CONFIG_USRDIR, DMODE);
+	file_copy(APP_USRDIR "/CONFIG/ICON0.PNG", PS2CONFIG_DIR "/ICON0.PNG");
+	file_copy(APP_USRDIR "/CONFIG/PARAM.SFO", PS2CONFIG_DIR "/PARAM.SFO");
+
+	if(sysLv2FsStat(PS2CONFIG_USRDIR "/CONFIG/ENC", &stat) != SUCCESS)
 	{
 		// copy PS2 CONFIG files
 		char path1[80], path2[80];
 		int fd; sysFSDirent dir; u64 read_e;
 
-		sysLv2FsMkdir(PS2CONFIG_DIR, 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR, 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG", 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/GX", 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/NET", 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/SOFT", 0777);
-		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/CUSTOM", 0777);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG", DMODE);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/GX", DMODE);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/NET", DMODE);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/ENC", DMODE);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/SOFT", DMODE);
+		sysLv2FsMkdir(PS2CONFIG_USRDIR "/CONFIG/CUSTOM", DMODE);
 
 		if(sysLv2FsOpenDir(APP_USRDIR "/CONFIG/GX", &fd) == SUCCESS)
 		{
@@ -604,6 +627,17 @@ int main()
 			{
 				sprintf(path1, APP_USRDIR       "/CONFIG/%s/%s", "NET", dir.d_name);
 				sprintf(path2, PS2CONFIG_USRDIR "/CONFIG/%s/%s", "NET", dir.d_name);
+				sysLv2FsUnlink(path2);
+				sysLv2FsLink(path1, path2);
+			}
+			sysLv2FsCloseDir(fd);
+		}
+		if(sysLv2FsOpenDir(APP_USRDIR "/CONFIG/ENC", &fd) == SUCCESS)
+		{
+			while((sysLv2FsReadDir(fd, &dir, &read_e) == SUCCESS) && (read_e > 0))
+			{
+				sprintf(path1, APP_USRDIR       "/CONFIG/%s/%s", "ENC", dir.d_name);
+				sprintf(path2, PS2CONFIG_USRDIR "/CONFIG/%s/%s", "ENC", dir.d_name);
 				sysLv2FsUnlink(path2);
 				sysLv2FsLink(path1, path2);
 			}
@@ -643,10 +677,10 @@ int main()
 	file_copy(APP_USRDIR "/icons/icon_lp_nocover.png"  , ICONS_DIR "/icon_lp_nocover.png");
 
 	// XMBM+ webMAN
-	sysLv2FsMkdir(XMLMANPLS_DIR, 0777);
-	sysLv2FsMkdir(XMLMANPLS_DIR "/USRDIR", 0777);
-	sysLv2FsMkdir(XMLMANPLS_IMAGES_DIR, 0777);
-	sysLv2FsMkdir(XMLMANPLS_FEATS_DIR, 0777);
+	sysLv2FsMkdir(XMLMANPLS_DIR, DMODE);
+	sysLv2FsMkdir(XMLMANPLS_DIR "/USRDIR", DMODE);
+	sysLv2FsMkdir(XMLMANPLS_IMAGES_DIR, DMODE);
+	sysLv2FsMkdir(XMLMANPLS_FEATS_DIR, DMODE);
 
 	if(sysLv2FsStat(XMLMANPLS_DIR "/PARAM.SFO", &stat) != SUCCESS)
 		file_copy(APP_USRDIR "/xmbm/PARAM.SFO", XMLMANPLS_DIR "/PARAM.SFO");
@@ -725,7 +759,7 @@ int main()
 	sysLv2FsUnlink(APP_USRDIR "webftp_server_rebug_cobra_multi23.sprx");
 	sysLv2FsUnlink(APP_USRDIR "webftp_server_rebug_cobra_english.sprx");
 
-	sysLv2FsMkdir(PLUGINS_DIR, 0777);
+	sysLv2FsMkdir(PLUGINS_DIR, DMODE);
 
 	plugins_dir_exists = (sysLv2FsStat(PLUGINS_DIR, &stat) == SUCCESS);
 
@@ -758,7 +792,7 @@ int main()
 		sysLv2FsUnlink(PLUGINS_DIR "/wm_vsh_menu.sprx");
 
 		// update images
-		sysLv2FsMkdir(RES_DIR "/images", 0777);
+		sysLv2FsMkdir(RES_DIR "/images", DMODE);
 		file_copy(APP_USRDIR "/images/wm_vsh_menu.png",   RES_DIR "/images/wm_vsh_menu.png");
 		file_copy(APP_USRDIR "/images/wm_vsh_menu_1.png", RES_DIR "/images/wm_vsh_menu_1.png");
 		file_copy(APP_USRDIR "/images/wm_vsh_menu_2.png", RES_DIR "/images/wm_vsh_menu_2.png");
@@ -837,10 +871,10 @@ int main()
 	// update PRX+Mamba Loader
 	if((sysLv2FsStat(IRISMAN_USRDIR "/webftp_server.sprx", &stat) == SUCCESS) || (sysLv2FsStat(IRISMAN_USRDIR "/webftp_server_ps3mapi.sprx", &stat) == SUCCESS))
 	{
-		sysLv2FsChmod(IRISMAN_USRDIR "/webftp_server.sprx", 0777);
+		sysLv2FsChmod(IRISMAN_USRDIR "/webftp_server.sprx", MODE);
 		sysLv2FsUnlink(IRISMAN_USRDIR "/webftp_server.sprx");
 
-		sysLv2FsChmod(IRISMAN_USRDIR "/webftp_server_ps3mapi.sprx", 0777);
+		sysLv2FsChmod(IRISMAN_USRDIR "/webftp_server_ps3mapi.sprx", MODE);
 		sysLv2FsUnlink(IRISMAN_USRDIR "/webftp_server_ps3mapi.sprx");
 
 		if(full)
@@ -873,7 +907,7 @@ int main()
 		fputs("\r\n" PRXLOADER_USRDIR "/webftp_server_noncobra.sprx", f);
 		fclose(f);
 
-		sysLv2FsChmod(PRXLOADER_USRDIR "/webftp_server_noncobra.sprx", 0777);
+		sysLv2FsChmod(PRXLOADER_USRDIR "/webftp_server_noncobra.sprx", MODE);
 		sysLv2FsUnlink(PRXLOADER_USRDIR "/webftp_server_noncobra.sprx");
 
 		file_copy(APP_USRDIR "/webftp_server_noncobra.sprx", PRXLOADER_USRDIR "/webftp_server_noncobra.sprx");
@@ -888,10 +922,10 @@ cont:
 		if(sysLv2FsStat("/dev_blind", &stat) != SUCCESS)
 			sys_fs_mount("CELL_FS_IOS:BUILTIN_FLSH1", "CELL_FS_FAT", "/dev_blind", 0);
 
-		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx", 0777);
+		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx", MODE);
 		sysLv2FsUnlink(REBUG_VSH_MODULE_DIR "/webftp_server.sprx");
 
-		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak", 0777);
+		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak", MODE);
 		sysLv2FsUnlink(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak");
 
 		if(full)
@@ -905,10 +939,10 @@ cont:
 		// delete webMAN from hdd0
 		if((sysLv2FsStat(REBUG_VSH_MODULE_DIR "/webftp_server.sprx", &stat) == SUCCESS))
 		{
-			sysLv2FsChmod(HDDROOT_DIR "/webftp_server.sprx", 0777);
+			sysLv2FsChmod(HDDROOT_DIR "/webftp_server.sprx", MODE);
 			sysLv2FsUnlink(HDDROOT_DIR "/webftp_server.sprx");
 
-			sysLv2FsChmod(PLUGINS_DIR "/webftp_server.sprx", 0777);
+			sysLv2FsChmod(PLUGINS_DIR "/webftp_server.sprx", MODE);
 			sysLv2FsUnlink(PLUGINS_DIR "/webftp_server.sprx");
 
 			if(sysLv2FsStat(HDDROOT_DIR "/boot_plugins.txt", &stat) == SUCCESS)
@@ -919,7 +953,7 @@ cont:
 					if((strstr(line,"webftp_server") != NULL) && (strstr(line,"/dev_blind") == NULL) && (strstr(line,"/dev_flash") == NULL))
 					{
 						strtok(line, "\r\n");
-						sysLv2FsChmod(line, 0777);
+						sysLv2FsChmod(line, MODE);
 						sysLv2FsUnlink(line);
 						break;
 					}
@@ -935,7 +969,7 @@ cont:
 					if((strstr(line,"webftp_server") != NULL) && (strstr(line,"/dev_blind") == NULL) && (strstr(line,"/dev_flash") == NULL))
 					{
 						strtok(line, "\r\n");
-						sysLv2FsChmod(line, 0777);
+						sysLv2FsChmod(line, MODE);
 						sysLv2FsUnlink(line);
 						break;
 					}
@@ -951,7 +985,7 @@ cont:
 					if((strstr(line,"webftp_server") != NULL) && (strstr(line,"/dev_blind") == NULL) && (strstr(line,"/dev_flash") == NULL))
 					{
 						strtok(line, "\r\n");
-						sysLv2FsChmod(line, 0777);
+						sysLv2FsChmod(line, MODE);
 						sysLv2FsUnlink(line);
 						break;
 					}
@@ -975,7 +1009,7 @@ cont:
 		if(sysLv2FsStat("/dev_blind", &stat) != SUCCESS)
 			sys_fs_mount("CELL_FS_IOS:BUILTIN_FLSH1", "CELL_FS_FAT", "/dev_blind", 0);
 
-		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak", 0777);
+		sysLv2FsChmod(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak", MODE);
 		sysLv2FsUnlink(REBUG_VSH_MODULE_DIR "/webftp_server.sprx.bak");
 
 		if(full)
@@ -1000,7 +1034,7 @@ cont:
 				{
 					fclose(f);
 					strtok(line, "\r\n");
-					sysLv2FsChmod(line, 0777);
+					sysLv2FsChmod(line, MODE);
 					sysLv2FsUnlink(line);
 					if(full_on_nocobra)
 						file_copy(APP_USRDIR "/webftp_server_full.sprx", line);
@@ -1057,7 +1091,7 @@ cont:
 				{
 					fclose(f);
 					strtok(line, "\r\n");
-					sysLv2FsChmod(line, 0777);
+					sysLv2FsChmod(line, MODE);
 					sysLv2FsUnlink(line);
 					if(full_on_nocobra)
 						file_copy(APP_USRDIR "/webftp_server_full.sprx", line);
@@ -1118,7 +1152,7 @@ cont:
 				{
 					fclose(f);
 					strtok(line, "\r\n");
-					sysLv2FsChmod(line, 0777);
+					sysLv2FsChmod(line, MODE);
 					sysLv2FsUnlink(line);
 					if(full)
 						file_copy(APP_USRDIR "/webftp_server_full.sprx", line);
@@ -1144,16 +1178,16 @@ cont:
 		fclose(f);
 
 		// delete old sprx
-		sysLv2FsChmod(HDDROOT_DIR "/webftp_server.sprx", 0777);
+		sysLv2FsChmod(HDDROOT_DIR "/webftp_server.sprx", MODE);
 		sysLv2FsUnlink(HDDROOT_DIR "/webftp_server.sprx");
 
-		sysLv2FsChmod(PLUGINS_DIR "/webftp_server.sprx", 0777);
+		sysLv2FsChmod(PLUGINS_DIR "/webftp_server.sprx", MODE);
 		sysLv2FsUnlink(PLUGINS_DIR "/webftp_server.sprx");
 
-		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_ps3mapi.sprx", 0777);
+		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_ps3mapi.sprx", MODE);
 		sysLv2FsUnlink(HDDROOT_DIR "/webftp_server_ps3mapi.sprx");
 
-		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_ps3mapi.sprx", 0777);
+		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_ps3mapi.sprx", MODE);
 		sysLv2FsUnlink(PLUGINS_DIR "/webftp_server_ps3mapi.sprx");
 
 		// copy ps3mapi/cobra/rebug/lite sprx
@@ -1190,7 +1224,7 @@ cont:
 				{
 					fclose(f);
 					strtok(line, "\r\n");
-					sysLv2FsChmod(line, 0777);
+					sysLv2FsChmod(line, MODE);
 					sysLv2FsUnlink(line);
 
 					if(full)
@@ -1217,10 +1251,10 @@ cont:
 		fclose(f);
 
 		// delete old sprx
-		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_ps3mapi.sprx", 0777);
+		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_ps3mapi.sprx", MODE);
 		sysLv2FsUnlink(HDDROOT_DIR "/webftp_server_ps3mapi.sprx");
 
-		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_ps3mapi.sprx", 0777);
+		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_ps3mapi.sprx", MODE);
 		sysLv2FsUnlink(PLUGINS_DIR "/webftp_server_ps3mapi.sprx");
 
 		// copy ps3mapi sprx
@@ -1272,10 +1306,10 @@ cont:
 		fclose(f);
 
 		// delete old sprx
-		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_noncobra.sprx", 0777);
+		sysLv2FsChmod(HDDROOT_DIR "/webftp_server_noncobra.sprx", MODE);
 		sysLv2FsUnlink(HDDROOT_DIR "/webftp_server_noncobra.sprx");
 
-		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_noncobra.sprx", 0777);
+		sysLv2FsChmod(PLUGINS_DIR "/webftp_server_noncobra.sprx", MODE);
 		sysLv2FsUnlink(PLUGINS_DIR "/webftp_server_noncobra.sprx");
 
 		// copy non cobra sprx

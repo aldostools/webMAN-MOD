@@ -83,9 +83,11 @@ static void remove_cfw_syscall8(void)
 		#ifdef COBRA_ONLY
 		{ system_call_3(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PDISABLE_SYSCALL8, 0); }
 		{ system_call_3(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_DISABLE_SYSCALL, SC_COBRA_SYSCALL8); }
-		#endif
 
 		pokeq(SYSCALL_PTR( SC_COBRA_SYSCALL8 ), sc_null);
+		#else
+		pokeq(SYSCALL_PTR( 8 ), sc_null);
+		#endif
 	}
 }
 
