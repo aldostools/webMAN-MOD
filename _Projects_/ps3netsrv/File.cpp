@@ -159,7 +159,7 @@ int File::open(const char *path, int flags)
 		{
 			unsigned char key[16];
 			keystr_to_keyarr(keystr, key);
-			if (aes_setkey_dec(&aes_dec_, key, 128) == SUCCEEDED)
+			if (mbedtls_aes_setkey_dec(&aes_dec_, key, 128) == SUCCEEDED)
 				enc_type_ = kDiscTypeRedump; // SET ENCRYPTION TYPE: Redump
 		}
 		close_file(key_fd);
@@ -219,10 +219,10 @@ int File::open(const char *path, int flags)
 			unsigned char key_d1[] = {0x38, 11, 0xcf, 11, 0x53, 0x45, 0x5b, 60, 120, 0x17, 0xab, 0x4f, 0xa3, 0xba, 0x90, 0xed};
 			unsigned char iv_d1[] = {0x69, 0x47, 0x47, 0x72, 0xaf, 0x6f, 0xda, 0xb3, 0x42, 0x74, 0x3a, 0xef, 170, 0x18, 0x62, 0x87};
 
-			aes_context aes_d1;
-			if (aes_setkey_enc(&aes_d1, key_d1, 128) == SUCCEEDED)
-				if (aes_crypt_cbc(&aes_d1, AES_ENCRYPT, 16, &iv_d1[0], key, key) == SUCCEEDED)
-					if (aes_setkey_dec(&aes_dec_, key, 128) == SUCCEEDED)
+			mbedtls_aes_context aes_d1;
+			if (mbedtls_aes_setkey_enc(&aes_d1, key_d1, 128) == SUCCEEDED)
+				if (mbedtls_aes_crypt_cbc(&aes_d1, MBEDTLS_AES_ENCRYPT, 16, &iv_d1[0], key, key) == SUCCEEDED)
+					if (mbedtls_aes_setkey_dec(&aes_dec_, key, 128) == SUCCEEDED)
 						enc_type_ = kDiscType3k3yEnc; // SET ENCRYPTION TYPE: 3K3YEnc
 		}
 		else if (memcmp(&k3k3yDecWatermark[0], &sec0sec1[0xF70], sizeof(k3k3yDecWatermark)) == SUCCEEDED)
@@ -423,12 +423,12 @@ void File::reset_iv(unsigned char (&iv)[16], unsigned int lba)
 }
 
 // Main function that will decrypt the sector(s) (needs to be a multiple of 2048).
-void File::decrypt_data(aes_context &aes, unsigned char *data, int sector_count, unsigned int start_lba)
+void File::decrypt_data(mbedtls_aes_context &aes, unsigned char *data, int sector_count, unsigned int start_lba)
 {
 	for (int i = 0; i < sector_count; ++i)
 	{
 		reset_iv(iv_, start_lba + i);
-		if (aes_crypt_cbc(&aes, AES_DECRYPT, kSectorSize, &iv_[0], &data[kSectorSize * i], &data[kSectorSize * i]) != SUCCEEDED)
+		if (mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, kSectorSize, &iv_[0], &data[kSectorSize * i], &data[kSectorSize * i]) != SUCCEEDED)
 		{
 			printf("ERROR: decrypt_data > aes_crypt_cbc.\n");
 			return;

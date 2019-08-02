@@ -29,18 +29,13 @@ ps3netsrv-src-nvrbst information:
 * I made a small change in main.cpp to fix a warning about undefined behavior with deleting a non-virtual base class.
 * I made small changes to fix all gcc warnings.
 * I modified the Makefile to have some common flags for release/debug and upped the stack size.
-* To build download mingw/msys with the base components, g++ 4.6.1 is needed (g++ 4.8.1 builds break JB games).
-1. cd .../ps3netsrv/polarssl/library/
-2. set WINDOWS=1
-3. make the polarssl library: make
-4. cd .../ps3netsrv/
-5. make the ps3netsrv binary: make
+* To build g++ 4.6.1 is needed (g++ 4.8.1 builds break JB games).
 
 
 EDIT: Also I didn't look into the g++ 4.8.1 problem much. If anyone knows why, able to confirm the problem, or has built ps3netsrv (origional or modified) with g++ 4.8.1 for win32 (and jb format games still work) then please let me know smile, thanks.
 */
 
-#include <polarssl/aes.h>
+#include <mbedtls/aes.h>
 
 #include "AbstractFile.h"
 
@@ -100,12 +95,12 @@ class File : public AbstractFile
 	void keystr_to_keyarr(const char (&str)[32], unsigned char (&arr)[16]);
 	unsigned int char_arr_BE_to_uint(unsigned char *arr);
 	void reset_iv(unsigned char (&iv)[16], unsigned int lba);
-	void decrypt_data(aes_context &aes, unsigned char *data, int sector_count, unsigned int start_lba);
+	void decrypt_data(mbedtls_aes_context &aes, unsigned char *data, int sector_count, unsigned int start_lba);
 	void init_region_info(void);
 
 	// Decryption related variables.
 	PS3EncDiscType enc_type_;
-	aes_context aes_dec_;
+	mbedtls_aes_context aes_dec_;
 	size_t region_count_;
 	PS3RegionInfo *region_info_;
 
