@@ -290,14 +290,15 @@ static char *translate_path(char *path, int *viso)
 		//char *dir_name = p;
 		char lnk_file[MAX_LINK_LEN];
 		char *sep = NULL;
+		size_t p_len = root_len + path_len;
 
-		for(size_t i = root_len + path_len; i >= root_len; i--)
+		for(size_t i = p_len; i >= root_len; i--)
 		{
-			if(p[i] == '/')
+			if(p[i] == '/' || i == p_len)
 			{
 				p[i] = 0;
 				sprintf(lnk_file, "%s.INI", p); // e.g. /BDISO.INI
-				p[i] = '/';
+				if (i < p_len) p[i] = '/';
 
 				if(stat_file(lnk_file, &st) >= 0) {sep = p + i; break;}
 			}
