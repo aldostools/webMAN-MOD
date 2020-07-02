@@ -163,6 +163,8 @@ static bool getTitleID(char *filename, char *title_id, u8 opcode)
 	char paramsfo[_4KB_];
 	unsigned char *mem = (u8*)paramsfo;
 
+	check_ps3_game(filename);
+
 	u64 sfo_size = read_file(filename, paramsfo, _4KB_, 0);
 
 	if(sfo_size)

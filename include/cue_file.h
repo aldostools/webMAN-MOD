@@ -1,7 +1,7 @@
-#define MAX_TRACKS	80
+//#define MAX_TRACKS	98 <- defined in cobra.h
 
 #ifdef COBRA_ONLY
-static int parse_lba(const char *templn, int use_pregap, int ret_value)
+static int parse_lba(const char *templn, int ret_value)
 {
 	char *time = strrchr(templn, ' '); if(!time) return ret_value;
 	char tcode[10]; // mm:ss:ff
@@ -14,7 +14,7 @@ static int parse_lba(const char *templn, int use_pregap, int ret_value)
 	tsec = val(tcode + 3); // (tcode[3] & 0x0F)*10 + (tcode[4] & 0x0F);
 	tfrm = val(tcode + 6); // (tcode[6] & 0x0F)*10 + (tcode[7] & 0x0F);
 
-	return ((tmin * 60 + tsec) * 75 + tfrm + use_pregap); // msf_to_lba
+	return ((((tmin * 60) + tsec) * 75) + tfrm); // msf_to_lba
 }
 
 static int get_line(char *templn, const char *cue_buf, const int buf_size, const int start)
@@ -52,8 +52,9 @@ static unsigned int parse_cue(char *templn, const char *cue_buf, const int cue_s
 
 	if(cue_size > 16)
 	{
-		int use_pregap = 0;
-		int lba, lp = 0;
+		int lba, lp = 0, off = 0, len;
+
+		int pregap = 0;
 
 		while(lp < cue_size)
 		{
@@ -64,14 +65,26 @@ static unsigned int parse_cue(char *templn, const char *cue_buf, const int cue_s
 
 			lba = NONE;
 
-			if(strstr(templn, "PREGAP")) {use_pregap = parse_lba(templn, 0, 2); continue;}
 			if(strstr(templn, "INDEX 1=")) lba = get_valuen32(templn, "INDEX 1="); else // ccd frames
-			if(strstr(templn, "INDEX 01") || strstr(templn, "INDEX 1 ")) lba = parse_lba(templn, num_tracks ? use_pregap : 0, FAILED); // cue msf
+			if(strstr(templn, "INDEX 01") || strstr(templn, "INDEX 1 "))
+			{
+				len = lba = parse_lba(templn, FAILED); // cue msf
+				if(lba < off || !num_tracks)
+					lba = off + pregap; // INDEX 01 is a track length, instead of lba in msf
+				else
+					len = 0;			// INDEX 01 is absolute LBA in MSF
+				off = lba + len;
+			}
 
 			if(lba < 0) continue;
 
-			tracks[num_tracks].lba = lba;
-			if(num_tracks) tracks[num_tracks].is_audio = 1;
+			if(num_tracks)
+			{
+				tracks[num_tracks].lba = lba;
+				tracks[num_tracks].is_audio = 1;
+			}
+
+			pregap = 150; // (2 * 75) -> 2 secs * 75 frames/sec
 
 			num_tracks++; if(num_tracks >= MAX_TRACKS) break;
 		}

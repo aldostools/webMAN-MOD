@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMBML version="1.0">
+<View id="wm_root">
+	<Attributes>
+		<Table key="webman_setup">
+			<Pair key="icon"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/settings.png</String></Pair>
+			<Pair key="title"><String>Sample Item #01</String></Pair>
+			<Pair key="info"><String>Example of webMAN Command</String></Pair>
+			<Pair key="module_name"><String>webrender_plugin</String></Pair>
+			<Pair key="module_action"><String>http://localhost/cpursx.ps3</String></Pair>
+		</Table>
+		<Table key="wm_custom_link02">
+			<Pair key="icon"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</String></Pair>
+			<Pair key="icon_notation"><String>WNT_XmbItemBrowser</String></Pair>
+			<Pair key="title"><String>Sample Item #02</String></Pair>
+			<Pair key="info"><String>Download item #02</String></Pair>
+			<Pair key="child"><String>segment</String></Pair>
+		</Table>
+		<Table key="wm_custom_link03">
+			<Pair key="icon"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</String></Pair>
+			<Pair key="icon_notation"><String>WNT_XmbItemBrowser</String></Pair>
+			<Pair key="title"><String>Sample Item #03</String></Pair>
+			<Pair key="info"><String>Download item #03</String></Pair>
+			<Pair key="child"><String>segment</String></Pair>
+		</Table>
+	</Attributes>
+	<Items>
+		<Item class="type:x-xmb/module-action" key="wm_custom_link01" attr="webman_setup"/>
+		<Query class="type:x-xmb/folder-pixmap" key="wm_custom_link02" attr="wm_custom_link02" src="#seg_wm_item02"/>
+		<Query class="type:x-xmb/folder-pixmap" key="wm_custom_link03" attr="wm_custom_link03" src="#seg_wm_item03"/>
+	</Items>
+</View>
+
+<!-- item 01 -->
+<View id="seg_wm_item01">
+	<Attributes>
+		<Table key="webman_setup">
+			<Pair key="icon"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/settings.png</String></Pair>
+			<Pair key="title"><String>PS3 webMAN [Setup]</String></Pair>
+			<Pair key="info"><String>Setup devices to scan and start up options</String></Pair>
+			<Pair key="module_name"><String>webrender_plugin</String></Pair>
+			<Pair key="module_action"><String>http://localhost/setup.ps3</String></Pair>
+		</Table>
+	</Attributes>
+	<Items><Item class="type:x-xmb/module-action" key="webman_setup" attr="webman_setup"/></Items>
+</View>
+
+<!-- item 02 -->
+<View id="seg_wm_item02">
+	<Items><Query class="type:x-xmb/folder-pixmap" key="wm_item02" src="#seg_wm_link02"/></Items>
+</View>
+<View id="seg_wm_link02">
+	<Attributes>
+		<Table key="wm_link02">
+			<Pair key="info"><String>net_package_install</String></Pair>
+			<Pair key="pkg_src"><String>http://192.168.99.99/sample/url.pkg</String></Pair>
+			<Pair key="pkg_src_qa"><String>http://192.168.99.99/sample/url.pkg</String></Pair>
+			<Pair key="content_name"><String>msg_install</String></Pair>
+			<Pair key="content_id"><String>EP0001-UPDWEBMOD_00-0000000000000000</String></Pair>
+			<Pair key="prod_pict_path"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</String></Pair>
+		</Table>
+	</Attributes>
+	<Items><Item class="type:x-xmb/xmlnpsignup" key="wm_link02" attr="wm_link02"/></Items>
+</View>
+
+<!-- item 03 -->
+<View id="seg_wm_item03">
+	<Items><Query class="type:x-xmb/folder-pixmap" key="wm_item03" src="#seg_wm_link03"/></Items>
+</View>
+<View id="seg_wm_link03">
+	<Attributes>
+		<Table key="wm_link03">
+			<Pair key="info"><String>net_package_install</String></Pair>
+			<Pair key="pkg_src"><String>http://192.168.99.99/sample/url.pkg</String></Pair>
+			<Pair key="pkg_src_qa"><String>http://192.168.99.99/sample/url.pkg</String></Pair>
+			<Pair key="content_name"><String>msg_install</String></Pair>
+			<Pair key="content_id"><String>EP0001-UPDWEBMOD_00-0000000000000000</String></Pair>
+			<Pair key="prod_pict_path"><String>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</String></Pair>
+		</Table>
+	</Attributes>
+	<Items><Item class="type:x-xmb/xmlnpsignup" key="wm_link03" attr="wm_link03"/></Items>
+</View>
+
+</XMBML>

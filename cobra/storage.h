@@ -99,7 +99,7 @@ int sys_storage_read(sys_device_handle_t device_handle, uint64_t unk, uint64_t s
 
 int sys_storage_execute_device_command(sys_device_handle_t device_handle, unsigned int command, void *indata, uint64_t inlen, void *outdata, uint64_t outlen, uint64_t *ret);
 
-/* Payloaed storage extensions */
+/* Payload storage extensions */
 
 typedef struct
 {

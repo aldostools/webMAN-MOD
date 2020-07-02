@@ -95,7 +95,7 @@ static void saveBMP(char *path, bool notify_bmp)
 
 	// create bmp file
 	int fd;
-	if(IS_INGAME || cellFsOpen(path, CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &fd, NULL, 0) != CELL_FS_SUCCEEDED) { BEEP3 ; return;}
+	if(IS_INGAME || cellFsOpen(path, CELL_FS_O_WRONLY|CELL_FS_O_CREAT|CELL_FS_O_TRUNC, &fd, NULL, 0) != CELL_FS_SUCCEEDED) { BEEP2 ; return;}
 
 	// alloc buffers
 	sys_memory_container_t mc_app = SYS_MEMORY_CONTAINER_NONE;
@@ -169,7 +169,7 @@ static void saveBMP(char *path, bool notify_bmp)
 	cellFsLseek(fd, pad, CELL_FS_SEEK_SET, 0);
 
 	cellFsClose(fd);
-	sys_memory_free((sys_addr_t)sysmem);
+	sys_memory_free(sysmem);
 
 	// continue rsx rendering
 	rsx_fifo_pause(0);

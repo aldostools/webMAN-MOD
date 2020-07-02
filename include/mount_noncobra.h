@@ -140,13 +140,13 @@ install_mm_payload:
 
 			char path2[strlen(_path) + 24];
 
-			sprintf(path2, "%s/PS3_GAME", _path);
+			sprintf(path2, "%s/PS3_GAME", _path); check_ps3_game(path2);
 			add_to_map("/app_home/PS3_GAME", path2);
 
-			sprintf(path2, "%s/PS3_GAME/USRDIR", _path);
+			sprintf(path2, "%s/PS3_GAME/USRDIR", _path); check_ps3_game(path2);
 			add_to_map("/app_home/USRDIR", path2);
 
-			sprintf(path2, "%s/PS3_GAME/USRDIR/", _path);
+			sprintf(path2, "%s/PS3_GAME/USRDIR/", _path); check_ps3_game(path2);
 			add_to_map("/app_home/", path2);
 		}
 
@@ -164,7 +164,7 @@ install_mm_payload:
 	else if(strstr(_path, "/GAME"))
 	{
 		char extgdfile[STD_PATH_LEN + 24], *extgdini = extgdfile;
-		sprintf(extgdfile, "%s/PS3_GAME/PS3GAME.INI", _path);
+		sprintf(extgdfile, "%s/PS3_GAME/PS3GAME.INI", _path); check_ps3_game(extgdfile);
 		if(read_file(extgdfile, extgdini, 12, 0))
 		{
 			if((extgd == 0) &&  (extgdini[10] & (1<<1))) set_gamedata_status(1, false); else

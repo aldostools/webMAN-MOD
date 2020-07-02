@@ -1,3 +1,11 @@
+It is possible to use a 8/16/32/+++ USB memory stick with one game.
+When you plug the USB - the game disc will appear and the game can be started.
+
+It can be as simple as:
+1) Write the ISO to the USB (no file systems - just raw sector copy)
+2) Insert the USB stick in the PS3
+3) Play the game
+
 it works with a USB as block device :)
 
 1) Get an ISO file

@@ -2,17 +2,23 @@ OS = windows
 BUILD_TYPE = release_static
 
 OUTPUT := ps3netsrv
-OBJS = src/main.o src/compat.o src/File.o src/VIsoFile.o
+OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/File.o src/VIsoFile.o
 
-CFLAGS = -Wall -Wno-format -I./include -I./polarssl-1.3.2/include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
-CPPFLAGS += -Wall -Wno-format -I./include -I./polarssl-1.3.2/include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+
+#CFLAGS += -Doff64_t=off_t
+#CPPFLAGS += -Doff64_t=off_t
+
+#CFLAGS += -DOPT_FILE_SEEK
+#CPPFLAGS += -DOPT_FILE_SEEK
 
 #CFLAGS += -DNOSSL
 #CPPFLAGS +=-DNOSSL
+#OBJS = src/main.o src/compat.o src/File.o src/VIsoFile.o
 
-LDFLAGS = -L. -L./polarssl-1.3.2/library
-LIBS = -lstdc++ -lpolarssl
-
+LDFLAGS = -L.
+LIBS = -lstdc++
 
 ifeq ($(OS), linux)
 LIBS += -lpthread

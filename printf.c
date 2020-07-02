@@ -271,11 +271,10 @@
 #endif	/* !defined(ISDIGIT) */
 
 #define OUTCHAR(str, len, size, ch) \
-do {                                \
-	if (len + 1 < size)             \
-		str[len] = ch;              \
-	(len)++;                        \
-} while (/* CONSTCOND */ 0)
+{                                   \
+	if (++len < size)               \
+		str[len-1] = ch;            \
+}
 
 static void fmtstr(char *, size_t *, size_t, const char *, int, int, int);
 static void fmtint(char *, size_t *, size_t, INTMAX_T, int, int, int, int);

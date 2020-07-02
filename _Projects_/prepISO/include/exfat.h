@@ -93,7 +93,7 @@ static int dir_read (char *dpath)
 				if(flen < 4) continue; flen -= 4;
 				char *ext = fno.fname + flen;
 
-				//--- create .ntfs[BDFILES] for 4="VIDEO", 5="MOVIES", 6="PKG", 7="Packages", 8="packages", 9="BDFILE", 10="PS2ISO", 10="PSPISO"
+				//--- create .ntfs[BDFILES] for 4="VIDEO", 5="MOVIES", 6="PKG", 7="Packages", 8="packages", 9="BDFILE", 10="PS2ISO", 11="PSPISO", 12="MUSIC", 13="THEME", 14="UPDATE", 15="ROMS"
 				if(g_mode >= 4)
 				{
 					snprintf (fn, 255, "%s/%s", dpath, fno.fname);
@@ -117,7 +117,7 @@ static int dir_read (char *dpath)
 					if(g_mode == PSXISO)
 					{
 						FIL fd;
-						int ret = 0;
+						int ret;
 
 						// detect CD sector size
 						if(!f_open (&fd, fn, FA_READ))
@@ -140,14 +140,15 @@ static int dir_read (char *dpath)
 
 						// parse CUE file
 						int path_len = snprintf (fn, 255, "%s/%s", dpath, fno.fname);
-						strcpy(fn + path_len - 3, "CUE");
-						if(f_open (&fd, fn, FA_READ))
+						const char *cue_ext[4] = {".cue", ".ccd", ".CUE", ".CCD"};
+						for(u8 e = 0; e < 4; e++)
 						{
-							strcpy(fn + path_len - 3, "cue");
-							if(f_open (&fd, fn, FA_READ)) ret = -1;
+							strcpy(fn + path_len - 4, cue_ext[e]);
+							ret = f_open (&fd, fn, FA_READ);
+							if(ret == SUCCESS) break;
 						}
 
-						if (ret >= 0)
+						if (ret >= SUCCESS)
 						{
 							UINT r = 0;
 							f_read (&fd, (char *)cue_buf, sizeof(cue_buf), &r);
@@ -155,12 +156,8 @@ static int dir_read (char *dpath)
 
 							if (r > 0)
 							{
-								char dummy[64];
-
-								if (cobra_parse_cue(cue_buf, r, tracks, 100, &num_tracks, dummy, sizeof(dummy)-1) != 0)
-								{
-									num_tracks = 1;
-								}
+								char templn[MAX_LINE_LEN];
+								num_tracks = parse_cue(templn, (char *)cue_buf, r, tracks);
 							}
 						}
 					}
@@ -243,17 +240,20 @@ static void scan_exfat(void)
 		int ret = fflib_attach (port, device_id, 1);
 		if (ret == FR_OK)
 		{
-			for (u8 profile = 0; profile < 6; profile++)
+			for (u8 p = 0; p < 2; p++)
 			{
-				g_profile = profile;
-				for(u8 m = 0; m < 12; m++) //0="PS3ISO", 1="BDISO", 2="DVDISO", 3="PSXISO", 4="VIDEO", 5="MOVIES", 6="PKG", 7="Packages", 8="packages", 9="BDFILE", 10="PS2ISO", 11="PSPISO"
+				for (u8 profile = 0; profile < 6; profile++)
 				{
-					g_mode = m;
-					*subpath = 0;
+					g_profile = profile;
+					for(u8 m = 0; m < MAX_MODES; m++) //0="PS3ISO", 1="BDISO", 2="DVDISO", 3="PSXISO", 4="VIDEO", 5="MOVIES", 6="PKG", 7="Packages", 8="packages", 9="BDFILE", 10="PS2ISO", 11="PSPISO", 12="MUSIC", 13="THEME", 14="UPDATE", 15="ROMS"
+					{
+						g_mode = m;
+						*subpath = 0;
 
-					snprintf(path, sizeof(path), "%u:/%s%s", port, c_path[m], SUFIX(profile));
-					for(s_mode = 0; s_mode < 2; s_mode++)
-						dir_read (path);
+						snprintf(path, sizeof(path), "%u:/%s%s%s", port, prefix[p], c_path[m], SUFIX(profile));
+						for(s_mode = 0; s_mode < 2; s_mode++)
+							dir_read (path);
+					}
 				}
 			}
 		}

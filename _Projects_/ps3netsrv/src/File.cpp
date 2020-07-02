@@ -4,11 +4,22 @@
 #include <string.h>
 #include <cstring>
 
+#include "aes.h"
 #include "common.h"
 #include "compat.h"
 
 static const int FAILED		= -1;
 static const int SUCCEEDED	=  0;
+
+#ifdef OPT_FILE_SEEK
+#define add_last_seek(n)	last_seek += n;
+#define set_last_seek(n)	last_seek = n;
+#define  is_last_seek(n)	(last_seek == n)
+#else
+#define add_last_seek(n)
+#define set_last_seek(n)
+#define  is_last_seek(n)	(0)
+#endif
 
 #ifdef NOSSL
 File::File()
@@ -18,7 +29,9 @@ File::File() : enc_type_(kDiscTypeNone), region_count_(0), region_info_(NULL)
 {
 	fd = INVALID_FD;
 
-	last_seek = is_multipart = index = 0;
+	set_last_seek(0);
+
+	is_multipart = index = 0;
 	for(uint8_t i = 0; i < 64; i++) fp[i] = INVALID_FD;
 }
 
@@ -60,7 +73,7 @@ int File::open(const char *path, int flags)
 	if (FD_OK(fd))
 		this->close();
 
-	last_seek = 0; // not for multi-iso
+	set_last_seek(0); // not for multi-iso
 
 	fd = open_file(path, flags);
 	if (!FD_OK(fd))
@@ -269,7 +282,7 @@ int File::close(void)
 
 	fd = INVALID_FD;
 
-	last_seek = 0;
+	set_last_seek(0);
 
 	if(!is_multipart)
 		return ret;
@@ -293,21 +306,24 @@ ssize_t File::read(void *buf, size_t nbyte)
 	{
 #ifdef NOSSL
 		ssize_t ret = read_file(fd, buf, nbyte);
-		last_seek += ret;
+
+		add_last_seek(ret);
 		return ret;
 #else
 		// In non-encrypted mode just do what is normally done.
 		if ((enc_type_ == kDiscTypeNone) || (region_count_ == 0) || (region_info_ == NULL))
 		{
 			ssize_t ret = read_file(fd, buf, nbyte);
-			last_seek += ret;
+
+			add_last_seek(ret);
 			return ret;
 		}
 
 		// read encrypted-3k3yredump-isos by NvrBst //
 		int64_t read_position = seek(0, SEEK_CUR);
 		ssize_t ret = read_file(fd, buf, nbyte);
-		last_seek += ret;
+
+		add_last_seek(ret);
 
 		if (read_position < 0LL)
 		{
@@ -389,7 +405,7 @@ ssize_t File::write(void *buf, size_t nbyte)
 {
 	if(!is_multipart)
 	{
-		last_seek += nbyte;
+		add_last_seek(nbyte);
 		return write_file(fd, buf, nbyte);
 	}
 
@@ -401,10 +417,9 @@ int64_t File::seek(int64_t offset, int whence)
 {
 	if ((!is_multipart) || (!part_size))
 	{
-		if(offset == last_seek) return SUCCEEDED;
+		if(is_last_seek(offset)) return SUCCEEDED;
 
-		last_seek = offset;
-
+		set_last_seek(offset);
 		return seek_file(fd, offset, whence);
 	}
 

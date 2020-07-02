@@ -26,6 +26,7 @@
 #define FAILED		-1
 
 #define SWAP32(x) ((((x) & 0xff) << 24) | (((x) & 0xff00) << 8) | (((x) & 0xff0000) >> 8) | (((x) >> 24) & 0xff))
+#define RANGE(a, b, c)	((a) <= (b) ? (b) : (a) >= (c) ? (c) : (a))
 
 #define KB			   1024
 #define  _16KB_		  16384UL
@@ -876,19 +877,20 @@ int cobra_mount_bd_disc_image(char *files[], unsigned int num)
 	return sys_storage_ext_mount_bd_discfile(num, files);
 }
 
-
 int cobra_mount_psx_disc_image(char *file, TrackDef *tracks, unsigned int num_tracks)
 {
-	if (!file || !tracks || num_tracks > 32) return EINVAL;
+	if (!file || !tracks) return EINVAL;
 
-	ScsiTrackDescriptor scsi_tracks[num_tracks];
+	num_tracks = RANGE(num_tracks, 1, MAX_TRACKS);
+
+	ScsiTrackDescriptor scsi_tracks[MAX_TRACKS];
 
 	memset(scsi_tracks, 0, sizeof(scsi_tracks));
 
 	for (unsigned int i = 0; i < num_tracks; i++)
 	{
 		scsi_tracks[i].adr_control = (tracks[i].is_audio) ? 0x10 : 0x14;
-		scsi_tracks[i].track_number = i+1;
+		scsi_tracks[i].track_number = i + 1;
 		scsi_tracks[i].track_start_addr = tracks[i].lba;
 	}
 
@@ -897,7 +899,9 @@ int cobra_mount_psx_disc_image(char *file, TrackDef *tracks, unsigned int num_tr
 
 int cobra_mount_ps2_disc_image(char *files[], int num, TrackDef *tracks, unsigned int num_tracks)
 {
-	if (!files || !tracks || num_tracks > 1) return EINVAL;
+	if (!files || !tracks) return EINVAL;
+
+	num_tracks = 1; if(num < 1) num = 1;
 
 	ScsiTrackDescriptor scsi_tracks[1];
 
@@ -906,7 +910,7 @@ int cobra_mount_ps2_disc_image(char *files[], int num, TrackDef *tracks, unsigne
 	for (unsigned int i = 0; i < num_tracks; i++)
 	{
 		scsi_tracks[i].adr_control = (tracks[i].is_audio) ? 0x10 : 0x14;
-		scsi_tracks[i].track_number = i+1;
+		scsi_tracks[i].track_number = i + 1;
 		scsi_tracks[i].track_start_addr = tracks[i].lba;
 	}
 
@@ -1424,6 +1428,9 @@ int cobra_create_mds(char *path, uint64_t size_in_sectors, DiscPhysInfo *layer0,
 	return 0;
 }
 */
+
+static uint8_t gm = 01;
+
 int cobra_map_game(const char *path, const char *title_id, int *special_mode)
 {
 /*
@@ -1449,6 +1456,22 @@ int cobra_map_game(const char *path, const char *title_id, int *special_mode)
 
 	sys_map_path("//dev_bdvd", path);
 	sys_map_path("/app_home", path);
+
+	char *mpath = (char *)malloc(strlen(path) + 12);
+	if(mpath)
+	{
+		CellFsStat stat;
+		sprintf(mpath, "%s/PS3_GM%02i", path, gm);
+		if(cellFsStat(mpath, &stat) != CELL_FS_SUCCEEDED)
+		{
+			gm = 01; sprintf(mpath, "%s/PS3_GM%02i", path, gm);
+		}
+		if(cellFsStat(mpath, &stat) == CELL_FS_SUCCEEDED)
+		{
+			sys_map_path("/app_home/PS3_GAME", mpath); gm++;
+		}
+		free(mpath);
+	}
 
 	unsigned int real_disctype;
 
@@ -2400,7 +2423,7 @@ int cobra_build_netiso_params(void *param_buf, char *server, uint16_t port, char
 
 	memset(param_buf, 0, 65536);
 
-	if (emu_mode < EMU_PS3 || emu_mode >= EMU_MAX || num_tracks >= 100)
+	if (emu_mode < EMU_PS3 || emu_mode >= EMU_MAX || num_tracks >= MAX_TRACKS)
 		return EINVAL;
 
 

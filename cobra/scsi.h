@@ -226,7 +226,7 @@ static inline void lba_to_msf(uint64_t lba, uint8_t *m, uint8_t *s, uint8_t *f)
 	*s = (lba /75) % 60;
 	*f = lba % 75;
 }
-*/
+
 static inline uint64_t msf_to_lba(uint8_t m, uint8_t s, uint8_t f)
 {
 	uint64_t lba = m;
@@ -234,7 +234,7 @@ static inline uint64_t msf_to_lba(uint8_t m, uint8_t s, uint8_t f)
 	lba = (lba*75)+f;
 	return lba;
 }
-/*
+
 
 #ifdef DEBUG
 

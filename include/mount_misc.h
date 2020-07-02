@@ -37,7 +37,7 @@
 			{
 				ret = file_exists(_path);
 				cobra_map_game(PKGLAUNCH_DIR, "PKGLAUNCH", 0);
-				save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", _path, 0);
+				save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", _path, SAVE_ALL);
 				if(ret) launch_app_home_icon();
 				goto mounting_done; //goto exit_mount;
 			}
@@ -53,7 +53,7 @@
 			ret = isDir(_path);
 		}
 
-		set_apphome(_path);
+		set_app_home(_path);
 
 		if(launch_app_home_icon()) ret = true;
 
@@ -95,7 +95,7 @@
 			}
 
 			// store rom path for PKGLAUNCH
-			save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", _path, 0);
+			save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", _path, SAVE_ALL);
 			copy_rom_media(_path);
 
 			mount_unk = EMU_ROMS;
@@ -138,7 +138,7 @@
 				if(webman_config->fanc) restore_fan(SET_PS2_MODE); //set_fan_speed( ((webman_config->ps2temp*255)/100), 0);
 
 				// create "wm_noscan" to avoid re-scan of XML returning to XMB from PS2
-				save_file(WMNOSCAN, NULL, 0); ret = true;
+				save_file(WMNOSCAN, NULL, SAVE_ALL); ret = true;
 
 				sprintf(temp, "\"%s\" %s", strrchr(_path, '/') + 1, STR_LOADED2);
 			}

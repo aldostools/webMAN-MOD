@@ -131,8 +131,7 @@
 #ifdef WM_CUSTOM_COMBO
 							if(do_custom_combo("l2_start")) continue;
 #endif
-							char category[8], seg_name[20]; *category = *seg_name = NULL;
-							launch_disc(category, seg_name, true); // L2+START
+							launch_disc(true); // L2+START
 							break;
 						}
 #ifdef COBRA_ONLY
@@ -143,8 +142,10 @@
 #endif
 							if(not_exists("/app_home/PS3_GAME/USRDIR/EBOOT.BIN"))
 							{
-								if(isDir(webman_config->home_url)) set_apphome(webman_config->home_url);
-								else if(islike(webman_config->home_url, "http")) open_browser(webman_config->home_url, 0);
+								if(isDir(webman_config->home_url))
+									set_app_home(webman_config->home_url);
+								else if(islike(webman_config->home_url, "http"))
+									open_browser(webman_config->home_url, 0);
 #ifdef WM_REQUEST
 								else if(*webman_config->home_url == '/') handle_file_request(webman_config->home_url); // web command
 #endif
@@ -712,7 +713,7 @@
 						{
 							// L3+R2+X = power off
 							working = 0;
-							{ del_turnoff(1); } // 1 beep
+							del_turnoff(1); // 1 beep
 
 							vsh_shutdown();
 
@@ -722,7 +723,7 @@
 						{
 							// L3+R2+O = lpar restart
 							working = 0;
-							{ del_turnoff(2); } // 2 beeps
+							del_turnoff(2); // 2 beeps
 
 #ifdef COBRA_ONLY
 							if(is_mamba)
@@ -752,7 +753,7 @@
 						{
 							// L3+R1+X = vsh shutdown
 							working = 0;
-							{ del_turnoff(1); } // 1 beep
+							del_turnoff(1); // 1 beep
 
 							vsh_shutdown();
 
@@ -763,7 +764,7 @@
 						{
 							// L3+R1+O = vsh reboot
 							working = 0;
-							{ del_turnoff(2); } // 2 beeps
+							del_turnoff(2); // 2 beeps
 
 							vsh_reboot();
 
@@ -927,9 +928,9 @@
 reboot:
 					// vsh reboot
 					working = 0;
-					{ del_turnoff(0); } // no beep
 
-					save_file(WMNOSCAN, NULL, 0);
+					del_turnoff(0); // no beep
+					save_file(WMNOSCAN, NULL, SAVE_ALL);
 
 					vsh_reboot(); // VSH reboot
 

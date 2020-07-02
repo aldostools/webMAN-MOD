@@ -134,7 +134,7 @@ static uint8_t opt_mode=0;
 static uint8_t unload_mode=1;
 
 static uint64_t tick=0x80;
-static int8_t   delta=10;
+static int8_t  delta=10;
 
 #define SYS_PPU_THREAD_NONE        (sys_ppu_thread_t)NONE
 
@@ -331,7 +331,7 @@ static void draw_side_menu_option(uint8_t option)
 	ctx.fg_color=(option==5 ? WHITE_TEXT : GRAY_TEXT);
 	print_text(ctx.side, (CANVAS_W-SM_X), SM_TO+(option!=5)*32, SM_Y+12*24, STR_SHUTDOWN);
 	ctx.fg_color=(option==6 ? WHITE_TEXT : GRAY_TEXT);
-	print_text(ctx.side, (CANVAS_W-SM_X), SM_TO+(option!=6)*32, SM_Y+14*24, !unload_mode ? STR_QUIT : STR_UNLOAD);
+	print_text(ctx.side, (CANVAS_W-SM_X), SM_TO+(option!=6)*32, SM_Y+14*24, unload_mode ? STR_UNLOAD : STR_QUIT);
 	ctx.fg_color=(option==7 ? WHITE_TEXT : GRAY_TEXT);
 	print_text(ctx.side, (CANVAS_W-SM_X), SM_TO+(option!=7)*32, SM_Y+20*24, web_page ? STR_FILEMNGR : STR_SETUP);
 
@@ -374,9 +374,9 @@ static uint8_t draw_side_menu(void)
 
 			if(curpad & (PAD_LEFT | PAD_RIGHT))
 			{
-				if(option == 3) opt_mode^=1;
-				if(option == 6) unload_mode^=1;
-				if(option == 7) web_page^=1;
+				if(option == 3) opt_mode^=1;	// opt_mode    ? STR_SYSCALLS : STR_GAMEDATA
+				if(option == 6) unload_mode^=1; // unload_mode ? STR_UNLOAD   : STR_QUIT
+				if(option == 7) web_page^=1;	// web_page    ? STR_FILEMNGR : STR_SETUP
 			}
 
 			if(curpad & PAD_UP)		option--;
@@ -445,13 +445,13 @@ static void load_config(void)
 		cellFsRead(fd, (void *)&sconfig, sizeof(_sconfig), 0);
 		cellFsClose(fd);
 
-		gmode=sconfig.gmode;
-		dmode=sconfig.dmode;
-		fav_mode=sconfig.fav_mode;
-		fav_game=sconfig.fav_game;
-		cur_game=sconfig.cur_game;
-		cur_game_=sconfig.cur_game_;
-		gpp=sconfig.gpp;
+		gmode     = sconfig.gmode;
+		dmode     = sconfig.dmode;
+		fav_mode  = sconfig.fav_mode;
+		fav_game  = sconfig.fav_game;
+		cur_game  = sconfig.cur_game;
+		cur_game_ = sconfig.cur_game_;
+		gpp       = sconfig.gpp;
 	}
 }
 
@@ -459,14 +459,15 @@ static void save_config(void)
 {
 	_sconfig sconfig;
 
-	sconfig.gmode=gmode;
-	sconfig.dmode=dmode;
-	sconfig.gpp=gpp;
-	sconfig.fav_mode=fav_mode;
-	sconfig.fav_game=fav_game;
-	sconfig.cur_game=cur_game;
-	sconfig.cur_game_=cur_game_;
-	sconfig.padd1=sconfig.padd0=0;
+	sconfig.gmode    = gmode;
+	sconfig.dmode    = dmode;
+	sconfig.gpp      = gpp;
+	sconfig.fav_mode = fav_mode;
+	sconfig.fav_game = fav_game;
+	sconfig.cur_game = cur_game;
+	sconfig.cur_game_= cur_game_;
+	sconfig.padd1 =
+	sconfig.padd0 = 0;
 	int fd;
 
 	if(cellFsOpen(WMTMP "/slaunch.cfg", CELL_FS_O_CREAT | CELL_FS_O_TRUNC | CELL_FS_O_WRONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
@@ -480,7 +481,7 @@ static void load_data(void)
 {
 	int fd;
 
-	if(get_vsh_plugin_slot_by_name("WWWD") >= 7) {games=fav_mode=0, gmode = TYPE_MAX; return;}
+	//if(get_vsh_plugin_slot_by_name("WWWD") >= 7) {games=fav_mode=0, gmode = TYPE_MAX; return;}
 
 	char filename[64];
 	if(fav_mode) sprintf(filename, WMTMP "/" SLIST "1.bin"); else sprintf(filename, WMTMP "/" SLIST ".bin");
@@ -491,8 +492,8 @@ static void load_data(void)
 
 	games=size/sizeof(_slaunch);
 
-	if(games>=MAX_GAMES) games=MAX_GAMES-1;
-	if(cur_game>=games) cur_game=0;
+	if(games >= MAX_GAMES) games = MAX_GAMES-1;
+	if(cur_game >= games) cur_game = 0;
 
 reload:
 	reset_heap(); load_background(); slaunch = NULL;
@@ -544,7 +545,7 @@ reload:
 			games = ngames; ngames = 0;
 
 			// filter empty entries
-			for(uint16_t n=0; n < games; n++)
+			for(uint16_t n = 0; n < games; n++)
 			{
 				if(*slaunch[n].name == 0 || *(slaunch[n].name + slaunch[n].path_pos) == 0) slaunch[ngames] = slaunch[n]; else ngames++;
 			}
@@ -554,10 +555,10 @@ reload:
 			games = ngames;
 
 			// sort game list
-			if(games>1)
+			if(games > 1)
 			{
-				_slaunch swap; uint8_t sorted = 1; ngames=(games-1);
-				for(uint16_t n=0; n<ngames; n++)
+				_slaunch swap; uint8_t sorted = 1; ngames = (games - 1);
+				for(uint16_t n = 0; n<ngames; n++)
 				{
 					if(strcasecmp(slaunch[n].name, slaunch[n+1].name)>0)
 					{
@@ -567,15 +568,15 @@ reload:
 
 				if(!sorted)
 				{
-					for(uint16_t n=0; n<ngames; n++)
+					for(uint16_t n = 0; n < ngames; n++)
 					{
-						for(uint16_t m=(n+1); m<games; m++)
+						for(uint16_t m = (n + 1); m < games; m++)
 						{
-							if(strcasecmp(slaunch[n].name, slaunch[m].name)>0)
+							if(strcasecmp(slaunch[n].name, slaunch[m].name) > 0)
 							{
-								swap=slaunch[n];
-								slaunch[n]=slaunch[m];
-								slaunch[m]=swap;
+								swap = slaunch[n];
+								slaunch[n] = slaunch[m];
+								slaunch[m] = swap;
 							}
 						}
 					}
@@ -600,7 +601,7 @@ static void reload_data(uint32_t curpad)
 
 	if(curpad & PAD_R2) gmode=dmode=TYPE_ALL;
 
-	cur_game=0;
+	cur_game=0; tick=0x80, delta=10;
 
 	load_data();
 	show_content();
@@ -855,7 +856,7 @@ static void slaunch_thread(uint64_t arg)
 					if(!gui_allowed(1)) continue;
 
 					start_VSH_Menu();
-					init_delay=0;
+					init_delay = 0;
 
 					// prevent set favorite with start button
 					while(slaunch_running) {pad_read(); if(curpad == PAD_START) sys_timer_usleep(20000); else break;}
@@ -870,16 +871,16 @@ static void slaunch_thread(uint64_t arg)
 
 				if(curpad)
 				{
-					if(curpad==oldpad)				// key-repeat
+					if(curpad == oldpad)				// key-repeat
 					{
 						init_delay++;
-						if(init_delay<=40) continue;
-						else sys_timer_usleep(40000);
+						if(init_delay <= 20) continue;
+						sys_timer_usleep(40000);
 					}
 					else
-						init_delay=0;
+						init_delay = 0;
 
-					can_skip=0;
+					can_skip = 0;
 					oldpad = curpad;
 
 					uint16_t _cur_game = cur_game;
@@ -890,12 +891,12 @@ static void slaunch_thread(uint64_t arg)
 
 					if(curpad & PAD_TRIANGLE)		// open side-menu
 					{
-						uint8_t option=draw_side_menu();
+						uint8_t option = draw_side_menu();
 						if(option)
 						{
-							if(option==1) send_wm_request("/mount_ps3/unmount");
-							if(option==2) send_wm_request("/refresh_ps3");
-							if(option==3)
+							if(option == 1) send_wm_request("/mount_ps3/unmount");
+							if(option == 2) send_wm_request("/refresh_ps3");
+							if(option == 3)
 							{
 								if(opt_mode)
 								{
@@ -906,9 +907,9 @@ static void slaunch_thread(uint64_t arg)
 									send_wm_request("/extgd.ps3");
 							}
 							return_to_xmb();
-							if(option==4) send_wm_request("/restart.ps3");
-							if(option==5) send_wm_request("/shutdown.ps3");
-							if(option==6)
+							if(option == 4) send_wm_request("/restart.ps3");
+							if(option == 5) send_wm_request("/shutdown.ps3");
+							if(option == 6)
 							{
 								send_wm_request("/popup.ps3?sLaunch%20unloaded!");
 
@@ -919,7 +920,7 @@ static void slaunch_thread(uint64_t arg)
 
 								running=0;
 							}
-							if(option==7) send_wm_request(web_page ? "/browser.ps3/" : "/browser.ps3/setup.ps3");
+							if(option == 7) send_wm_request(web_page ? "/browser.ps3/" : "/browser.ps3/setup.ps3");
 							break;
 						}
 						else
@@ -981,9 +982,9 @@ static void slaunch_thread(uint64_t arg)
 						break;
 					}
 
-					if(cur_game!=_cur_game && games)		// draw backdrop
+					if((cur_game!=_cur_game) && games)		// draw backdrop
 					{
-						tick=0xc0;
+						tick=0xc0, delta=10;
 						play_rco_sound("snd_cursor");
 						pg_idx=(1 + _cur_game % gpp);
 						if(pg_idx<=games) set_backdrop(pg_idx, 1);
@@ -999,7 +1000,7 @@ static void slaunch_thread(uint64_t arg)
 					init_delay=0, oldpad=0, tick+=delta;	// pulsing selection frame
 					pg_idx=(1 + cur_game % gpp);
 					if(pg_idx<=games) set_frame(1 + cur_game % gpp, 0xff000000ff000000|tick<<48|tick<<16); else cur_game=0;
-					if(tick<0x80 || tick>0xF0)delta=-delta;
+					if(tick<0x80 || tick>0xF0){delta=-delta; tick&=0xff;}
 
 					// update temperature
 					if(++frame > 300) {frame = 0, cpu_rsx ^= 1; draw_selection(cur_game);}

@@ -8,7 +8,7 @@ static void no_singstar_icon(void)
 	del(XIL2_DIR, RECURSIVE_DELETE);
 	if(webman_config->noss)
 	{
-		save_file(XIL2_DIR, NULL, 0); // DeViL303's new method for no singstar:
+		save_file(XIL2_DIR, NULL, SAVE_ALL); // DeViL303's new method for no singstar:
 		cellFsChmod(XIL2_DIR, 0444); // make fake game dir read only
 	}
 #else
@@ -47,7 +47,7 @@ static void no_singstar_icon(void)
 
 							if(file_exists(xmlpath))
 							{
-								save_file(xmlpath, NULL, 0);
+								save_file(xmlpath, NULL, SAVE_ALL);
 								cellFsChmod(xmlpath, 0444); // make blank xml read only
 							}
 						}

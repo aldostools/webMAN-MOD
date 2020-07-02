@@ -303,8 +303,8 @@ static void toggle_video_rec(const char *param)
 			reco_open = getNIDfunc("vshmain", 0xBEF63A14, -(50 * 8));
 
 			// fetch recording utility vsh options struct (build address from instructions...)
-			u32 addr = (*(u32*)(*(u32*)reco_open+0xC) & 0x0000FFFF) -1;
-			recOpt = (u32*)((addr << 16) + ((*(u32*)(*(u32*)reco_open+0x14)) & 0x0000FFFF)); // (u32*)0x72EEC0;
+			u32 addr = (*(u32*)(*(u32*)reco_open + 0xC) & 0x0000FFFF) -1;
+			recOpt = (u32*)((addr << 16) + ((*(u32*)(*(u32*)reco_open + 0x14)) & 0x0000FFFF)); // (u32*)0x72EEC0;
 		}
 
 		if(recording == false)

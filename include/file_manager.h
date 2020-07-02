@@ -603,9 +603,9 @@ static bool folder_listing(char *buffer, u32 BUFFER_SIZE_HTML, char *templn, cha
 #ifdef NET_SUPPORT
 		if(is_net)
 		{
-			int ns = FAILED, abort_connection = 0; char netid = param[4];
+			int ns = FAILED, abort_connection = 0; char netid = param[4]; netiso_svrid = (netid & 0x0F);
 
-			if(netid >= '0' && netid <= '4') ns = connect_to_remote_server((netid  & 0x0F));
+			if(netid >= '0' && netid <= '4') ns = connect_to_remote_server(netid);
 
 			if(ns >= 0)
 			{

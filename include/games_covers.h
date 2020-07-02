@@ -167,7 +167,7 @@ static bool get_cover_by_titleid(char *icon, char *title_id)
 	{
 #ifndef ENGLISH_ONLY
 		// Search covers in custom path
-		if(covers_exist[0] && (webman_config->nocov == SHOW_MMCOVERS && *COVERS_PATH == '/'))
+		if(covers_exist[0] && ((webman_config->nocov == SHOW_MMCOVERS) && (*COVERS_PATH == '/')))
 		{
 			flen = sprintf(icon, "%s/%s", COVERS_PATH, title_id);
 			if(get_image_file(icon, flen)) return true;
@@ -280,7 +280,13 @@ static void get_default_icon_from_folder(char *icon, u8 is_dir, const char *para
 
 	if(SHOW_COVERS_OR_ICON0)
 	{
-			if(is_dir && (webman_config->nocov == SHOW_ICON0)) {sprintf(icon, "%s/%s/PS3_GAME/ICON0.PNG", param, entry_name); if(!HAS(icon)) sprintf(icon, "%s/%s/ICON0.PNG", param, entry_name); return;}
+			if(is_dir && (webman_config->nocov == SHOW_ICON0))
+			{
+				sprintf(icon, "%s/%s/PS3_GAME/ICON0.PNG", param, entry_name); check_ps3_game(icon);
+				if(!HAS(icon))
+					sprintf(icon, "%s/%s/ICON0.PNG", param, entry_name);
+				return;
+			}
 
 			// get path/name and remove file extension
 			int flen = sprintf(icon, "%s/%s", param, entry_name);
@@ -328,7 +334,13 @@ static void get_default_icon_from_folder(char *icon, u8 is_dir, const char *para
 			}
 
 			// return ICON0
-			if(is_dir) {sprintf(icon, "%s/%s/PS3_GAME/ICON0.PNG", param, entry_name); if(!HAS(icon)) sprintf(icon, "%s/%s/ICON0.PNG", param, entry_name); return;}
+			if(is_dir)
+			{
+				sprintf(icon, "%s/%s/PS3_GAME/ICON0.PNG", param, entry_name); check_ps3_game(icon);
+				if(!HAS(icon))
+					sprintf(icon, "%s/%s/ICON0.PNG", param, entry_name);
+				return;
+			}
 
 			// continue searching for covers
 			if(SHOW_COVERS) return;
@@ -446,16 +458,16 @@ static enum icon_type get_default_icon(char *icon, const char *param, char *file
 
 	if(webman_config->nocov == SHOW_DISC) {if(get_cover_from_name(icon, file, title_id)) return default_icon; goto no_icon0;}
 
-	if(!IS_NET) get_default_icon_from_folder(icon, is_dir, param, file, title_id, f0);
-
-	// continue using cover or default icon0.png
-	if(HAS(icon)) return default_icon;
-
 	if(SHOW_COVERS && get_cover_from_name(icon, file, title_id)) return default_icon; // show mm cover
 
 	// get icon from folder && copy remote icon
 	get_default_icon_for_iso(icon, param, file, is_dir, ns);
 
+	if(HAS(icon)) return default_icon;
+
+	if(!IS_NET) get_default_icon_from_folder(icon, is_dir, param, file, title_id, f0);
+
+	// continue using cover or default icon0.png
 	if(HAS(icon)) return default_icon;
 
 	//use the cached PNG from wmtmp if available

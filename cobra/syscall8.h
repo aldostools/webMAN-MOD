@@ -1,6 +1,12 @@
 #ifndef __SYSCALL8_H__
 #define __SYSCALL8_H__
 
+// Since version 7.0, any opcode added should be an odd number.
+// Also, it should be kept under 0xA000
+// If function is to be used to make a patched module call cobra payload,
+// a number below 0x8000 is suggested, so that the patch can assign the opcode
+// with a single instruction
+
 #define SC_COBRA_SYSCALL8								(8)
 
 #define SYSCALL8_OPCODE_DISABLE_COBRA					0x0000 // 7.3 AV
@@ -15,14 +21,14 @@
 #define SYSCALL8_OPCODE_GET_VERSION2					0x7001
 
 #define SYSCALL8_OPCODE_POKE_LV2						0x7003 //8.1 HABIB
-#define SYSCALL8_OPCODE_POKE8_LV2						0x7005 //8.2 AV
-#define SYSCALL8_OPCODE_POKE16_LV2						0x7007 //8.2 AV
-#define SYSCALL8_OPCODE_POKE32_LV2						0x7009 //8.2 AV
+#define SYSCALL8_OPCODE_POKE8_LV2						0x7005 //8.3 AV
+#define SYSCALL8_OPCODE_POKE16_LV2						0x7007 //8.3 AV
+#define SYSCALL8_OPCODE_POKE32_LV2						0x7009 //8.3 AV
 
-#define SYSCALL8_OPCODE_POKE_LV1						0x7013 //8.2 AV
-#define SYSCALL8_OPCODE_POKE8_LV1						0x7015 //8.2 AV
-#define SYSCALL8_OPCODE_POKE16_LV1						0x7017 //8.2 AV
-#define SYSCALL8_OPCODE_POKE32_LV1						0x7019 //8.2 AV
+#define SYSCALL8_OPCODE_POKE_LV1						0x7013 //8.3 AV
+#define SYSCALL8_OPCODE_POKE8_LV1						0x7015 //8.3 AV
+#define SYSCALL8_OPCODE_POKE16_LV1						0x7017 //8.3 AV
+#define SYSCALL8_OPCODE_POKE32_LV1						0x7019 //8.3 AV
 
 #define SYSCALL8_OPCODE_IS_HEN							0x1337 //PS3HEN HABIB
 #define SYSCALL8_OPCODE_HEN_REV							0x1339 //PS3HEN HABIB
@@ -59,8 +65,8 @@
 
 #define SYSCALL8_OPCODE_AIO_COPY_ROOT					0x6637
 #define SYSCALL8_OPCODE_MAP_PATHS						0x7964
-#define SYSCALL8_OPCODE_GET_MAP_PATH					0x7967 // 8.2 AV
-#define SYSCALL8_OPCODE_MAP_PATH_CALLBACK				0x7969 // 8.2 AV
+#define SYSCALL8_OPCODE_GET_MAP_PATH					0x7967 // 8.3 AV
+#define SYSCALL8_OPCODE_MAP_PATH_CALLBACK				0x7969 // 8.3 AV
 
 #define SYSCALL8_OPCODE_VSH_SPOOF_VERSION				0x2C0F // DEPRECATED
 
@@ -79,6 +85,8 @@
 #define SYSCALL8_OPCODE_UNLOAD_PAYLOAD_DYNAMIC			0x6CE3 // 8.01 HABIB
 
 #define SYSCALL8_OPCODE_DISABLE_COBRA_STAGE				0x6A13 // 8.01 HABIB
+
+#define SYSCALL8_OPCODE_PROC_CREATE_THREAD				0x6E03 // 8.2 not enough params for PS3MAPI_OPCODE // TheRouletteBoi
 
 #ifdef DEBUG
 // These debug opcode changed to odd numbers in version 7.0 to minmize crashes with lv1 peek apps

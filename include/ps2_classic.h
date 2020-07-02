@@ -192,7 +192,7 @@ static void copy_ps2savedata(char *vme, const char *_path)
 
 static void enable_classic_ps2_mode(void)
 {
-	save_file(PS2_CLASSIC_TOGGLER, NULL, 0);
+	save_file(PS2_CLASSIC_TOGGLER, NULL, SAVE_ALL);
 }
 
 static void disable_classic_ps2_mode(void)

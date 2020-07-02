@@ -8,9 +8,14 @@ u64 PSID[2] = {0, 0};
 #define SC_GET_IDPS 					(870)
 #define SC_GET_PSID 					(872)
 
-#define FLASH_DEVICE_NAND					0x0100000000000001ULL
-#define FLASH_DEVICE_NOR					0x0100000000000004ULL
-#define FLASH_FLAGS							0x22ULL
+#define PS3MAPI_OPCODE_GET_IDPS 		0x0081
+#define PS3MAPI_OPCODE_SET_IDPS 		0x0082
+#define PS3MAPI_OPCODE_GET_PSID 		0x0083
+#define PS3MAPI_OPCODE_SET_PSID			0x0084
+
+#define FLASH_DEVICE_NAND				0x0100000000000001ULL
+#define FLASH_DEVICE_NOR				0x0100000000000004ULL
+#define FLASH_FLAGS						0x22ULL
 
 u64 idps_offset1 = 0;
 u64 idps_offset2 = 0;
@@ -18,27 +23,28 @@ u64 psid_offset  = 0;
 
 u64 eid0_idps[2] = {0, 0};
 
+/*
+static s32 sys_ss_appliance_info_manager(u32 packet_id, u64 arg)
+{
+	system_call_2(867, packet_id, arg);
+	return_to_user_prog(s32);
+}
+
+static s32 ss_aim_get_device_id(u8 *idps)
+{
+	return sys_ss_appliance_info_manager(0x19003, (u32)(idps));
+}
+
+static s32 ss_aim_get_open_psid(u8 *psid)
+{
+	return sys_ss_appliance_info_manager(0x19005, (u32)(psid));
+}
+*/
+
 static void get_idps_psid(void)
 {
-	{ PS3MAPI_ENABLE_ACCESS_SYSCALL8 }
-
-	if(c_firmware <= 4.53f)
-	{
-		{system_call_1(SC_GET_IDPS, (u64) IDPS);}
-		{system_call_1(SC_GET_PSID, (u64) PSID);}
-	}
-	else if(peekq(TOC) == SYSCALLS_UNAVAILABLE)
-		return; // do not update IDPS/PSID if syscalls are removed
-	else if(idps_offset2 | psid_offset)
-	{
-			IDPS[0] = peekq(idps_offset2    );
-			IDPS[1] = peekq(idps_offset2 + 8);
-
-			PSID[0] = peekq(psid_offset     );
-			PSID[1] = peekq(psid_offset  + 8);
-	}
-
-	{ PS3MAPI_DISABLE_ACCESS_SYSCALL8 }
+	{system_call_2(867, 0x19003, (u32)IDPS);}
+	{system_call_2(867, 0x19005, (u32)PSID);}
 }
 
 static void spoof_idps_psid(void)
@@ -52,6 +58,9 @@ static void spoof_idps_psid(void)
 		newPSID[0] = convertH(webman_config->vPSID1);
 		newPSID[1] = convertH(webman_config->vPSID2);
 
+#ifdef COBRA_ONLY
+		{system_call_4(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_SET_PSID, (u64)newPSID[0], (u64)newPSID[1]);}
+#else
 #ifndef LAST_FIRMWARE_ONLY
 		if(c_firmware <= 4.53f)
 		{
@@ -72,6 +81,7 @@ static void spoof_idps_psid(void)
 			pokeq(psid_offset  , newPSID[0]);
 			pokeq(psid_offset+8, newPSID[1]);
 		}
+#endif
 	}
 
 	if(webman_config->sidps)
@@ -84,6 +94,9 @@ static void spoof_idps_psid(void)
 		// IDPS must be like 00000001008*00**
 		if((newIDPS[0] & 0xFFFFFFFFFFF0FF00ULL) == 0x0000000100800000ULL && newIDPS[1] != 0)
 		{
+#ifdef COBRA_ONLY
+			{system_call_4(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_SET_IDPS, (u64)newIDPS[0], (u64)newIDPS[1]);}
+#else
 #ifndef LAST_FIRMWARE_ONLY
 			if(c_firmware <= 4.53f)
 			{
@@ -106,6 +119,7 @@ static void spoof_idps_psid(void)
 				pokeq(idps_offset2  , newIDPS[0]);
 				pokeq(idps_offset2+8, newIDPS[1]);
 			}
+#endif
 		}
 	}
 
@@ -123,7 +137,6 @@ static void get_eid0_idps(void)
 	sys_device_handle_t dev_id;
 	if(sys_storage_open(FLASH_DEVICE_NOR, 0, &dev_id, 0) != CELL_OK)
 	{
-		sys_storage_close(dev_id);
 		sys_storage_open(FLASH_DEVICE_NAND, 0, &dev_id, 0);
 		start_sector = 0x204; // NAND
 	}
@@ -196,7 +209,7 @@ static void save_idps_psid(bool is_psid, bool is_idps, char *header, char *param
 
 	*param = NULL;
 
-	if(is_default) 
+	if(is_default)
 	{
 		if(file_exists(act_dat))
 		{

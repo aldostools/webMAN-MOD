@@ -59,6 +59,7 @@
 
 #define RELOADXMB_DIR		_HDD0_GAME_DIR "RELOADXMB"
 #define RELOADXMB_EBOOT		RELOADXMB_DIR "/USRDIR/EBOOT.BIN"
+#define RELOADXMB_ISO		WM_RES_PATH "/RELOAD_XMB.ISO"
 
 #define VSH_RESOURCE_DIR	"/dev_flash/vsh/resource/"
 #define SYSMAP_EMPTY_DIR	VSH_RESOURCE_DIR "AAA"		//redirect firmware update to empty folder (formerly redirected to "/dev_bdvd")

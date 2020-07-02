@@ -38,3 +38,20 @@ function home()
 	else
 		self.location='/index.ps3';	
 }
+
+document.onkeydown = function(evt) {
+	evt = evt || window.event;
+	if (evt.keyCode == 27) {
+		if(document.activeElement.className != 'bs')
+		{
+			var divs = document.getElementsByTagName('div');
+			for (var i = 0; i < divs.length; i++) {
+				if(divs[i].style.maxHeight=='500px') divs[i].style.maxHeight='0px';
+			}
+			var bs = document.getElementsByClassName('bs'); 
+			if(bs.length) bs[0].focus();
+		}
+		else
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+};

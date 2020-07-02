@@ -203,6 +203,22 @@ static bool not_exists(const char *path)
 	return !file_exists(path);
 }
 
+#ifdef COBRA_ONLY
+#define check_ps3_game(path)
+#else
+static void check_ps3_game(char *path)
+{
+	char *p = strstr(path, "/PS3_GAME");
+	if(p)
+	{
+		p[6] = 'M', p[7] = '0', p[8] = '1';  // PS3_GM01
+		if(file_exists(path)) return;
+		p[6] = 'A', p[7] = 'M', p[8] = 'E';  // PS3_GAME
+	}
+
+}
+#endif
+
 #if defined(COPY_PS3) || defined(PKG_HANDLER) || defined(PKG_LAUNCHER)
 static void mkdir_tree(char *path)
 {

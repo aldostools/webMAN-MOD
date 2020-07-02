@@ -106,15 +106,15 @@ static void remove_cfw_syscalls(bool keep_ccapi)
 	{ system_call_3(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_DISABLE_SYSCALL, (u64)sc_disable[sc]); }
 	{ system_call_3(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PDISABLE_SYSCALL8, webman_config->sc8mode); } // default: Partial disable syscall8 (Keep cobra/mamba+ps3mapi features only)
 
-	if(webman_config->sc8mode == 4) remove_cfw_syscall8();
+	if(webman_config->sc8mode == PS3MAPI_DISABLED) remove_cfw_syscall8();
 	#endif
 
 	for(u8 sc = initial_sc; sc < CFW_SYSCALLS; sc++)
 		pokeq(SYSCALL_PTR( sc_disable[sc] ), sc_null);
 
-	u64 sc9  = peekq(SYSCALL_PTR( 9));
+	u64 sc8  = peekq(SYSCALL_PTR(8)) | peekq(SYSCALL_PTR(9));
 
-	syscalls_removed = (sc9 == SYSCALLS_UNAVAILABLE || sc9 == sc_null);
+	syscalls_removed = (sc8 == SYSCALLS_UNAVAILABLE || sc8 == sc_null);
 
 	#ifdef COBRA_ONLY
 	if(syscalls_removed)

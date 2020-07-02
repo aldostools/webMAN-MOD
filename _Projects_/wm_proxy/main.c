@@ -139,7 +139,8 @@ static void sclose(int *socket_e)
 }
 
 #define HTML_RECV_SIZE	2048
-#define HTML_RECV_LAST	2045
+#define HTML_RECV_LAST	2045 // HTML_RECV_SIZE-3
+#define HTML_RECV_LASTP	2042 // HTML_RECV_LAST-3
 
 static void wm_plugin_action(const char * action)
 {
@@ -151,23 +152,24 @@ static void wm_plugin_action(const char * action)
 
 		u32 pa = 4;
 
-		if(*action == 'G') action += 4; // skip GET
+		if(*action == 'G') action += 4;  // skip GET
 		if(*action != '/') action += 16; // using http://127.0.0.1/ or http://localhost/
 
 		if(*action == '/')
 		{
 			u8 is_path = !strstr(action, ".ps") && !strstr(action, "_ps");
 
-			for(;*action && (pa < HTML_RECV_LAST); action++)
+			for(;*action && (pa < HTML_RECV_LAST); action++, pa++)
 			{
 				if(*action == 0x20)
-					proxy_action[pa++] = 0x2B;
+					proxy_action[pa] = 0x2B;
 				else if((*action == 0x2B) && is_path)
 				{
-					memcpy(proxy_action + pa, "%2B", 3); pa += 3;
+					if(pa > HTML_RECV_LASTP) break;
+					memcpy(proxy_action + pa, "%2B", 3); pa += 2; //+
 				}
 				else
-					proxy_action[pa++] = *action;
+					proxy_action[pa] = *action;
 			}
 
 			memcpy(proxy_action + pa, "\r\n\0", 3); pa +=2;

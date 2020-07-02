@@ -320,6 +320,10 @@ size_t read_file(const char *file, char *data, size_t size, s32 offset);
 int save_file(const char *file, const char *mem, s64 size);
 int wait_for(const char *path, u8 timeout);
 
+int (*vshtask_notify)(int, const char *) = NULL;
+int (*View_Find)(const char *) = NULL;
+int (*plugin_GetInterface)(int,int) = NULL;
+
 #include "include/string.h"
 #include "include/wm_config.h"
 #include "include/html.h"
@@ -357,6 +361,7 @@ static void restore_cfw_syscalls(void);
 
 #ifdef PKG_HANDLER
 static int installPKG(const char *pkgpath, char *msg);
+static void installPKG_all(char *path, bool delete_after_install);
 #endif
 
 static void handleclient_www(u64 conn_s_p);
@@ -367,7 +372,7 @@ static bool mount_game(const char *_path, u8 do_eject);
 #ifdef COBRA_ONLY
 static void do_umount_iso(void);
 static void unload_vsh_gui(void);
-static void set_apphome(const char *game_path);
+static void set_app_home(const char *game_path);
 #endif
 
 static size_t get_name(char *name, const char *filename, u8 cache);
@@ -467,7 +472,7 @@ static void wwwd_thread(u64 arg)
 
 #ifdef COBRA_ONLY
 	if(isDir(webman_config->home_url))
-		set_apphome(webman_config->home_url);
+		set_app_home(webman_config->home_url);
 
 	{sys_map_path((char*)"/app_home", NULL);}
 #endif
@@ -589,6 +594,9 @@ int wwwd_start(size_t args, void *argp)
 	cellRtcGetCurrentTick(&rTick); gTick = rTick;
 
 	detect_firmware();
+
+	if(!payload_ps3hen && !(webman_config->fanc)) // SYSCON
+		sys_ppu_thread_sleep(webman_config->boots);
 
 	if(set_fan_policy_offset) restore_set_fan_policy = peekq(set_fan_policy_offset); // sys 389 get_fan_policy
 

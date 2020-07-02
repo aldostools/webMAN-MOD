@@ -7,10 +7,10 @@ static const int SUCCEEDED	=  0;
 
 int create_start_thread(thread_t *thread, void *(*start_routine)(void*), void *arg)
 {
-	thread_t t = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_routine, arg, 0, NULL);	
+	thread_t t = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_routine, arg, 0, NULL);
 	if (!t)
 		return GetLastError();
-	
+
 	*thread = t;
 	return SUCCEEDED;
 }
@@ -20,7 +20,7 @@ int join_thread(thread_t thread)
 	DWORD ret = WaitForSingleObject(thread, INFINITE);
 	if (ret == 0xFFFFFFFF)
 		return (int)ret;
-	
+
 	return SUCCEEDED;
 }
 
@@ -34,7 +34,7 @@ file_t open_file(const char *path, int oflag)
 	file_t f;
 	DWORD dwDesiredAccess;
 	DWORD dwCreationDisposition;
-	
+
 	if ((oflag & (O_RDONLY | O_WRONLY | O_RDWR)) == O_RDONLY)
 	{
 		dwDesiredAccess = GENERIC_READ;
@@ -47,7 +47,7 @@ file_t open_file(const char *path, int oflag)
 	{
 		dwDesiredAccess = GENERIC_READ | GENERIC_WRITE;
 	}
-	
+
 	if ((oflag & O_TRUNC) && ((oflag & O_ACCMODE) != O_RDONLY))
 	{
 		if (oflag & O_CREAT)
@@ -75,19 +75,19 @@ file_t open_file(const char *path, int oflag)
 	{
 		dwCreationDisposition = CREATE_NEW;
 	}
-	
+
 	f = CreateFileA(path, dwDesiredAccess, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, dwCreationDisposition, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (f == INVALID_HANDLE_VALUE)
 	{
 		//printf("Error: %x\n", GetLastError());
 		return f;
 	}
-	
+
 	if (oflag & O_APPEND)
 		SetFilePointer(f, 0, NULL, FILE_END);
 	else
 		SetFilePointer(f, 0, NULL, FILE_BEGIN);
-	
+
 	return f;
 }
 
@@ -95,31 +95,31 @@ int close_file(file_t fd)
 {
 	if (!CloseHandle(fd))
 		return FAILED;
-	
+
 	return SUCCEEDED;
 }
 
 ssize_t read_file(file_t fd, void *buf, size_t nbyte)
 {
 	DWORD rd;
-	
+
 	if (!ReadFile(fd, buf, nbyte, &rd, NULL))
 	{
 		return FAILED;
 	}
-	
+
 	return rd;
 }
 
 ssize_t write_file(file_t fd, void *buf, size_t nbyte)
 {
 	DWORD wr;
-	
+
 	if (!WriteFile(fd, buf, nbyte, &wr, NULL))
 	{
 		return FAILED;
 	}
-	
+
 	return wr;
 }
 
@@ -127,10 +127,10 @@ int64_t seek_file(file_t fd, int64_t offset, int whence)
 {
 	LONG low;
 	LONG high;
-	
+
 	low = offset&0xFFFFFFFF;
 	high = (offset>>32);
-	
+
 	if (whence == SEEK_SET)
 	{
 		whence = FILE_BEGIN;
@@ -147,24 +147,24 @@ int64_t seek_file(file_t fd, int64_t offset, int whence)
 	{
 		return FAILED;
 	}
-	
+
 	low = SetFilePointer(fd, low, &high, whence);
 	if (low == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR)
 	{
 		//printf("SetFilePointer failed: %x\n", GetLastError());
 		return FAILED;
 	}
-	
+
 	uint64_t low64 = (uint64_t)low;
 	uint64_t high64 = (uint64_t)high;
-	
+
 	low64 &= 0xFFFFFFFF;
 	high64 &= 0xFFFFFFFF;
 	int64_t ret = (int64_t)((high64<<32ULL) | low64);
-	
+
 	//printf("ret = %I64x\n", ret);
-	
-	return ret; 
+
+	return ret;
 }
 
 #define USE_LONG_LONG 1
@@ -211,7 +211,7 @@ uint64_t FileTimeToUnixTime(const FILETIME *filetime, DWORD *remainder)
 	else						a1 += (1 << 16) - 54590 - carry, carry = 1;
 
 	a2 -= 27111902 + carry;
-	
+
 	/* If a is negative, replace a by (-1-a) */
 	negative = (a2 >= ((UINT32)1) << 31);
 	if (negative)
@@ -260,31 +260,31 @@ uint64_t FileTimeToUnixTime(const FILETIME *filetime, DWORD *remainder)
 int fstat_file(file_t fd, file_stat_t *fs)
 {
 	BY_HANDLE_FILE_INFORMATION  FileInformation;
-	 
-	if (!GetFileInformationByHandle(fd, &FileInformation)) 
+
+	if (!GetFileInformationByHandle(fd, &FileInformation))
 		return FAILED;
-	
-	fs->file_size = ((uint64_t)FileInformation.nFileSizeHigh << 32) | FileInformation.nFileSizeLow; 
-	
+
+	fs->file_size = ((uint64_t)FileInformation.nFileSizeHigh << 32) | FileInformation.nFileSizeLow;
+
 	fs->ctime = FileTimeToUnixTime(&FileInformation.ftCreationTime, NULL);
 	fs->atime = FileTimeToUnixTime(&FileInformation.ftLastAccessTime, NULL);
 	fs->mtime = FileTimeToUnixTime(&FileInformation.ftLastWriteTime, NULL);
-	
+
 	if (fs->atime ==0)
 		fs->atime = fs->mtime;
 
 	if (fs->ctime ==0)
 		fs->ctime = fs->mtime;
-	
+
 	fs->mode = S_IREAD;
 	if (FileInformation.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		fs->mode |= S_IFDIR | S_IEXEC;
 	else
 		fs->mode |= S_IFREG;
-	
+
 	if (!(FileInformation.dwFileAttributes & FILE_ATTRIBUTE_READONLY))
 		fs->mode |= S_IWRITE;
-	
+
 	return SUCCEEDED;
 }
 
@@ -295,20 +295,20 @@ int stat_file(const char *path, file_stat_t *fs)
 
 	WIN32_FIND_DATA wfd;
 	HANDLE fh;
-	
+
 	fh = FindFirstFile(path, &wfd);
 	if (fh == INVALID_HANDLE_VALUE)
 	{
 		//printf("Stat failed here: %d\n", GetLastError());
 		return FAILED;
 	}
-	
-	fs->file_size = ((uint64_t)wfd.nFileSizeHigh << 32) | wfd.nFileSizeLow; 
+
+	fs->file_size = ((uint64_t)wfd.nFileSizeHigh << 32) | wfd.nFileSizeLow;
 
 	fs->ctime = FileTimeToUnixTime(&wfd.ftCreationTime, NULL);
 	fs->atime = FileTimeToUnixTime(&wfd.ftLastAccessTime, NULL);
 	fs->mtime = FileTimeToUnixTime(&wfd.ftLastWriteTime, NULL);
-	
+
 	if (fs->atime == 0)
 		fs->atime = fs->mtime;
 	if (fs->ctime == 0)
@@ -324,13 +324,13 @@ int stat_file(const char *path, file_stat_t *fs)
 		fs->mode |= S_IWRITE | S_IEXEC;
 
 	if (FindNextFile(fh, &wfd))
-	{		
+	{
 		FindClose(fh);
 		//printf("Stat failed here.\n");
 		return FAILED;
 	}
-	
-	FindClose(fh);	
+
+	FindClose(fh);
 	return SUCCEEDED;
 }
 
@@ -377,11 +377,11 @@ int64_t seek_file(file_t fd, int64_t offset, int whence)
 int fstat_file(file_t fd, file_stat_t *fs)
 {
 	struct stat st;
-	
+
 	int ret = fstat(fd, &st);
 	if (ret < SUCCEEDED)
 		return ret;
-	
+
 	fs->file_size = st.st_size;
 	fs->mtime = st.st_mtime;
 	fs->ctime = st.st_ctime;
@@ -396,11 +396,11 @@ int stat_file(const char *path, file_stat_t *fs)
 		return FAILED;
 
 	struct stat st;
-	
+
 	int ret = stat(path, &st);
 	if (ret < SUCCEEDED)
 		return ret;
-	
+
 	fs->file_size = st.st_size;
 	fs->mtime = st.st_mtime;
 	fs->ctime = st.st_ctime;

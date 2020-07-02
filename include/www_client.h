@@ -806,29 +806,42 @@ parse_request:
 				if(is_combo != 1) {if(!webman_config->nopad) ret = parse_pad_command(buttons, is_combo);} // do /pad.ps3 || /combo.ps3
 				else // do /play.ps3
 				{
+					char *param2 = param + 9; if(*param2 == '?') param2++;
+
 					// check /play.ps3<path>
-					if(file_exists(param + 9))
+					if(file_exists(param2))
 					{
-						strcpy(header, param); sprintf(param, "/mount.ps3%s", header + 9); ap_param = 2;
+						if(IS(param2, "/app_home"))
+						{
+							launch_app_home_icon();
+							sprintf(param, "/cpursx.ps3");
+						}
+						else
+						{
+							strcpy(header, param2);
+							sprintf(param, "/mount.ps3%s", header);
+							ap_param = 2; // force auto_play
+						}
 						is_binary = WEB_COMMAND;
 						goto html_response;
 					}
 
 					// default: play.ps3?col=game&seg=seg_device
-					char col[16], seg[80], *param2 = buttons; *col = *seg = NULL; bool execute = true;
+					char col[16], seg[80]; *col = *seg = NULL; bool execute = true;
 #ifndef LITE_EDITION
 					if(_islike(param2, "movian") || IS(param2, "HTSS00003"))
 													 {sprintf(param2, "col=tv&seg=HTSS00003"); mount_unk = APP_GAME;} else
 					if(_islike(param2, "remoteplay")){sprintf(param2, "col=network&seg=seg_premo");} else
 					if(_islike(param2, "retro"))     {sprintf(param2, "SSNE10000");} else
 					if(_islike(param2, "multiman"))  {sprintf(param2, "BLES80608");} else
-					if(_islike(param2, "rebug"))     {sprintf(param2, "RBGTLBOX2");} else
+					if(_islike(param2, "rebug"))     {sprintf(param2, "RBGTLBOX2");}
 #endif
 #ifdef COBRA_ONLY
 					sprintf(header, "%s%s", HDD0_GAME_DIR, param2);
+
 					if((*param2 != NULL) && isDir(header))
 					{
-						set_apphome(header);
+						set_app_home(header);
 
 						if(is_app_home_onxmb()) mount_unk = APP_GAME; else execute = false;
 					}
@@ -839,7 +852,7 @@ parse_request:
 						get_param("col=", seg, param2, 80);
 					}
 
-					launch_disc(col, seg, execute);
+					exec_xmb_item(col, seg, execute);
 					mount_unk = EMU_OFF;
 				}
 
@@ -859,8 +872,7 @@ parse_request:
 				// /play.ps3                     start game from disc icon
 
 				// default: play.ps3?col=game&seg=seg_device
-				char col[16], seg[40]; *col = *seg = NULL;
-				launch_disc(col, seg, true);
+				launch_disc(true);
 
 				sprintf(param, "/cpursx.ps3");
 			}
@@ -993,6 +1005,14 @@ parse_request:
 				char *pkg_file = param + 12;
 
 				bool install_ps3 = (param[8] == '_');
+
+				if(islike(pkg_file, "/net"))
+				{
+					sprintf(header, "%s%s", "/mount_ps3", pkg_file); // use /mount.ps3 command to install the remote pkg
+					strcpy(param, header);
+					is_binary = WEB_COMMAND;
+					goto html_response;
+				}
 
 				pkg_delete_after_install = islike(pkg_file, "$all");
 
@@ -1229,7 +1249,7 @@ parse_request:
 				else
     #endif //#ifndef LITE_EDITION
    #endif // #ifdef COBRA_ONLY
-				if(IS_ON_XMB)
+				if(IS_ON_XMB || *param2 == '?' || *param2 == '/')
 				{   // in-XMB
    #ifdef COBRA_ONLY
 					if(islike(param2, "$vsh_menu")) {start_vsh_gui(true); sprintf(param, "/cpursx.ps3"); goto html_response;}
@@ -1425,13 +1445,18 @@ parse_request:
 					get_param("to=", path2, param, MAX_PATH_LEN);
 				}
 
-				if(*path1 && (path1[1] != NULL) && (nocheck || file_exists(isremap ? path2 : path1)))
+				if(param[10] == 0)
+				{
+					sys_map_path(NULL, NULL);
+					apply_remaps();
+				}
+				else if(*path1 && (path1[1] != NULL) && (nocheck || file_exists(isremap ? path2 : path1)))
 				{
 					sys_map_path(path1, path2);
 
 					htmlenc(url, path2, 1); urlenc(url, path1); htmlenc(title, path1, 0);
 
-					if(isremap && *path2 != NULL)
+					if(isremap && (*path2 != NULL))
 					{
 						htmlenc(path1, path2, 0);
 						sprintf(param,  "Remap: " HTML_URL "<br>"
@@ -1962,7 +1987,7 @@ parse_request:
 
 				if(sysmem) sys_memory_free(sysmem);
 
-				{ del_turnoff(1); }
+				del_turnoff(1);
 
 				if(param[14] != 'o')
 					vsh_shutdown(); // shutdown using VSH
@@ -2012,10 +2037,10 @@ parse_request:
 
 				if(sysmem) sys_memory_free(sysmem);
 
-				{ del_turnoff(2); }
+				del_turnoff(2);
 
 				char *allow_scan = strstr(param,"?0");
-				if(allow_scan) *allow_scan = NULL; else save_file(WMNOSCAN, NULL, 0);
+				if(allow_scan) *allow_scan = NULL; else save_file(WMNOSCAN, NULL, SAVE_ALL);
 
 				bool is_restart = IS(param, "/restart.ps3");
 
@@ -3184,7 +3209,7 @@ retry_response:
 
 						if(sysmem) {sys_memory_free(sysmem); sysmem = NULL;}
 
-						if(game_mount(pbuffer, templn, param, tempstr, mount_ps3, forced_mount)) ap_param = 1;
+						if(game_mount(pbuffer, templn, param, tempstr, mount_ps3, forced_mount)) ap_param = 1; // use webman_config->autoplay
 
 						is_busy = false; keep_alive = 0;
 

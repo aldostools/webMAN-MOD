@@ -78,9 +78,9 @@ static void parse_script(const char *script_file)
 	#ifdef COBRA_ONLY
 					if(_islike(line, "map /"))  {line += 4;}
 		#ifndef WM_REQUEST
-					if(*line == '/') {if(IS(path, "/app_home")) set_apphome(path); else sys_map_path(path, dest);} else
+					if(*line == '/') {if(IS(path, "/app_home")) set_app_home(path); else sys_map_path(path, dest);} else
 		#else
-					if(*line == '/') {if(IS_WEB_COMMAND(line)) handle_file_request(line); else if(IS(path, "/app_home")) set_apphome(path); else sys_map_path(path, dest);} else
+					if(*line == '/') {if(IS_WEB_COMMAND(line)) handle_file_request(line); else if(IS(path, "/app_home")) set_app_home(path); else sys_map_path(path, dest);} else
 		#endif
 	#elif defined(WM_REQUEST)
 					if(*line == '/') {if(IS_WEB_COMMAND(line)) handle_file_request(line);} else

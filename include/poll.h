@@ -63,7 +63,7 @@ static void poll_start_play_time(void)
 				{
 					xsetting_F48C0548()->GetSettingNet_enable(&status);
 					xsetting_F48C0548()->SetSettingNet_enable(net_status < 0 ? 0 : net_status);
-					if(status && (net_status <= 0)) {save_file(WMNET_DISABLED, NULL, 0); show_msg((char*)OFFLINE_TAG);}
+					if(status && (net_status <= 0)) {save_file(WMNET_DISABLED, NULL, SAVE_ALL); show_msg((char*)OFFLINE_TAG);}
 					net_status = status;
 				}
 			}
@@ -133,7 +133,7 @@ static void poll_thread(__attribute__((unused)) u64 arg)
 		{
 			loading_html++;
 			sys_ppu_thread_t t_id;
-			if(working) sys_ppu_thread_create(&t_id, handleclient, WM_FILE_REQUEST, THREAD_PRIO, THREAD_STACK_SIZE_WEB_CLIENT, SYS_PPU_THREAD_CREATE_NORMAL, THREAD_NAME_WEB);
+			if(working) sys_ppu_thread_create(&t_id, handleclient_www, WM_FILE_REQUEST, THREAD_PRIO, THREAD_STACK_SIZE_WEB_CLIENT, SYS_PPU_THREAD_CREATE_NORMAL, THREAD_NAME_WEB);
 		}
 #endif
 

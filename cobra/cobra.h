@@ -781,6 +781,8 @@ int cobra_load_vsh_plugin(unsigned int slot, const char *path, void *arg, uint32
  */
 int cobra_unload_vsh_plugin(unsigned int slot);
 
+#define MAX_TRACKS	98 // game with most tracks (97) is SLUS-01208 - Sabrina the Teenage Witch: A Twitch in Time!
+
 #ifdef __cplusplus
 }
 #endif

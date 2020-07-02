@@ -25,7 +25,7 @@ static int g_socket = NONE;
 
 #define TEMP_NET_PSXCUE  WMTMP "/~netpsx.cue"
 
-static int netiso_svrid = NONE;
+static int8_t netiso_svrid = NONE;
 
 static int read_remote_file(int s, void *buf, u64 offset, u32 size, int *abort_connection)
 {
@@ -569,6 +569,8 @@ static bool is_netsrv_enabled(u8 server_id)
 {
 	server_id &= 0x0F; // change '0'-'4' to  0..4
 
+	if(netiso_svrid == server_id) return true;
+
 	if(server_id > 4) return false;
 
 	s32 net_enabled = 0;
@@ -615,6 +617,7 @@ static int connect_to_remote_server(u8 server_id)
 				goto reconnect;
 			}
 
+			netiso_svrid = NONE;
 			if(refreshing_xml && (webman_config->refr))
 				webman_config->netd[server_id] = 0; // disable connection to offline servers (only when content scan on startup is disabled)
 

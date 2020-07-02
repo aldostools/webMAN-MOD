@@ -144,7 +144,7 @@ static void setup_parse_settings(char *param)
 	if(IS_UNMARKED("cf2=1")) webman_config->ps2config = true;
  #endif
 
-	if(IS_MARKED("sc8=0")) webman_config->sc8mode = 4; else webman_config->sc8mode = 1;
+	webman_config->sc8mode = IS_MARKED("sc8=1") ? PS3MAPI_ENABLED : PS3MAPI_DISABLED;
 
 	webman_config->bus = IS_MARKED("bus=1");
 	webman_config->deliso = IS_MARKED("dx=1"); if(!webman_config->deliso) cellFsUnlink(DEL_CACHED_ISO);
@@ -195,6 +195,8 @@ static void setup_parse_settings(char *param)
 #endif
 	webman_config->ftpd = IS_MARKED("ft=1" );
 //	webman_config->nopad = IS_MARKED("xp=1");
+
+//	if( IS_MARKED("ic=0" )) webman_config->nocov = SHOW_MMCOVERS;	 // default
 	if( IS_MARKED("nc=1" )) webman_config->nocov = SHOW_ICON0;	else // (0 = Use MM covers, 1 = Use ICON0.PNG, 2 = No game icons, 3 = Online Covers)
 	if( IS_MARKED("ic=1" )) webman_config->nocov = SHOW_ICON0;	else
 	if( IS_MARKED("ic=2" )) webman_config->nocov = SHOW_DISC;
@@ -224,7 +226,7 @@ static void setup_parse_settings(char *param)
 	webman_config->dyn_temp = MY_TEMP;
 
 	webman_config->minfan = get_valuen(param, "mfan=", MIN_FANSPEED, 95); //%
-	webman_config->maxfan = get_valuen(param, "mfs=",  50, 99); //%
+	webman_config->maxfan = get_valuen(param, "mfs=",  40, 99); //%
 	if(webman_config->minfan > webman_config->maxfan) webman_config->maxfan = webman_config->minfan;
 
 	webman_config->bind = IS_MARKED("bn=1");
@@ -594,7 +596,7 @@ static void setup_form(char *buffer, char *templn)
 	add_radio_button("temp\" onchange=\"fc.checked=1;", 0, "t_0", STR_AUTOAT , " : ", (webman_config->man_speed == 0), buffer);
 	sprintf(templn, HTML_NUMBER("step\"  accesskey=\"T", "%i", "40", "80") " °C</td>"
 					"<td><label><input type=\"checkbox\"%s/> %s</label> : " HTML_NUMBER("mfan", "%i", "20", "95") " %% - "
-					HTML_NUMBER("mfs", "%i", "50", "99") " %% %s </td></tr>",
+					HTML_NUMBER("mfs", "%i", "40", "99") " %% %s </td></tr>",
 					webman_config->dyn_temp, (webman_config->fanc && (webman_config->man_speed == 0)) ? ITEM_CHECKED : "",
 					STR_LOWEST, webman_config->minfan, webman_config->maxfan, STR_FANSPEED); concat(buffer, templn);
 
@@ -971,7 +973,6 @@ static void setup_form(char *buffer, char *templn)
 	add_check_box("pss", false, STR_SHOWTEMP,   " : <b>SELECT+START</b><br>"     , !(webman_config->combo & SHOW_TEMP),  buffer);
 	add_check_box("ppv", false, STR_PREVGAME,   " : <b>SELECT+L1</b><br>"        , !(webman_config->combo & PREV_GAME),  buffer);
 	add_check_box("pnx", false, STR_NEXTGAME,   " : <b>SELECT+R1</b><br>"        , !(webman_config->combo & NEXT_GAME),  buffer);
-	add_check_box("pdf", false, STR_FANCTRL4,   " : <b>L3+R2+START</b><br>"      , !(webman_config->combo & DISABLEFC),  buffer);
 
 	sprintf(templn, " : <b>SELECT+%c</b><br>", (CELL_PAD_CIRCLE_BTN == CELL_PAD_CTRL_CIRCLE) ? 'O' : 'X');
 	add_check_box("umt", false, STR_UNMOUNT,    templn                           , !(webman_config->combo2 & UMNT_GAME), buffer);
@@ -987,6 +988,7 @@ static void setup_form(char *buffer, char *templn)
 #ifdef REX_ONLY
 	sprintf(templn, " : <b>R2+%c</b><br>", (CELL_PAD_CIRCLE_BTN == CELL_PAD_CTRL_CIRCLE) ? 'O' : 'X');
 	add_check_box("pid", false, STR_SHOWIDPS,   templn                           , !(webman_config->combo & SHOW_IDPS),  buffer);
+	add_check_box("puw", false, STR_UNLOADWM,   " : <b>L3+R2+R3</b><br>"         , !(webman_config->combo & UNLOAD_WM),  buffer);
 	add_check_box("psd", false, STR_SHUTDOWN2,  " : <b>L3+R2+X</b><br>"          , !(webman_config->combo & SHUT_DOWN),  buffer);
 	add_check_box("prs", false, STR_RESTART2,   " : <b>L3+R2+O</b><br>"          , !(webman_config->combo & RESTARTPS),  buffer);
  #ifdef WM_REQUEST
@@ -1004,10 +1006,11 @@ static void setup_form(char *buffer, char *templn)
  #else
 	add_check_box("psv", false, "BLOCK SERVERS"," : <b>R2+&#9633;</b></td><td>",   !(webman_config->combo2 & CUSTOMCMB), buffer);
  #endif
+	add_check_box("puw", false, STR_UNLOADWM,   " : <b>L3+R2+R3</b><br>"         , !(webman_config->combo & UNLOAD_WM),  buffer);
 	add_check_box("psd", false, STR_SHUTDOWN2,  " : <b>L3+R2+X</b><br>"          , !(webman_config->combo & SHUT_DOWN),  buffer);
 	add_check_box("prs", false, STR_RESTART2,   " : <b>L3+R2+O</b><br>"          , !(webman_config->combo & RESTARTPS),  buffer);
 #endif
-	add_check_box("puw", false, STR_UNLOADWM,   " : <b>L3+R2+R3</b><br>"         , !(webman_config->combo & UNLOAD_WM),  buffer);
+	add_check_box("pdf", false, STR_FANCTRL4,   " : <b>L3+R2+START</b><br>"      , !(webman_config->combo & DISABLEFC),  buffer);
 	add_check_box("pf1", false, STR_FANCTRL2,   " : <b>SELECT+&#8593;/&#8595;</b><br>", !(webman_config->combo & MANUALFAN),  buffer);
 	add_check_box("pf2", false, STR_FANCTRL5,   " : <b>SELECT+&#8592;/&#8594;</b><br>", !(webman_config->combo & MINDYNFAN),  buffer);
 #ifdef REMOVE_SYSCALLS
@@ -1017,8 +1020,8 @@ static void setup_form(char *buffer, char *templn)
 
  #ifdef COBRA_ONLY
 	concat(buffer, "• PS3MAPI <select name=\"sc8\">");
-	add_option_item(1, STR_ENABLED,  (webman_config->sc8mode != 4), buffer);
-	add_option_item(0, STR_DISABLED, (webman_config->sc8mode == 4), buffer);
+	add_option_item(1, STR_ENABLED,  (webman_config->sc8mode != PS3MAPI_DISABLED), buffer);
+	add_option_item(0, STR_DISABLED, (webman_config->sc8mode == PS3MAPI_DISABLED), buffer);
 	concat(buffer, "</select>)<br>");
  #else
 	concat(buffer, ")<br>");
@@ -1064,7 +1067,13 @@ static void setup_form(char *buffer, char *templn)
  #endif
 		read_file("/dev_hdd0/tmp/wm_custom_combo", command, 255, 0);
 
-	sprintf(templn, "&nbsp; &nbsp;" HTML_INPUT("ccbo\" list=\"cmds", "%s", "255", "50") "<br>", command); concat(buffer, templn);
+	sprintf(templn, "&nbsp; &nbsp;" HTML_INPUT("ccbo\" list=\"cmds", "%s", "255", "50")
+					#ifdef WM_CUSTOM_COMBO
+					"<button onclick=\"window.location='/edit.ps3%s';return false;\">&#x270D;</button>"
+					"<br>", command, WM_CUSTOM_COMBO "r2_square"); concat(buffer, templn);
+					#else
+					"<br>", command); concat(buffer, templn);
+					#endif
 
 	concat(buffer,
 					"<div style=\"display:none\"><datalist id=\"cmds\">"
@@ -1304,7 +1313,7 @@ static void read_settings(void)
 #ifndef COBRA_ONLY
 	webman_config->spp = 0; //disable removal of syscalls on nonCobra
 #else
-	if(webman_config->sc8mode < 1 || webman_config->sc8mode > 4) webman_config->sc8mode = 4; // default: disable all syscalls (including sc8)
+	if(webman_config->sc8mode < 1 || webman_config->sc8mode >= 4) webman_config->sc8mode = PS3MAPI_DISABLED; // default: disable all syscalls (including sc8)
 #endif
 
 	prev_nosnd0 = webman_config->nosnd0;
@@ -1313,11 +1322,11 @@ static void read_settings(void)
 	if((webman_config->autoboot_path[0] != '/') && !islike(webman_config->autoboot_path, "http")) sprintf(webman_config->autoboot_path, "%s", DEFAULT_AUTOBOOT_PATH);
 
 	// check stored data
-	if(webman_config->maxfan < 50) webman_config->maxfan = 80; // % (0xCC)
+	if(webman_config->maxfan < 40) webman_config->maxfan = 80; // % (0xCC)
 	if(webman_config->nowarn >  1) webman_config->nowarn = 0;
 
 	webman_config->minfan   = RANGE(webman_config->minfan, MIN_FANSPEED, 95);   // %
-	webman_config->maxfan   = RANGE(webman_config->maxfan, 50, 99);   // %
+	webman_config->maxfan   = RANGE(webman_config->maxfan, 40, 99);   // %
 	if(webman_config->minfan > webman_config->maxfan) webman_config->maxfan = webman_config->minfan;
 
 	webman_config->man_rate = RANGE(webman_config->man_rate, MIN_FANSPEED, webman_config->maxfan);       // %

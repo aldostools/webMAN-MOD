@@ -32,7 +32,7 @@ PPU_PRX_LDLIBS	=	-lfs_stub -lnet_stub -lrtc_stub -lio_stub -lgcm_sys_stub \
 					-lxsetting_export_stub \
 					-lvshnet_export_stub \
 					-lnetctl_main_export_stub \
-					-lntfs_prx -fatfs \
+					-lntfs_prx -lfatfs \
 					-lmd5
 
 PPU_CFLAGS +=	-Os -ffunction-sections -fdata-sections \

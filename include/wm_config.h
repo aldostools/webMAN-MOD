@@ -77,7 +77,7 @@ typedef struct
 	u8 minfan;
 	u8 chart;
 	u8 maxfan;
-	
+
 	u8 padding4[7];
 
 	// combo settings
@@ -111,9 +111,9 @@ typedef struct
 
 	// net client settings
 
-	u8  netd[5];
-	u16 netp[5];
-	char neth[5][16];
+	u8   netd[5];     //0..4
+	u16  netp[5];     //port 0..65535
+	char neth[5][16]; //ip 255.255.255.255
 
 	u8 padding8[33];
 

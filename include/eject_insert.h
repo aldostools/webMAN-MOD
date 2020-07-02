@@ -121,7 +121,7 @@ static void usb_keep_awake(u8 sector)
 	for(u8 i = 0; i < 6; i++)
 	{
 		u8 f0 = (u8)val(drives[i + 1] + 8);
-		if(sys_storage_open(((f0 < 6) ? USB_MASS_STORAGE_1(f0) : USB_MASS_STORAGE_2(f0)), 0, &usb_handle, 0) == CELL_OK)
+		if(sys_storage_open(USB_MASS_STORAGE(f0), 0, &usb_handle, 0) == CELL_OK)
 		{
 			sys_storage_read(usb_handle, 0, sector, 1, tmp, &r, 0);
 			sys_storage_close(usb_handle);

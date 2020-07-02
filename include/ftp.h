@@ -1030,8 +1030,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							ssend(conn_s_ftp, FTP_OK_221); // Service closing control connection.
 							if(sysmem) sys_memory_free(sysmem);
 							working = 0;
-							if(_IS(cmd, "REBOOT")) save_file(WMNOSCAN, NULL, 0);
-							if(_IS(cmd, "SHUTDOWN")) {del_turnoff(1); vsh_shutdown();} else {del_turnoff(2); system_call_3(SC_SYS_POWER, SYS_REBOOT, NULL, 0);}
+							if(_IS(cmd, "REBOOT")) save_file(WMNOSCAN, NULL, SAVE_ALL);
+							if(_IS(cmd, "SHUTDOWN")) {del_turnoff(1); vsh_shutdown();} else {del_turnoff(2); vsh_reboot();}
 							sys_ppu_thread_exit(0);
 						}
 #ifdef USE_NTFS

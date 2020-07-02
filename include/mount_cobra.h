@@ -2,11 +2,11 @@
 // mount hdd0   -> /GAMES /GAMEZ /PS3ISO /PSXISO /PSXGAMES /PS2ISO /PSPISO /BDISO /DVDISO
 // mount usb*   -> /GAMES /GAMEZ /PS3ISO /PSXISO /PSXGAMES /PSPISO /BDISO /DVDISO
 //       iso.*  -> support split-iso
-// mount ntfs   -> .ntfs[PS3ISO] .ntfs[PSXISO].ntfs[BDISO] .ntfs[DVDISO] .ntfs[BDFILE]
-//    ps2 & psp -> are cached to hdd0
-//       psxiso -> use rawiso by default on NTFS due multi-disc support
-// mount net    -> /net0/PS3ISO /net0/PSXISO /net0/PSXGAMES /net0/BDISO /net0/DVDISO /net0/GAMES /net0/PKG
-//    ps2 & psp -> are cached to hdd0
+// mount ntfs   -> .ntfs[PS3ISO] .ntfs[PSXISO] .ntfs[PSPISO] .ntfs[BDISO] .ntfs[DVDISO] .ntfs[BDFILE]
+//          ps2 -> are cached to hdd0
+//       psxiso -> use rawseciso plugin by default on NTFS due multi-disc support
+// mount net    -> /net0/PS3ISO /net0/PSXISO /net0/PSXGAMES /net0/PSPISO /net0/BDISO /net0/DVDISO /net0/GAMES /net0/PKG
+//          ps2 -> are cached to hdd0
 //    Dump with /copy.ps3/net0/***PS3***/GAMES/BLES12345  -> /dev_hdd0/PS3ISO/BLES12345.iso
 //    Dump with /copy.ps3/net0/***DVD***/folder           -> /dev_hdd0/DVDISO/folder.iso
 
@@ -23,7 +23,7 @@
 			else if(strstr(_path, "/GAME"))
 			{
 				char extgdfile[strlen(_path) + 24], *extgdini = extgdfile;
-				sprintf(extgdfile, "%s/PS3_GAME/PS3GAME.INI", _path);
+				sprintf(extgdfile, "%s/PS3_GAME/PS3GAME.INI", _path); check_ps3_game(extgdfile);
 				if(read_file(extgdfile, extgdini, 12, 0))
 				{
 					if((extgd == 0) &&  (extgdini[10] & (1<<1))) set_gamedata_status(1, false); else
@@ -99,10 +99,9 @@
 				cobra_iso_list[n] = (char*)iso_list[n];
 			}
 
-
-			// ---------------
-			// mount NTFS ISO
-			// ---------------
+			// -----------------------
+			// mount extFAT / NTFS ISO
+			// -----------------------
 
 			char *ntfs_ext = strstr(_path, ".ntfs[");
 			if(ntfs_ext)
@@ -182,6 +181,13 @@
 	#endif
 					}
 
+#ifdef PKG_HANDLER
+					if(IS(ntfs_ext, ".ntfs[BDFILE]") && islike(ntfs_ext - 4, ".pkg"))
+					{
+						installPKG_all((char*)"/dev_bdvd", false);
+						goto exit_mount;
+					}
+#endif
 					// cache PS2ISO or PSPISO to HDD0
 					bool is_ps2 = IS(ntfs_ext, ".ntfs[PS2ISO]");
 					bool is_psp = IS(ntfs_ext, ".ntfs[PSPISO]");
@@ -245,7 +251,7 @@
 
 				if(_path[5] == NULL) strcat(_path, "/.");
 
-				char *netpath = _path + 5;
+				char *netpath = _path + 5, *pkg_slash = NULL;
 
 				size_t len = sprintf(netiso_args.path, "%s", netpath);
 
@@ -330,12 +336,16 @@
 					sprintf(netiso_args.path, "/***DVD***%s", "/ROMS");
 
 					sprintf(templn, "/dev_bdvd/%s", netpath + 6);
-					save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", templn, 0);
+					save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", templn, SAVE_ALL);
 					copy_rom_media(templn);
 				}
 				else
 				{
 					mount_unk = netiso_args.emu_mode = EMU_DVD;
+					if(!extcasecmp(netpath, ".pkg", 4))
+					{
+						pkg_slash = strrchr(netpath, '/'); if(pkg_slash) *pkg_slash = NULL;
+					}
 					if(!extcasecmp(netpath, ".iso", 4) || !extcasecmp(netpath, ".mdf", 4) || !extcasecmp(netpath, ".img", 4) || !extcasecmp(netpath, ".bin", 4)) ;
 					else
 						sprintf(netiso_args.path, "/***DVD***%s", netpath);
@@ -388,14 +398,20 @@
 					wait_for("/dev_bdvd", 15);
 
 					sys_map_path(PKGLAUNCH_DIR, NULL);
-					set_apphome (PKGLAUNCH_DIR "/PS3_GAME");
+					set_app_home (PKGLAUNCH_DIR "/PS3_GAME");
 
 					sys_map_path("/dev_bdvd/PS3_GAME", PKGLAUNCH_DIR "/PS3_GAME");
 					sys_map_path("/dev_bdvd/PS3_GAME/USRDIR/cores", isDir( RETROARCH_DIR1 ) ?
 																			RETROARCH_DIR1 "/USRDIR/cores" :
 																			RETROARCH_DIR2 "/USRDIR/cores" );
 				}
-
+#ifdef PKG_HANDLER
+				if(ret && (pkg_slash != NULL))
+				{
+					sprintf(_path, "/dev_bdvd/%s", pkg_slash + 1);
+					installPKG(_path, templn);
+				}
+#endif
 				goto exit_mount;
 			}
 
@@ -495,16 +511,13 @@
 					{
 						cellFsUnlink(TMP_DIR "/loadoptical"); //Cobra 8.x
 
-						TrackDef tracks[1];
-						tracks[0].lba = 0;
-						tracks[0].is_audio = 0;
-
 						#ifndef LITE_EDITION
 						// Auto-copy CONFIG from ManaGunZ
+						sprintf(templn, "%s", _path);
 						sprintf(_path, "%s.CONFIG", iso_list[0]);
 						if(!webman_config->ps2config && not_exists(_path))
 						{
-							cobra_mount_ps2_disc_image(cobra_iso_list, 1, tracks, 1);
+							mount_ps_disc_image(templn, cobra_iso_list, iso_parts, EMU_PS2_DVD);
 							sys_ppu_thread_usleep(2500);
 							cobra_send_fake_disc_insert_event();
 
@@ -562,13 +575,13 @@
 
 						// mount PS2 ISO
 						if(mount_unk == EMU_PS2_DVD)
-							cobra_mount_ps2_disc_image(cobra_iso_list, 1, tracks, 1);
+							mount_ps_disc_image(templn, cobra_iso_list, iso_parts, EMU_PS2_DVD);
 
 						// set fan to PS2 mode (constant fan speed)
 						if(webman_config->fanc) restore_fan(SET_PS2_MODE); //set_fan_speed( ((webman_config->ps2temp*255)/100), 0);
 
 						// create "wm_noscan" to avoid re-scan of XML returning to XMB from PS2
-						save_file(WMNOSCAN, NULL, 0);
+						save_file(WMNOSCAN, NULL, SAVE_ALL);
 
 						if(mount_unk == EMU_PS2_CD) goto exit_mount; // don't call cobra_send_fake_disc_insert_event again
 					}
@@ -582,59 +595,7 @@
 
 				else if(strstr(_path, "/PSXISO") || strstr(_path, "/PSXGAMES") || mount_unk == EMU_PSX)
 				{
-					int flen = strlen(_path) - 4; bool mount_iso = false;
-
-					if(flen < 0) ;
-
-					else if(!extcasecmp(_path, ".cue", 4) || !extcasecmp(_path, ".ccd", 4))
-					{
-						const char *iso_ext[8] = {".bin", ".iso", ".img", ".mdf", ".BIN", ".ISO", ".IMG", ".MDF"};
-						for(u8 e = 0; e < 8; e++)
-						{
-							sprintf(cobra_iso_list[0] + flen, "%s", iso_ext[e]);
-							mount_iso = file_exists(cobra_iso_list[0]); if(mount_iso) break;
-						}
-					}
-					else if(_path[flen] == '.')
-					{
-						const char *cue_ext[4] = {".cue", ".ccd", ".CUE", ".CCD"};
-						for(u8 e = 0; e < 4; e++)
-						{
-							sprintf(_path + flen, "%s", cue_ext[e]);
-							if(file_exists(_path)) break;
-						}
-						if(not_exists(_path)) sprintf(_path, "%s", cobra_iso_list[0]);
-					}
-
-					mount_iso = mount_iso || file_exists(cobra_iso_list[0]); ret = mount_iso; mount_unk = EMU_PSX;
-
-					if(!extcasecmp(_path, ".cue", 4) || !extcasecmp(_path, ".ccd", 4))
-					{
-						sys_addr_t sysmem = 0;
-						if(sys_memory_allocate(_64KB_, SYS_MEMORY_PAGE_SIZE_64K, &sysmem) == CELL_OK)
-						{
-							char *cue_buf = (char*)sysmem;
-							int cue_size = read_file(_path, cue_buf, _8KB_, 0);
-
-							if(cue_size > 16)
-							{
-								TrackDef tracks[MAX_TRACKS];
-								unsigned int num_tracks = parse_cue(templn, cue_buf, cue_size, tracks);
-
-								cobra_mount_psx_disc_image(cobra_iso_list[0], tracks, num_tracks);
-								mount_iso = false;
-							}
-							sys_memory_free(sysmem);
-						}
-					}
-
-					if(mount_iso)
-					{
-						TrackDef tracks[1];
-						tracks[0].lba = 0;
-						tracks[0].is_audio = 0;
-						cobra_mount_psx_disc_image(cobra_iso_list[0], tracks, 1);
-					}
+					ret = mount_ps_disc_image(_path, cobra_iso_list, 1, EMU_PSX);
 				}
 
 				// -------------------
@@ -658,6 +619,7 @@
 
 						// re-mount using proper media type
 						if(isDir("/dev_bdvd/PS3_GAME")) mount_unk = EMU_PS3; else
+						if(isDir("/dev_bdvd/PS3_GM01")) mount_unk = EMU_PS3; else
 						if(isDir("/dev_bdvd/VIDEO_TS")) mount_unk = EMU_DVD; else
 						if(file_exists("/dev_bdvd/SYSTEM.CNF") || strcasestr(_path, "PS2")) mount_unk = EMU_PS2_DVD; else
 						if(strcasestr(_path, "PSP")!=NULL && !extcasecmp(_path, ".iso", 4)) mount_unk = EMU_PSP; else
@@ -700,8 +662,8 @@
 			fix_game(_path, title_id, webman_config->fixgame);
 		#else
 			char filename[STD_PATH_LEN + 20];
-			sprintf(filename, "%s/PS3_GAME/PARAM.SFO", _path);
 
+			sprintf(filename, "%s/PS3_GAME/PARAM.SFO", _path);
 			getTitleID(filename, title_id, GET_TITLE_ID_ONLY);
 		#endif
 			// ----

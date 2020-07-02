@@ -212,61 +212,61 @@
 
 	<View id="seg_webman_nethost_links_items_net0">
 		<Items>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link1" src="#seg_webman_nethost0"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link2" src="#seg_webman_nethost0_pkg"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link3" src="#seg_webman_nethost0_video"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link4" src="#seg_webman_nethost0_music"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link5" src="#seg_webman_nethost0_picture"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link6" src="#seg_webman_nethost0_roms"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link7" src="#seg_webman_nethost0_pup"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost0_link1" src="#seg_webman_nethost0"/>
 		</Items>
 	</View>
 
 	<View id="seg_webman_nethost_links_items_net1">
 		<Items>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link1" src="#seg_webman_nethost1"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link2" src="#seg_webman_nethost1_pkg"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link3" src="#seg_webman_nethost1_video"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link4" src="#seg_webman_nethost1_music"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link5" src="#seg_webman_nethost1_picture"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link6" src="#seg_webman_nethost1_roms"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link7" src="#seg_webman_nethost1_pup"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost1_link1" src="#seg_webman_nethost1"/>
 		</Items>
 	</View>
 
 	<View id="seg_webman_nethost_links_items_net2">
 		<Items>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link1" src="#seg_webman_nethost2"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link2" src="#seg_webman_nethost2_pkg"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link3" src="#seg_webman_nethost2_video"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link4" src="#seg_webman_nethost2_music"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link5" src="#seg_webman_nethost2_picture"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link6" src="#seg_webman_nethost2_roms"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link7" src="#seg_webman_nethost2_pup"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost2_link1" src="#seg_webman_nethost2"/>
 		</Items>
 	</View>
 
 	<View id="seg_webman_nethost_links_items_net3">
 		<Items>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link1" src="#seg_webman_nethost3"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link2" src="#seg_webman_nethost3_pkg"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link3" src="#seg_webman_nethost3_video"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link4" src="#seg_webman_nethost3_music"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link5" src="#seg_webman_nethost3_picture"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link6" src="#seg_webman_nethost3_roms"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link7" src="#seg_webman_nethost3_pup"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost3_link1" src="#seg_webman_nethost3"/>
 		</Items>
 	</View>
 
 	<View id="seg_webman_nethost_links_items_net4">
 		<Items>
-			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link1" src="#seg_webman_nethost4"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link2" src="#seg_webman_nethost4_pkg"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link3" src="#seg_webman_nethost4_video"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link4" src="#seg_webman_nethost4_music"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link5" src="#seg_webman_nethost4_picture"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link6" src="#seg_webman_nethost4_roms"/>
 			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link7" src="#seg_webman_nethost4_pup"/>
+			<Query class="type:x-xmb/folder-pixmap" key="webman_nethost4_link1" src="#seg_webman_nethost4"/>
 		</Items>
 	</View>
 

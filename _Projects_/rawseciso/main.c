@@ -731,7 +731,7 @@ static uint32_t cached_cd_sector=0x80000000;
 
 static int process_read_cd_2048_cmd(uint8_t *buf, uint32_t start_sector, uint32_t sector_count)
 {
-	uint32_t capacity = sector_count*2048;
+	uint32_t capacity = sector_count * 2048;
 	uint32_t fit = capacity/CD_SECTOR_SIZE_2352;
 	uint32_t rem = (sector_count-fit);
 	uint32_t i;
@@ -869,7 +869,7 @@ static void get_psx_track_datas(void)
 		while(k < (int) track_datas[3])
 		{
 			tracks[num_tracks].adr_control = (buff[k + 1] != 0x14) ? 0x10 : 0x14;
-			tracks[num_tracks].track_number = num_tracks+1;
+			tracks[num_tracks].track_number = num_tracks + 1;
 			tracks[num_tracks].track_start_addr = ((uint32_t) buff[k + 4] << 24) | ((uint32_t) buff[k + 5] << 16) |
 												  ((uint32_t) buff[k + 6] << 8)  | ((uint32_t) buff[k + 7]);
 			num_tracks++;

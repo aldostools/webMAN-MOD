@@ -245,7 +245,7 @@ static char *translate_path(char *path, int *viso)
 
 	size_t path_len = strlen(path);
 
-	p = (char *)malloc(root_len + path_len + 1);
+	p = (char *)malloc(MAX_PATH_LEN + root_len + path_len + 1);
 	if(!p)
 	{
 		printf("Memory allocation error\n");
@@ -326,7 +326,7 @@ static char *translate_path(char *path, int *viso)
 					while ((*dir_path == '\r') || (*dir_path == '\n') || (*dir_path == '\t') || (*dir_path == ' ')) dir_path++;
 					char *eol = strstr(dir_path, "\n"); if(eol) {*eol = 0, dlen = eol - dir_path;} else dlen = strlen(dir_path);
 
-					char *filepath = (char *)malloc(dlen + flen + 1);
+					char *filepath = (char *)malloc(MAX_PATH_LEN + dlen + flen + 1);
 
 					if(filepath)
 					{
@@ -455,7 +455,7 @@ static int process_open_cmd(client_t *client, netiso_open_cmd *cmd)
 	}
 
 	//DPRINTF("fp_len = %d\n", fp_len);
-	filepath = (char *)malloc(fp_len + 1);
+	filepath = (char *)malloc(MAX_PATH_LEN + fp_len + 1);
 	if(!filepath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -735,7 +735,7 @@ static int process_create_cmd(client_t *client, netiso_create_cmd *cmd)
 
 	fp_len = BE16(cmd->fp_len);
 
-	filepath = (char *)malloc(fp_len + 1);
+	filepath = (char *)malloc(MAX_PATH_LEN + fp_len + 1);
 	if(!filepath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -851,7 +851,7 @@ static int process_delete_file_cmd(client_t *client, netiso_delete_file_cmd *cmd
 
 	fp_len = BE16(cmd->fp_len);
 
-	filepath = (char *)malloc(fp_len + 1);
+	filepath = (char *)malloc(MAX_PATH_LEN + fp_len + 1);
 	if(!filepath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -901,7 +901,7 @@ static int process_mkdir_cmd(client_t *client, netiso_mkdir_cmd *cmd)
 
 	dp_len = BE16(cmd->dp_len);
 
-	dirpath = (char *)malloc(dp_len + 1);
+	dirpath = (char *)malloc(MAX_PATH_LEN + dp_len + 1);
 	if(!dirpath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -955,7 +955,7 @@ static int process_rmdir_cmd(client_t *client, netiso_rmdir_cmd *cmd)
 
 	dp_len = BE16(cmd->dp_len);
 
-	dirpath = (char *)malloc(dp_len + 1);
+	dirpath = (char *)malloc(MAX_PATH_LEN + dp_len + 1);
 	if(!dirpath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -1005,7 +1005,7 @@ static int process_open_dir_cmd(client_t *client, netiso_open_dir_cmd *cmd)
 
 	dp_len = BE16(cmd->dp_len);
 
-	dirpath = (char *)malloc(dp_len + 1);
+	dirpath = (char *)malloc(MAX_PATH_LEN + dp_len + 1);
 	if(!dirpath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -1138,7 +1138,7 @@ static int process_read_dir_entry_cmd(client_t *client, netiso_read_dir_entry_cm
 		goto send_result_read_dir;
 	}
 
-	path = (char *)malloc(strlen(client->dirpath) + d_name_len + 2);
+	path = (char *)malloc(MAX_PATH_LEN + strlen(client->dirpath) + d_name_len + 2);
 	if(!path)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -1252,7 +1252,7 @@ static int process_read_dir_cmd(client_t *client, netiso_read_dir_entry_cmd *cmd
 	netiso_read_dir_result_data *dir_entries = (netiso_read_dir_result_data *) malloc(sizeof(netiso_read_dir_result_data) * MAX_ENTRIES);
 	memset(dir_entries, 0, sizeof(netiso_read_dir_result_data) * MAX_ENTRIES);
 
-	char *path = (char*)malloc(root_len + strlen(client->dirpath + root_len) + MAX_FILE_LEN + 2);
+	char *path = (char*)malloc(MAX_PATH_LEN + root_len + strlen(client->dirpath + root_len) + MAX_FILE_LEN + 2);
 
 	if ((!client->dir) || (!client->dirpath) || (!dir_entries) || (!path))
 	{
@@ -1452,7 +1452,7 @@ static int process_stat_cmd(client_t *client, netiso_stat_cmd *cmd)
 
 	fp_len = BE16(cmd->fp_len);
 
-	filepath = (char *)malloc(fp_len + 1);
+	filepath = (char *)malloc(MAX_PATH_LEN + fp_len + 1);
 	if(!filepath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -1521,7 +1521,7 @@ static int process_get_dir_size_cmd(client_t *client, netiso_get_dir_size_cmd *c
 
 	dp_len = BE16(cmd->dp_len);
 
-	dirpath = (char *)malloc(dp_len + 1);
+	dirpath = (char *)malloc(MAX_PATH_LEN + dp_len + 1);
 	if(!dirpath)
 	{
 		DPRINTF("CRITICAL: memory allocation error\n");
@@ -1667,7 +1667,7 @@ int main(int argc, char *argv[])
 	printf("\033[1;37m");
 #endif
 
-	printf("ps3netsrv build 20200529");
+	printf("ps3netsrv build 20200620");
 
 #ifdef WIN32
 	SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), 0x0C );

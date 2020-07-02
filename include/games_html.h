@@ -755,7 +755,10 @@ next_html_entry:
 							}
 							else
 #endif
+							{
 								sprintf(templn, "%s/%s/PS3_GAME/PARAM.SFO", param, entry.entry_name.d_name);
+								check_ps3_game(templn);
+							}
 						}
 
 						if(is_iso || (IS_JB_FOLDER && file_exists(templn)))

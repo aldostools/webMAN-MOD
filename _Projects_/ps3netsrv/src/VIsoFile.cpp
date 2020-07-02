@@ -177,7 +177,7 @@ static int get_ucs2_from_utf8(const unsigned char *input, const unsigned char **
 		return FAILED;
 	}
 
-	if (input[0] < 0x80)
+	//if (input[0] < 0x80)
 	{
 		*end_ptr = input + 1;
 		return input[0];
@@ -204,6 +204,7 @@ static int get_ucs2_from_utf8(const unsigned char * input, const unsigned char *
 		return FAILED;
 	}
 
+	// assumes proper encoding
 	if (input[0] < 0x80)
 	{
 		*end_ptr = input + 1;
@@ -211,55 +212,55 @@ static int get_ucs2_from_utf8(const unsigned char * input, const unsigned char *
 	}
 	if ((input[0] & 0xE0) == 0xC0)
 	{
-		if (input[1] == 0)
+		/*if (input[1] == 0)
 		{
-			printf("viso error 0xE0: in get_ucs2_from_utf8\n");
+			printf("viso error 0xC0: in get_ucs2_from_utf8\n");
 			return FAILED;
-		}
+		}*/
 
 		*end_ptr = input + 2;
 		return (input[0] & 0x1F)<<6 | (input[1] & 0x3F);
 	}
 	if ((input[0] & 0xF0) == 0xE0)
 	{
-		if ((input[1] == 0) || (input[2] == 0))
+		/*if ((input[1] == 0) || (input[2] == 0))
 		{
-			printf("viso error 0xF0: in get_ucs2_from_utf8\n");
+			printf("viso error 0xE0: in get_ucs2_from_utf8\n");
 			return FAILED;
-		}
+		}*/
 
 		*end_ptr = input + 3;
 		return (input[0] & 0x0F)<<12 | (input[1] & 0x3F)<<6 | (input[2] & 0x3F);
 	}
 	if ((input[0] & 0xF8) == 0xF0)
 	{
-		if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0))
+		/*if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0))
 		{
-			printf("viso error 0xF8: in get_ucs2_from_utf8\n");
+			printf("viso error 0xF0: in get_ucs2_from_utf8\n");
 			return FAILED;
-		}
+		}*/
 
 		*end_ptr = input + 4;
 		return (input[0] & 0x07)<<18 | (input[1] & 0x3F)<<12 | (input[2] & 0x3F)<<6 | (input[3] & 0x3F);
 	}
 	if ((input[0] & 0xFC) == 0xF8)
 	{
-		if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0) || (input[4] == 0))
+		/*if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0) || (input[4] == 0))
 		{
-			printf("viso error 0xFC: in get_ucs2_from_utf8\n");
+			printf("viso error 0xF8: in get_ucs2_from_utf8\n");
 			return FAILED;
-		}
+		}*/
 
 		*end_ptr = input + 4;
 		return (input[0] & 0x03)<<24 | (input[1] & 0x3F)<<18 | (input[2] & 0x3F)<<12 | (input[3] & 0x3F)<<6 | (input[4] & 0x3F);
 	}
 	if ((input[0] & 0xFE) == 0xFC)
 	{
-		if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0) || (input[4] == 0) || (input[5] == 0))
+		/*if ((input[1] == 0) || (input[2] == 0) || (input[3] == 0) || (input[4] == 0) || (input[5] == 0))
 		{
-			printf("viso error 0xFE: in get_ucs2_from_utf8\n");
+			printf("viso error 0xFC: in get_ucs2_from_utf8\n");
 			return FAILED;
-		}
+		}*/
 
 		*end_ptr = input + 5;
 		return (input[0] & 0x01)<<30 | (input[1] & 0x3F)<<24 | (input[2] & 0x3F)<<18 | (input[3] & 0x3F)<<12 | (input[4] & 0x3F)<<6 | (input[5] & 0x3F);
@@ -601,7 +602,7 @@ bool VIsoFile::isDirectChild(DirList *dir, DirList *parentCheck)
 
 Iso9660DirectoryRecord *VIsoFile::findDirRecord(const char *dirName, Iso9660DirectoryRecord *parentRecord, size_t size, bool joliet)
 {
-	uint8_t *strCheck = new uint8_t[256];
+	uint8_t strCheck[256];
 	uint8_t *buf, *p;
 	uint32_t pos = 0;
 	uint8_t strCheckSize;
@@ -639,7 +640,6 @@ Iso9660DirectoryRecord *VIsoFile::findDirRecord(const char *dirName, Iso9660Dire
 
 		if ((current->len_fi == strCheckSize) && (memcmp(&current->fi, strCheck, strCheckSize) == SUCCEEDED))
 		{
-			delete[] strCheck;
 			return current;
 		}
 
@@ -648,7 +648,6 @@ Iso9660DirectoryRecord *VIsoFile::findDirRecord(const char *dirName, Iso9660Dire
 	}
 
 	//printf("%s not found (joliet=%d)!!!!!!!\n", dirName, joliet);
-	delete[] strCheck;
 	return NULL;
 }
 
@@ -872,6 +871,7 @@ bool VIsoFile::buildContent(DirList *dirList, bool joliet)
 			{
 				uint16_t len = fileList->file_len;
 				char *s = new char[len  + 3];
+				if (!s) {free(record); return false;}
 				strcpy(s, fileName); strcpy(s + len, ";1");
 				record->len_fi = utf8_to_ucs2((const unsigned char *)s, (uint16_t *)&record->fi, MAX_ISONAME / 2) * 2;
 				delete[] s;
@@ -1662,7 +1662,7 @@ ssize_t VIsoFile::read(void *buf, size_t nbyte)
 							return r;
 						}
 
-						if (this_r != to_read)
+						if (this_r != (int64_t)to_read)
 						{
 							fprintf(stderr, "VISO: read on file %s returned less data than expected (file modified?)\n", fileList->path);
 							return r;

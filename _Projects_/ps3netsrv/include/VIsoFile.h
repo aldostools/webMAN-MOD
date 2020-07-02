@@ -8,9 +8,6 @@
 #include "compat.h"
 #include "iso9660.h"
 
-// uncomment if needed
-// typedef long long int off64_t;
-
 typedef struct _FileList
 {
 	char *path;
