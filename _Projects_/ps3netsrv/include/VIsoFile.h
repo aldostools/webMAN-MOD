@@ -35,25 +35,25 @@ typedef struct _DirList
 
 typedef struct
 {
-	/*00*/uint32_t startSector;// first sector of the range (inclusive)
-	/*04*/uint32_t endSector; // last sector of the range (inclusive)
+	/*00*/uint32_t startSector;			// first sector of the range (inclusive)
+	/*04*/uint32_t endSector;			// last sector of the range (inclusive)
 } SectorRangeEntry;
 
 typedef struct
 {
-	/*00*/uint32_t numRanges; // number of unencrypted sector ranges
-	/*04*/uint32_t zero; // ? (this is set to zero)
-	/*08*/SectorRangeEntry ranges[255]; // all unencrypted sector ranges
+	/*00*/uint32_t numRanges;			// number of unencrypted sector ranges
+	/*04*/uint32_t zero;				// ? (this is set to zero)
+	/*08*/SectorRangeEntry ranges[255];	// all unencrypted sector ranges
 } DiscRangesSector;
 
 // 0x200 bytes
 typedef struct
 {
-	/*000*/char consoleId[0x10];	// "PlayStation3\0\0\0\0"
-	/*010*/char productId[0x20];	// "BCES-00104      ", "                "
-	/*030*/uint8_t zeros[0x10]; 	// all 0x00
-	/*040*/uint8_t info[0x1B0]; 	// disc info
-	/*1F0*/uint8_t	hash[0x10]; 	// a hash 0x1B0 bytes of 'info' above
+	/*000*/char consoleId[0x10];		// "PlayStation3\0\0\0\0"
+	/*010*/char productId[0x20];		// "BCES-00104      ", "                "
+	/*030*/uint8_t zeros[0x10];			// all 0x00
+	/*040*/uint8_t info[0x1B0];			// disc info
+	/*1F0*/uint8_t	hash[0x10];			// a hash 0x1B0 bytes of 'info' above
 } DiscInfoSector;
 
 class VIsoFile : public AbstractFile
@@ -119,5 +119,3 @@ public:
 };
 
 #endif
-
-
