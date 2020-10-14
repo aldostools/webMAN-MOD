@@ -1,10 +1,10 @@
 OS = windows
 BUILD_TYPE = release_static
-
 OUTPUT := ps3netsrv
+
 OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/File.o src/VIsoFile.o
 
-CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CFLAGS += -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
 CXXFLAGS += -Wall -Wno-format -I./include -std=c++0x -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
 
 #CFLAGS += -Doff64_t=off_t
@@ -13,42 +13,35 @@ CXXFLAGS += -Wall -Wno-format -I./include -std=c++0x -D_LARGEFILE64_SOURCE -D_FI
 #CFLAGS += -DOPT_FILE_SEEK
 #CXXFLAGS += -DOPT_FILE_SEEK
 
-#CFLAGS += -DNOSSL
-#CXXFLAGS +=-DNOSSL
 #OBJS = src/main.o src/compat.o src/File.o src/VIsoFile.o
+#CFLAGS += -DNOSSL
+#CXXFLAGS += -DNOSSL
 
 LDFLAGS = -L.
 LIBS = -lstdc++
-
-# detect if rm is available
-ifeq ($(wildcard $(addsuffix /rm,$(subst :, ,$(PATH)))),)
-RM = del /Q /F
-SUBST = $(subst /,\,$1)
-ERRIGNORE = 2>NUL || true
-else
-RM = rm -f
-SUBST = $1
-ERRIGNORE = 2>/dev/null
-endif
 
 ifeq ($(OS), linux)
 LIBS += -lpthread
 endif
 
+ifeq ($(OS), macos)
+LIBS += -lpthread
+endif
+
 ifeq ($(OS), windows)
+CC = gcc
+CXX = g++
 CFLAGS += -D_OS_WINDOWS -DWIN32
 CXXFLAGS += -D_OS_WINDOWS -DWIN32
 OBJS += src/scandir.o src/dirent.o
-CC = gcc
-CXX = g++
 LIBS += -lws2_32
 OUTPUT := $(OUTPUT).exe
 endif
 
 ifeq ($(OS), cross)
-OBJS += scandir.o dirent.o
 CC = i586-pc-mingw32-gcc
 CXX = i586-pc-mingw32-g++
+OBJS += scandir.o dirent.o
 LIBS += -lws2_32
 OUTPUT := $(OUTPUT).exe
 endif
@@ -59,18 +52,29 @@ CXXFLAGS += -O0 -g3 -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), debug_static)
-CFLAGS += -O0 -static -g3 -DDEBUG
-CXXFLAGS += -O0 -static -g3 -DDEBUG
+CFLAGS += -static -O0 -g3 -DDEBUG
+CXXFLAGS += -static -O0 -g3 -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), release)
-CFLAGS += -O3 -s -DNDEBUG
-CXXFLAGS += -O3 -s -DNDEBUG
+CFLAGS += -O3 -DNDEBUG
+CXXFLAGS += -O3 -DNDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), release_static)
-CFLAGS += -static -O3 -s -DNDEBUG
-CXXFLAGS += -static -O3 -s -DNDEBUG
+CFLAGS += -static -O3 -DNDEBUG
+CXXFLAGS += -static -O3 -DNDEBUG
+endif
+
+# detect if rm is available
+ifeq ($(wildcard $(addsuffix /rm,$(subst :, ,$(PATH)))),)
+RM = del /Q /F
+SUBST = $(subst /,\,$1)
+ERRIGNORE = 2>NUL || true
+else
+RM = rm -f
+SUBST = $1
+ERRIGNORE = 2>/dev/null
 endif
 
 all: $(OUTPUT)
