@@ -5,13 +5,13 @@ OUTPUT := ps3netsrv
 OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/File.o src/VIsoFile.o
 
 CFLAGS = -Wall -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
-CPPFLAGS += -Wall -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CXXFLAGS += -Wall -I./include -std=c++0x -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
 
 CFLAGS += -Doff64_t=off_t
-CPPFLAGS += -Doff64_t=off_t
+CXXFLAGS += -Doff64_t=off_t
 
 #CFLAGS += -DNOSSL
-#CPPFLAGS +=-DNOSSL
+#CXXFLAGS +=-DNOSSL
 #OBJS = src/main.o src/compat.o src/File.o src/VIsoFile.o
 
 LDFLAGS = -L.
@@ -49,12 +49,12 @@ endif
 
 ifeq ($(BUILD_TYPE), debug)
 CFLAGS += -DDEBUG
-CPPFLAGS += -DDEBUG
+CXXFLAGS += -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), debug_static)
 CFLAGS += -DDEBUG -static
-CPPFLAGS += -DDEBUG
+CXXFLAGS += -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), release)

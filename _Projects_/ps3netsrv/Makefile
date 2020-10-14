@@ -5,18 +5,16 @@ OUTPUT := ps3netsrv
 OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/File.o src/VIsoFile.o
 
 CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
-CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
-
-CPPFLAGS += -std=c++0x
+CXXFLAGS += -Wall -Wno-format -I./include -std=c++0x -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
 
 #CFLAGS += -Doff64_t=off_t
-#CPPFLAGS += -Doff64_t=off_t
+#CXXFLAGS += -Doff64_t=off_t
 
 #CFLAGS += -DOPT_FILE_SEEK
-#CPPFLAGS += -DOPT_FILE_SEEK
+#CXXFLAGS += -DOPT_FILE_SEEK
 
 #CFLAGS += -DNOSSL
-#CPPFLAGS +=-DNOSSL
+#CXXFLAGS +=-DNOSSL
 #OBJS = src/main.o src/compat.o src/File.o src/VIsoFile.o
 
 LDFLAGS = -L.
@@ -39,7 +37,7 @@ endif
 
 ifeq ($(OS), windows)
 CFLAGS += -D_OS_WINDOWS -DWIN32
-CPPFLAGS += -D_OS_WINDOWS -DWIN32
+CXXFLAGS += -D_OS_WINDOWS -DWIN32
 OBJS += src/scandir.o src/dirent.o
 CC = gcc
 CXX = g++
@@ -57,22 +55,22 @@ endif
 
 ifeq ($(BUILD_TYPE), debug)
 CFLAGS += -O0 -g3 -DDEBUG
-CPPFLAGS += -O0 -g3 -DDEBUG
+CXXFLAGS += -O0 -g3 -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), debug_static)
 CFLAGS += -O0 -static -g3 -DDEBUG
-CPPFLAGS += -O0 -static -g3 -DDEBUG
+CXXFLAGS += -O0 -static -g3 -DDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), release)
 CFLAGS += -O3 -s -DNDEBUG
-CPPFLAGS += -O3 -s -DNDEBUG
+CXXFLAGS += -O3 -s -DNDEBUG
 endif
 
 ifeq ($(BUILD_TYPE), release_static)
 CFLAGS += -static -O3 -s -DNDEBUG
-CPPFLAGS += -static -O3 -s -DNDEBUG
+CXXFLAGS += -static -O3 -s -DNDEBUG
 endif
 
 all: $(OUTPUT)

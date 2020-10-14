@@ -31,7 +31,8 @@ File::File() : enc_type_(kDiscTypeNone), region_count_(0), region_info_(NULL)
 
 	set_last_seek(0);
 
-	is_multipart = index = 0;
+	is_multipart = 0;
+	index = 0;
 
 	for (uint8_t i = 0; i < 64; i++)
 		fp[i] = INVALID_FD;
@@ -89,12 +90,11 @@ int File::open(const char *path, int flags)
 	int flen = plen - 6;
 
 	if (flen < 0) {
-        flen = 0;
-        is_multipart = 0;
-    }
-	else {
-        is_multipart = (strstr(path + flen, ".iso.0") != NULL) || (strstr(path + flen, ".ISO.0") != NULL);
-    }
+		flen = 0;
+		is_multipart = 0;
+	} else {
+		is_multipart = (strstr(path + flen, ".iso.0") != NULL) || (strstr(path + flen, ".ISO.0") != NULL);
+	}
 
 	///// check path for encrypted-3k3yredump-isos by NvrBst ///////
 
@@ -298,13 +298,14 @@ int File::close(void)
 	// close multi part isos (2015 AV)
 	for (uint8_t i = 1; i < 64; i++)
 	{
-		if(FD_OK(fp[i]))
+		if (FD_OK(fp[i]))
 			close_file(fp[i]);
 
 		fp[i] = INVALID_FD;
 	}
 
-	is_multipart = index = 0;
+	is_multipart = 0;
+	index = 0;
 
 	return ret;
 }
@@ -378,7 +379,6 @@ ssize_t File::read(void *buf, size_t nbyte)
 						static_cast<unsigned long int>(read_position)
 					);
 				}
-
 				return ret;
 			}
 		}

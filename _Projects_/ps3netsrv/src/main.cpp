@@ -2,13 +2,12 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <memory>
 #include <dirent.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <memory>
-
 
 #ifndef WIN32
 #include <ifaddrs.h>
@@ -1070,6 +1069,7 @@ static int process_open_dir_cmd(client_t *client, netiso_open_dir_cmd *cmd)
 
 	normalize_path(dirpath, true);
 	client->dir = opendir(dirpath);
+
 	if (!client->dir)
 	{
 		//printf("open dir error on \"%s\"\n", dirpath);
@@ -1187,7 +1187,7 @@ static int process_read_dir_entry_cmd(client_t *client, netiso_read_dir_entry_cm
 
 	if ((st.mode & S_IFDIR) == S_IFDIR)
 	{
-		if(version == 1)
+		if (version == 1)
 		{
 			result_v1.file_size = BE64(0);
 			result_v1.is_directory = 1;
@@ -1724,23 +1724,23 @@ int main(int argc, char *argv[])
 
 		// Use current path as default shared directory
 		if ((filename != NULL) && (
-			(stat_file("./PS3ISO",				&fs) >= 0) ||
-			(stat_file("./PSXISO",				&fs) >= 0) ||
-			(stat_file("./GAMES",				&fs) >= 0) ||
-			(stat_file("./GAMEZ",				&fs) >= 0) ||
-			(stat_file("./DVDISO",				&fs) >= 0) ||
-			(stat_file("./BDISO",				&fs) >= 0) ||
-			(stat_file("./ROMS",				&fs) >= 0) ||
-			(stat_file("./PKG",					&fs) >= 0) ||
-			(stat_file("./PS3ISO.INI",			&fs) >= 0) ||
-			(stat_file("./PSXISO.INI",			&fs) >= 0) ||
-			(stat_file("./GAMES.INI",			&fs) >= 0) ||
-			(stat_file("./GAMEZ.INI",			&fs) >= 0) ||
-			(stat_file("./DVDISO.INI",			&fs) >= 0) ||
-			(stat_file("./BDISO.INI",			&fs) >= 0) ||
-			(stat_file("./ROMS.INI",			&fs) >= 0) ||
-			(stat_file("./PKG.INI",				&fs) >= 0) ||
-			(stat_file("./PS3_NET_Server.cfg",	&fs) >= 0)
+			(stat_file("./PS3ISO",              &fs) >= 0) ||
+			(stat_file("./PSXISO",              &fs) >= 0) ||
+			(stat_file("./GAMES",               &fs) >= 0) ||
+			(stat_file("./GAMEZ",               &fs) >= 0) ||
+			(stat_file("./DVDISO",              &fs) >= 0) ||
+			(stat_file("./BDISO",               &fs) >= 0) ||
+			(stat_file("./ROMS",                &fs) >= 0) ||
+			(stat_file("./PKG",                 &fs) >= 0) ||
+			(stat_file("./PS3ISO.INI",          &fs) >= 0) ||
+			(stat_file("./PSXISO.INI",          &fs) >= 0) ||
+			(stat_file("./GAMES.INI",           &fs) >= 0) ||
+			(stat_file("./GAMEZ.INI",           &fs) >= 0) ||
+			(stat_file("./DVDISO.INI",          &fs) >= 0) ||
+			(stat_file("./BDISO.INI",           &fs) >= 0) ||
+			(stat_file("./ROMS.INI",            &fs) >= 0) ||
+			(stat_file("./PKG.INI",             &fs) >= 0) ||
+			(stat_file("./PS3_NET_Server.cfg",  &fs) >= 0)
 		)) {
 			argv[1] = argv[0];
 			*(filename - 1) = '\0';
@@ -1816,9 +1816,10 @@ int main(int argc, char *argv[])
 	// Parse port argument
 	if (argc > 2)
 	{
-		uint32_t u;
+		char *endptr;
+		uint32_t u = strtoul(argv[2], &endptr, 0);
 
-		if (sscanf(argv[2], "%u", &u) != 1)
+		if (argv[2] == endptr)
 		{
 			printf("Wrong port specified.\n");
 			goto exit_error;
@@ -1845,10 +1846,12 @@ int main(int argc, char *argv[])
 
 		for (int i = 3; i >= 0; i--)
 		{
-			uint32_t u;
 			int wildcard = 0;
 
-			if (sscanf(p, "%u", &u) != 1)
+			char *endptr;
+			uint32_t u = strtoul(p, &endptr, 0);
+
+			if (p == endptr)
 			{
 				if (i == 0)
 				{

@@ -1,8 +1,8 @@
 #ifndef __ABSTRACTFILE_H__
 #define __ABSTRACTFILE_H__
 
-#include <stdlib.h>
-#include <stdint.h>
+#include <cstdlib>
+#include <cstdint>
 #include "compat.h"
 
 class AbstractFile

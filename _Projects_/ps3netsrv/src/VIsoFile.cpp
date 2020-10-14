@@ -68,9 +68,7 @@ static uint8_t strncpy_upper(char *s1, const char *s2, uint8_t n)
 			return i;
 
 		if ((s1[i] >= 'a') && (s1[i] <= 'z'))
-		{
 			s1[i] -= ('a'-'A');
-		}
 	}
 
 	return n;
@@ -112,9 +110,7 @@ static bool getFileSizeAndProcessMultipart(char *file, off64_t *size, bool multi
 		*size += statbuf.file_size;
 
 		if ((i > 1) && (prev_size & SECTOR_MASK))
-		{
 			fprintf(stderr, "666XX file must be multiple of sector, except last fragment. (file=%s)\n", file);
-		}
 
 		prev_size = statbuf.file_size;
 	}
@@ -165,13 +161,14 @@ static void genIso9660TimePvd(time_t t, char *volumeTime)
 static int get_ucs2_from_utf8(const unsigned char *input, const unsigned char **end_ptr)
 {
 	// We are not really getting utf8, but 8-bits local charset. We only support ansi in win32, atm
-	if(!input)
+	if (!input)
 	{
 		printf("viso error: no input in get_ucs2_from_utf8\n");
 		return FAILED;
 	}
 
 	*end_ptr = input;
+
 	if (input[0] == 0)
 	{
 		printf("viso error: blank input in get_ucs2_from_utf8\n");
@@ -192,13 +189,14 @@ static int get_ucs2_from_utf8(const unsigned char *input, const unsigned char **
 
 static int get_ucs2_from_utf8(const unsigned char * input, const unsigned char ** end_ptr)
 {
-	if(!input)
+	if (!input)
 	{
 		printf("viso error: no input in get_ucs2_from_utf8\n");
 		return FAILED;
 	}
 
 	*end_ptr = input;
+
 	if (input[0] == 0)
 	{
 		printf("viso error: blank input in get_ucs2_from_utf8\n");
@@ -287,7 +285,7 @@ static int utf8_to_ucs2(const unsigned char *utf8, uint16_t *ucs2, uint16_t maxL
 		if (ch < 0)
 			break;
 
-		ucs2[length++] = BE16(ch&0xFFFF);
+		ucs2[length++] = BE16(ch & 0xFFFF);
 	}
 
 	return length;
@@ -306,7 +304,7 @@ static void get_rand(void *bfr, uint32_t size)
 	if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
 		fprintf(stderr, "Error aquiring crypt context.\n");
 
-	if (!CryptGenRandom(hProv, size, (BYTE *)bfr))
+	if (!CryptGenRandom(hProv, size, static_cast<BYTE *>(bfr)))
 		fprintf(stderr, "Errorgetting random numbers.\n");
 
 	CryptReleaseContext(hProv, 0);
@@ -420,7 +418,7 @@ static bool get_title_id(const char *dir, char *title_id)
 
 static int select_directories(const struct dirent2 *entry)
 {
-	if(!entry)
+	if (!entry)
 		return false;
 
 	if (entry->d_type & DT_DIR)
@@ -430,13 +428,12 @@ static int select_directories(const struct dirent2 *entry)
 
 		return true;
 	}
-
 	return false;
 }
 
 static int select_files(const struct dirent2 *entry)
 {
-	if((!entry) || (entry->d_type & DT_DIR))
+	if ((!entry) || (entry->d_type & DT_DIR))
 		return false;
 
 	return true;
@@ -504,7 +501,7 @@ void VIsoFile::reset(void)
 		pathTableJolietL = NULL;
 	}
 
-	if(pathTableJolietM)
+	if (pathTableJolietM)
 	{
 		delete [] pathTableJolietM;
 		pathTableJolietM = NULL;
@@ -553,7 +550,7 @@ void VIsoFile::reset(void)
 
 DirList *VIsoFile::getParent(DirList *dirList)
 {
-	if(!dirList)
+	if (!dirList)
 		return dirList;
 
 	if (dirList == rootList)
@@ -1154,10 +1151,12 @@ bool VIsoFile::build(const char *inDir)
 
 		count = scandir(dirList->path, &files, select_files, alphasort);
 
-		if(files)
+		if (files) {
 			dlen = dirList->full_len;
-		else
-			dlen = count = 0;
+		} else {
+			dlen = 0;
+			count = 0;
+		}
 
 		for (int i = 0; i < count; i++)
 		{
@@ -1210,7 +1209,6 @@ bool VIsoFile::build(const char *inDir)
 					error = true;
 				}
 			}
-
 			free(files[i]);
 		}
 
@@ -1468,7 +1466,7 @@ bool VIsoFile::generate(const char *inDir, const char *volumeName, const char *g
 		delete [] fsBuf;
 
 	fsBuf = new uint8_t[fsBufSize];
-	if(!fsBuf)
+	if (!fsBuf)
 		return false;
 
 	memset(fsBuf, 0, fsBufSize);
@@ -1479,7 +1477,7 @@ bool VIsoFile::generate(const char *inDir, const char *volumeName, const char *g
 
 int VIsoFile::open(const char *path, int flags)
 {
-	if(!path)
+	if (!path)
 	{
 		printf("viso error: no path in open\n");
 		return FAILED;
@@ -1547,7 +1545,7 @@ int VIsoFile::close(void)
 
 ssize_t VIsoFile::read(void *buf, size_t nbyte)
 {
-	if(!buf)
+	if (!buf)
 	{
 		printf("viso error: no read buffer\n");
 		return FAILED;

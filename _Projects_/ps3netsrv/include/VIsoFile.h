@@ -49,11 +49,11 @@ typedef struct
 // 0x200 bytes
 typedef struct
 {
-	/*000*/char consoleId[0x10];    // "PlayStation3\0\0\0\0"
-	/*010*/char productId[0x20];    // "BCES-00104      ", "                "
-	/*030*/uint8_t zeros[0x10];     // all 0x00
-	/*040*/uint8_t info[0x1B0];     // disc info
-	/*1F0*/uint8_t	hash[0x10];     // a hash 0x1B0 bytes of 'info' above
+	/*000*/char consoleId[0x10];        // "PlayStation3\0\0\0\0"
+	/*010*/char productId[0x20];        // "BCES-00104      ", "                "
+	/*030*/uint8_t zeros[0x10];         // all 0x00
+	/*040*/uint8_t info[0x1B0];         // disc info
+	/*1F0*/uint8_t	hash[0x10];         // a hash 0x1B0 bytes of 'info' above
 } DiscInfoSector;
 
 class VIsoFile : public AbstractFile
