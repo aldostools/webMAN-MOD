@@ -7,7 +7,7 @@ static const int SUCCEEDED	=  0;
 
 int create_start_thread(thread_t *thread, void *(*start_routine)(void*), void *arg)
 {
-	thread_t t = CreateThread(NULL, 0, static_cast<LPTHREAD_START_ROUTINE>(start_routine), arg, 0, NULL);
+	thread_t t = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)start_routine, arg, 0, NULL);
 	if (!t)
 		return GetLastError();
 
@@ -19,7 +19,7 @@ int join_thread(thread_t thread)
 {
 	DWORD ret = WaitForSingleObject(thread, INFINITE);
 
-	return (ret == 0xFFFFFFFF) ? static_cast<int>(ret) : SUCCEEDED;
+	return (ret == 0xFFFFFFFF) ? (int)ret : SUCCEEDED;
 }
 
 // Files
@@ -111,12 +111,12 @@ int64_t seek_file(file_t fd, int64_t offset, int whence)
 		return FAILED;
 	}
 
-	uint64_t low64 = static_cast<uint64_t>(low);
-	uint64_t high64 = static_cast<uint64_t>(high);
+	uint64_t low64 = (uint64_t)low;
+	uint64_t high64 = (uint64_t)high;
 
 	low64 &= 0xFFFFFFFF;
 	high64 &= 0xFFFFFFFF;
-	int64_t ret = static_cast<int64_t>((high64<<32ULL) | low64);
+	int64_t ret = (int64_t)((high64<<32ULL) | low64);
 
 	//printf("ret = %I64x\n", ret);
 
@@ -132,7 +132,7 @@ uint64_t FileTimeToUnixTime(const FILETIME *filetime, DWORD *remainder)
 
 	long long int t = filetime->dwHighDateTime;
 	t <<= 32;
-	t += static_cast<UINT32>(filetime->dwLowDateTime);
+	t += (UINT32)filetime->dwLowDateTime;
 	t -= 116444736000000000LL;
 	if (t < 0)
 	{
@@ -223,7 +223,7 @@ int fstat_file(file_t fd, file_stat_t *fs)
 	if (!GetFileInformationByHandle(fd, &FileInformation))
 		return FAILED;
 
-	fs->file_size = (static_cast<uint64_t>(FileInformation.nFileSizeHigh) << 32) | FileInformation.nFileSizeLow;
+	fs->file_size = ((uint64_t)FileInformation.nFileSizeHigh << 32) | FileInformation.nFileSizeLow;
 
 	fs->ctime = FileTimeToUnixTime(&FileInformation.ftCreationTime, NULL);
 	fs->atime = FileTimeToUnixTime(&FileInformation.ftLastAccessTime, NULL);
@@ -256,7 +256,7 @@ int stat_file(const char *path, file_stat_t *fs)
 		return FAILED;
 	}
 
-	fs->file_size = (static_cast<uint64_t>(wfd.nFileSizeHigh) << 32) | wfd.nFileSizeLow;
+	fs->file_size = ((uint64_t)wfd.nFileSizeHigh << 32) | wfd.nFileSizeLow;
 
 	fs->ctime = FileTimeToUnixTime(&wfd.ftCreationTime, NULL);
 	fs->atime = FileTimeToUnixTime(&wfd.ftLastAccessTime, NULL);

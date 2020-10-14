@@ -1,7 +1,6 @@
 #include "File.h"
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
 #include <cstring>
 #include <memory>
 
@@ -89,10 +88,13 @@ int File::open(const char *path, int flags)
 	int plen = strlen(path);
 	int flen = plen - 6;
 
-	if (flen < 0)
-		flen = is_multipart = 0;
-	else
-		is_multipart = (strstr(path + flen, ".iso.0") != NULL) || (strstr(path + flen, ".ISO.0") != NULL);
+	if (flen < 0) {
+        flen = 0;
+        is_multipart = 0;
+    }
+	else {
+        is_multipart = (strstr(path + flen, ".iso.0") != NULL) || (strstr(path + flen, ".ISO.0") != NULL);
+    }
 
 	///// check path for encrypted-3k3yredump-isos by NvrBst ///////
 
@@ -397,9 +399,9 @@ ssize_t File::read(void *buf, size_t nbyte)
 	// check if data is split between 2 parts
 	if ((ret < static_cast<ssize_t>(nbyte)) && ((index + 1) < is_multipart))
 	{
-		index += 1;										// change default index to the next part
-		seek_file(fp[index], 0, SEEK_SET);				// reset seek pointer to beginning of the next part
-		void *buf2 = static_cast<int8_t*>(buf) + ret;	// complete filling the buffer
+		index += 1;                                     // change default index to the next part
+		seek_file(fp[index], 0, SEEK_SET);              // reset seek pointer to beginning of the next part
+		void *buf2 = static_cast<int8_t*>(buf) + ret;   // complete filling the buffer
 		ret2 = read_file(fp[index], buf2, nbyte - ret);
 	}
 
@@ -492,10 +494,10 @@ void File::reset_iv(unsigned char (&iv)[16], unsigned int lba)
 {
 	memset(iv, 0, 12);
 
-	iv[12] = (lba & 0xFF000000)>>24;
-	iv[13] = (lba & 0x00FF0000)>>16;
-	iv[14] = (lba & 0x0000FF00)>> 8;
-	iv[15] = (lba & 0x000000FF)>> 0;
+	iv[12] = (lba & 0xFF000000) >> 24;
+	iv[13] = (lba & 0x00FF0000) >> 16;
+	iv[14] = (lba & 0x0000FF00) >> 8;
+	iv[15] = (lba & 0x000000FF) >> 0;
 }
 
 // Main function that will decrypt the sector(s) (needs to be a multiple of 2048).

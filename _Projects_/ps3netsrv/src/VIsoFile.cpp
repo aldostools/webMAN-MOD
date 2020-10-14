@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <time.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
+#include <ctime>
 #include <memory>
 
 #include "common.h"
@@ -608,14 +608,9 @@ Iso9660DirectoryRecord *VIsoFile::findDirRecord(const char *dirName, Iso9660Dire
 
 	memset(strCheck, 0, 256);
 
-	if (!joliet)
-	{
-		strCheckSize = strncpy_upper(reinterpret_cast<char *>(strCheck), dirName, MAX_ISONAME - 2);
-	}
-	else
-	{
-		strCheckSize = utf8_to_ucs2(reinterpret_cast<const unsigned char *>(dirName), reinterpret_cast<uint16_t *>(strCheck), MAX_ISODIR / 2) * 2;
-	}
+	strCheckSize = (!joliet)
+	        ? strncpy_upper(reinterpret_cast<char *>(strCheck), dirName, MAX_ISONAME - 2)
+	        : utf8_to_ucs2(reinterpret_cast<const unsigned char *>(dirName), reinterpret_cast<uint16_t *>(strCheck), MAX_ISODIR / 2) * 2;
 
 	buf = p = reinterpret_cast<uint8_t *>(parentRecord);
 
@@ -678,14 +673,9 @@ uint8_t *VIsoFile::buildPathTable(bool msb, bool joliet, size_t *retSize)
 
 			char *fileName = dirList->path + dirList->path_len + 1;
 
-			if (!joliet)
-			{
-				table->len_di = strncpy_upper(&table->dirID, fileName, MAX_ISODIR);
-			}
-			else
-			{
-				table->len_di = utf8_to_ucs2(reinterpret_cast<const unsigned char *>(fileName), reinterpret_cast<uint16_t *>(&table->dirID), MAX_ISODIR / 2) * 2;
-			}
+			table->len_di = (!joliet)
+			        ? strncpy_upper(&table->dirID, fileName, MAX_ISODIR)
+			        : utf8_to_ucs2(reinterpret_cast<const unsigned char *>(fileName), reinterpret_cast<uint16_t *>(&table->dirID), MAX_ISODIR / 2) * 2;
 
 			parent = getParent(dirList);
 			parentIdx = static_cast<uint16_t>(parent->idx) + 1;
@@ -786,9 +776,8 @@ bool VIsoFile::buildContent(DirList *dirList, bool joliet)
 
 		if (fileList->size > 0xFFFFFFFF)
 		{
-			parts = fileList->size / MULTIEXTENT_PART_SIZE;
-			if (fileList->size % MULTIEXTENT_PART_SIZE)
-				parts++;
+		    parts = fileList->size / MULTIEXTENT_PART_SIZE;
+		    parts += (fileList->size % MULTIEXTENT_PART_SIZE) ? 1 : 0;
 		}
 
 		for (unsigned int i = 0; i < parts; i++)
@@ -1072,9 +1061,7 @@ void VIsoFile::fixPathTableLba(uint8_t *pathTable, size_t size, uint32_t dirLba,
 		table->dirLocation = (msb) ? BE32(BE32(table->dirLocation) + dirLba) : LE32(LE32(table->dirLocation) + dirLba);
 
 		p = p + 8 + table->len_di;
-
-		if (table->len_di & 1)
-			p++;
+		p += (table->len_di & 1) ? 1 : 0;
 	}
 }
 
@@ -1505,9 +1492,7 @@ int VIsoFile::open(const char *path, int flags)
 	}
 
 	if (fsBuf)
-	{
 		close();
-	}
 
 	if (stat_file(path, &st) != SUCCEEDED)
 	{
@@ -1554,9 +1539,7 @@ int VIsoFile::open(const char *path, int flags)
 int VIsoFile::close(void)
 {
 	if (!fsBuf)
-	{
 		return FAILED;
-	}
 
 	reset();
 	return SUCCEEDED;
@@ -1728,17 +1711,11 @@ int64_t VIsoFile::seek(int64_t offset, int whence)
 	}
 
 	if (whence == SEEK_SET)
-	{
 		vFilePtr = offset;
-	}
 	else if (whence == SEEK_CUR)
-	{
 		vFilePtr += offset;
-	}
 	else if (whence == SEEK_END)
-	{
 		vFilePtr = totalSize + offset;
-	}
 
 	return vFilePtr;
 }

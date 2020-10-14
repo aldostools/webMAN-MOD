@@ -20,6 +20,17 @@ CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_B
 LDFLAGS = -L.
 LIBS = -lstdc++
 
+# detect if rm is available
+ifeq ($(wildcard $(addsuffix /rm,$(subst :, ,$(PATH)))),)
+RM = del /Q /F
+SUBST = $(subst /,\,$1)
+ERRIGNORE = 2>NUL || true
+else
+RM = rm -f
+SUBST = $1
+ERRIGNORE = 2>/dev/null
+endif
+
 ifeq ($(OS), linux)
 LIBS += -lpthread
 endif
@@ -63,10 +74,10 @@ CPPFLAGS += -static -O3 -s -DNDEBUG
 endif
 
 all: $(OUTPUT)
-	rm -r -f src/*.o
+	$(RM) $(call SUBST,src/*.o) $(ERRIGNORE)
 
 clean:
-	rm -r -f $(OUTPUT) src/*.o
+	$(RM) $(OUTPUT) $(call SUBST,src/*.o) $(ERRIGNORE)
 
 $(OUTPUT): $(OBJS)
 	$(LINK.c) $(LDFLAGS) -o $@ $^ $(LIBS)

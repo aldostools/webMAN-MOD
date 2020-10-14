@@ -1,7 +1,7 @@
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdint>
+#include <cstdio>
+#include <cstring>
 #include <dirent.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -18,9 +18,9 @@ static const int FAILED		= -1;
 static const int SUCCEEDED	=  0;
 static const int NONE		= -1;
 
+#include "compat.h"
 #include "color.h"
 #include "common.h"
-#include "compat.h"
 #include "netiso.h"
 
 #include "File.h"
@@ -1351,7 +1351,7 @@ static int process_read_dir_cmd(client_t *client, netiso_read_dir_entry_cmd *cmd
 	{
 		if ((p[i] == '/') || (i == slen))
 		{
-			p[i] = 0;
+			p[i] = '\0';
 			sprintf(ini_file, "%s.INI", p); // e.g. /BDISO.INI
 
 			p[i] = (i < slen) ? '/' : p[i];
@@ -1367,7 +1367,7 @@ static int process_read_dir_cmd(client_t *client, netiso_read_dir_entry_cmd *cmd
 	{
 		// read INI
 		char lnk_file[MAX_LINK_LEN];
-		memset(lnk_file, 0, MAX_LINK_LEN);
+		memset(lnk_file, '\0', MAX_LINK_LEN);
 		read_file(fd, lnk_file, MAX_LINK_LEN);
 		close_file(fd);
 
@@ -1743,7 +1743,7 @@ int main(int argc, char *argv[])
 			(stat_file("./PS3_NET_Server.cfg",	&fs) >= 0)
 		)) {
 			argv[1] = argv[0];
-			*(filename - 1) = 0;
+			*(filename - 1) = '\0';
 			argc = 2;
 		#ifdef WIN32
 			file_t fd = open_file("./PS3_NET_Server.cfg", O_RDONLY);
@@ -1760,7 +1760,7 @@ int main(int argc, char *argv[])
 
 					char *pos = strchr(path + 7, '"');
 					if (pos)
-						*pos = 0;
+						*pos = '\0';
 				}
 			}
 		#endif
@@ -1923,12 +1923,12 @@ int main(int argc, char *argv[])
 		{
 			printf("Current Host Name: %s\n", host);
 			host_entry = gethostbyname(host); //find host information
-			if (host_entry);
+			if (host_entry)
 			{
 				set_gray_text();
 				for (int i = 0; host_entry->h_addr_list[i]; i++)
 				{
-					char *IP = inet_ntoa(*static_cast<struct in_addr *>(host_entry->h_addr_list[i])); //Convert into IP string
+					char *IP = inet_ntoa(reinterpret_cast<struct in_addr &>(*host_entry->h_addr_list[i])); //Convert into IP string
 					printf("Host IP: %s:%i\n", IP, port);
 				}
 			}
@@ -1979,7 +1979,7 @@ int main(int argc, char *argv[])
 
 		// accept request
 		size = sizeof(addr);
-		cs = accept(s, reinterpret_cast<struct sockaddr *>(&addr), static_cast<socklen_t *>(&size));
+		cs = accept(s, reinterpret_cast<struct sockaddr *>(&addr), reinterpret_cast<socklen_t *>(&size));
 
 		if (cs < 0)
 		{
@@ -2003,7 +2003,7 @@ int main(int argc, char *argv[])
 			closesocket(clients[i].s);
 			join_thread(clients[i].thread);
 
-			if (strcmp(last_ip, conn_ip))
+			if (strcmp(last_ip, conn_ip) == 0)
 				printf("[%i] Reconnection from %s\n",  i, conn_ip);
 		}
 		else
@@ -2036,7 +2036,7 @@ int main(int argc, char *argv[])
 			}
 
 			// Show only new connections
-			if (strcmp(last_ip, conn_ip))
+			if (strcmp(last_ip, conn_ip) != 0)
 			{
 				printf("[%i] Connection from %s\n", i, conn_ip);
 				sprintf(last_ip, "%s", conn_ip);
