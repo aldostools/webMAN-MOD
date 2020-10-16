@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "common.h"
+
 #include "VIsoFile.h"
 
 #ifdef WIN32
@@ -690,8 +691,7 @@ uint8_t *VIsoFile::buildPathTable(bool msb, bool joliet, size_t *retSize)
 		}
 
 		p += 8 + table->len_di;
-		if (table->len_di & 1)
-			p++;
+		p += (table->len_di & 1) ? 1 : 0;
 
 		dirList = dirList->next;
 		i++;

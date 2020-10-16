@@ -71,8 +71,8 @@ static inline uint64_t LE64(uint64_t x)
 static inline uint16_t BE16(uint16_t x)
 {
 	uint16_t ret;
-	ret  =  (x<<8)&0xff00;
-	ret |= ((x>>8)&0xff);
+	ret  =  (x << 8) & 0xff00;
+	ret |= ((x >> 8) & 0xff);
 
 	return ret;
 }

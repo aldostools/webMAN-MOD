@@ -2,7 +2,7 @@ OS = linux
 BUILD_TYPE = release_static
 OUTPUT := ps3netsrv
 
-OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/File.o src/VIsoFile.o
+OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/Console.o src/File.o src/VIsoFile.o
 
 CFLAGS += -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
 CXXFLAGS += -Wall -Wno-format -I./include -std=c++0x -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
