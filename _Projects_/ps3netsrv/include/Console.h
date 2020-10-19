@@ -1,53 +1,46 @@
 #ifndef PS3NETSRV_CONSOLE_H
 #define PS3NETSRV_CONSOLE_H
 
-#include <cstdio>
+#include <map>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-#ifdef NO_COLOR
-#define _GetConsoleScreenBufferInfo(a, b)
-#define _set_text_color(a)
+#ifndef NDEBUG
+#define debug_enabled true
 #else
-#ifdef WIN32
-#define _GetConsoleScreenBufferInfo(a, b) GetConsoleScreenBufferInfo(a, b)
-#define _set_text_color(a) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), a)
-#else
-#define _set_text_color(a) printf("\033[1;%dm", a)
-#endif
+#define debug_enabled false
 #endif
 
-enum Colors {
-	COLOR_NORMAL = 0,
-	COLOR_WHITE,
-	COLOR_RED,
-	COLOR_GRAY
+enum class Color {
+	Normal = 0,
+	White,
+	Red,
+	Gray
 };
 
 class Console
 {
 public:
-	static void init(Colors color = COLOR_NORMAL);
+	Console(const Console& other) = delete;
+	Console(Console&&) = delete;
+	Console& operator=(const Console&) = delete;
+	Console& operator=(Console&&) = delete;
 
-	static int get_text_color();
-	static void set_text_color(Colors color);
+	static Console& get(Color defaultColor = Color::Normal);
 
-	static void print(char const *fmt, ...);
-	static void print(Colors color, char const *fmt, ...);
+	Color get_textColor();
+	void set_textColor(Color color);
 
-	static void wait();
+	void print(const char *format ...);
+	void print(Color color, const char *format ...);
+	static inline void debug_print(const char *format ...) { if (debug_enabled) get().print(format); }
+
+	void wait();
 
 private:
-	explicit Console(Colors color = COLOR_NORMAL);
+	explicit Console(Color defaultColor);
+	~Console() = default;
 
-	static Console *_console;
-	static Colors curColor;
-	static int colorMap[4];
-#ifdef WIN32
-	static CONSOLE_SCREEN_BUFFER_INFO console_info;
-#endif
+	std::map<Color, int> colorMap;
+	Color textColor;
 };
 
 #endif //PS3NETSRV_CONSOLE_H

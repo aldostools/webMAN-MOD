@@ -1,66 +1,75 @@
+#include <cstdio>
 #include <cstdarg>
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #include "Console.h"
 
-Console* Console::_console = NULL;
-Colors Console::curColor = COLOR_NORMAL;
-int Console::colorMap[4] = {};
-#ifdef WIN32
-CONSOLE_SCREEN_BUFFER_INFO Console::console_info = {};
-#endif
-
-Console::Console(Colors color)
+Console::Console(const Color defaultColor)
+	: textColor { Color::Normal }
 {
 #ifdef WIN32
-	_GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &console_info );
-	colorMap[COLOR_NORMAL] = (console_info.wAttributes) ? console_info.wAttributes : 0x0F;
-	colorMap[COLOR_WHITE] = 0x0F;
-	colorMap[COLOR_RED] = 0x0C;
-	colorMap[COLOR_GRAY] = 0x08;
+	CONSOLE_SCREEN_BUFFER_INFO console_info;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console_info);
+	colorMap = {
+		{ Color::Normal, console_info.wAttributes },
+		{ Color::White, 0x0F },
+		{ Color::Red, 0x0C },
+		{ Color::Gray, 0x08 }
+	};
 #else
-	colorMap[COLOR_NORMAL] = 37;
-	colorMap[COLOR_WHITE] = 37;
-	colorMap[COLOR_RED] = 31;
-	colorMap[COLOR_GRAY] = 30;
+	colorMap = {
+		{ Color::Normal, 37 },
+		{ Color::White, 37 },
+		{ Color::Red, 31 },
+		{ Color::Gray, 30 }
+	};
 #endif
-	set_text_color(color);
+	set_textColor(defaultColor);
 }
 
-void Console::init(Colors color)
+Console& Console::get(const Color defaultColor)
 {
-	if (_console == NULL)
-		_console = new Console(color);
+	static Console console(defaultColor);
+	return console;
 }
 
-int Console::get_text_color()
+Color Console::get_textColor()
 {
-	return curColor;
+	return textColor;
 }
 
-void Console::set_text_color(Colors color)
+void Console::set_textColor(const Color color)
 {
-	curColor = color;
-	_set_text_color(colorMap[color]);
+#ifndef NO_COLOR
+	textColor = color;
+#ifdef WIN32
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colorMap[color]);
+#else
+	std::printf("\033[1;%dm", colorMap[color]);
+#endif
+#endif
 }
 
-void Console::print(char const *fmt, ...)
+void Console::print(const char *format...)
 {
 	va_list args;
-	va_start(args, fmt);
-	vprintf(fmt, args);
+	va_start(args, format);
+	std::vprintf(format, args);
 	va_end(args);
 }
 
-void Console::print(Colors color, char const *fmt, ...)
+void Console::print(const Color color, const char *format...)
 {
-	Colors prevColor = curColor;
-	set_text_color(color);
-	print(fmt);
-	set_text_color(prevColor);
+	Color prevColor = textColor;
+	set_textColor(color);
+	print(format);
+	set_textColor(prevColor);
 }
 
 void Console::wait()
 {
 	print("\n\nPress ENTER to continue...");
-	getchar();
+	std::getchar();
 }
