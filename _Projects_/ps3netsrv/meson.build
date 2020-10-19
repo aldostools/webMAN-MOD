@@ -13,7 +13,8 @@ ps3netsrv_src = files(
   'src/compat.c',
   'src/File.cpp',
   'src/main.cpp',
-  'src/VIsoFile.cpp'
+  'src/VIsoFile.cpp',
+  'src/Console.cpp'
 )
 if host_machine.system() == 'windows'
   ps3netsrv_src += files(
