@@ -11,7 +11,7 @@
 #endif
 
 #ifndef _OS_WINDOWS
-#include <endian.h>
+#include <sys/types.h>
 #define __BIG_ENDIAN__ (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
 #endif
 #if __BIG_ENDIAN__
