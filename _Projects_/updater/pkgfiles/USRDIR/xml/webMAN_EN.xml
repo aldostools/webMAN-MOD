@@ -453,12 +453,12 @@
 		</I>
 	</V>
 
-	<!-- Main > webMAN > Refresh My Games -->
+	<!-- Main > webMAN > Refresh webMAN Games -->
 	<V id="seg_webman_refresh_xmb">
 		<A>
 			<T key="webman_refresh_xmb">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>Refresh My Games & XMB</></P>
+				<P key="title"><>Refresh webMAN Games & XMB</></P>
 				<P key="info"><>The XMB will be re-loaded after the update of the game list</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
@@ -468,12 +468,12 @@
 		<I><I class="type:x-xmb/module-action" key="webman_refresh_xmb" attr="webman_refresh_xmb"/></I>
 	</V>
 
-	<!-- Main > webMAN > Refresh My Games -->
+	<!-- Main > webMAN > Refresh webMAN Games -->
 	<V id="seg_webman_refresh_xml">
 		<A>
 			<T key="webman_refresh_xml">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>Refresh My Games</></P>
+				<P key="title"><>Refresh webMAN Games</></P>
 				<P key="info"><>The game list will be displayed the next time the XMB is loaded</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
