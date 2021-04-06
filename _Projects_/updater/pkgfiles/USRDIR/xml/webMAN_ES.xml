@@ -8,7 +8,7 @@
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/tools.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>webMAN</></P>
-				<P key="info"><>Quick Links to webMAN Functions</></P>
+				<P key="info"><>Accesos directos a las funcionalidades de webMAN.</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -82,22 +82,22 @@
 			</T>
 			<T key="remap_home" include="inc">
 				<P key="title"><>Redirigir home a USB000</></P>
-				<P key="info"><>Redirigir /dev_hdd0/home a /dev_usb000/home</></P>
+				<P key="info"><>Redirige /dev_hdd0/home a /dev_usb000/home.</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_hdd0/home&to=/dev_usb000/home</></P>
 			</T>
 			<T key="remap_usb0" include="inc">
 				<P key="title"><>Redirigir USB000 a HDD</></P>
-				<P key="info"><>Redirigir /dev_usb000 a /dev_hdd0/packages</></P>
+				<P key="info"><>Redirige /dev_usb000 a /dev_hdd0/packages.</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_hdd0/packages</></P>
 			</T>
 			<T key="remap_bdvd" include="inc">
 				<P key="title"><>Redirigir USB000 a BDVD</></P>
-				<P key="info"><>Redirigir /dev_usb000 a /dev_bdvd</></P>
+				<P key="info"><>Redirige /dev_usb000 a /dev_bdvd.</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_bdvd</></P>
 			</T>
 			<T key="unmap_usb0" include="inc">
 				<P key="title"><>Restaurar USB000</></P>
-				<P key="info"><>Recupear acceso a /dev_usb000</></P>
+				<P key="info"><>Restaura el acceso a /dev_usb000.</></P>
 				<P key="module_action"><>http://0/unmap.ps3/dev_hdd0/home;/unmap.ps3/dev_usb000</></P>
 			</T>
 		</A>
@@ -115,8 +115,8 @@
 			<T key="nethost_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Contenido en la Red</></P>
-				<P key="info"><>Montar carpetas /nethost como /dev_bdvd</></P>
+				<P key="title"><>Carpetas de red</></P>
+				<P key="info"><>Monta las carpetas /nethost como /dev_bdvd locales.</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -141,7 +141,7 @@
 			<T key="webman_system_files">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/sysfiles.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Archivos del Sistema</></P>
+				<P key="title"><>Archivos del sistema</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -153,8 +153,8 @@
 			<T key="nethost0_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net0</></P>
-				<P key="info"><>Montar carpetas /net0 como /dev_bdvd</></P>
+				<P key="title"><>Carpetas Net0</></P>
+				<P key="info"><>Monta las carpetas /net0 como /dev_bdvd locales.</></P>
 			</T>
 		</A>
 		<I>
@@ -167,8 +167,8 @@
 			<T key="nethost1_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net1</></P>
-				<P key="info"><>Montar carpetas /net1 como /dev_bdvd</></P>
+				<P key="title"><>Carpetas Net1</></P>
+				<P key="info"><>Monta todas las carpetas /net1 como /dev_bdvd locales.</></P>
 			</T>
 		</A>
 		<I>
@@ -181,8 +181,8 @@
 			<T key="nethost2_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net2</></P>
-				<P key="info"><>Montar carpetas /net2 como /dev_bdvd</></P>
+				<P key="title"><>Carpetas Net2</></P>
+				<P key="info"><>Monta todas las carpetas /net2 como /dev_bdvd locales.</></P>
 			</T>
 		</A>
 		<I>
@@ -195,8 +195,8 @@
 			<T key="nethost3_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net3</></P>
-				<P key="info"><>Montar carpetas /net3 como /dev_bdvd</></P>
+				<P key="title"><>Carpetas Net3</></P>
+				<P key="info"><>Monta todas las carpetas /net3 como /dev_bdvd locales.</></P>
 			</T>
 		</A>
 		<I>
@@ -209,8 +209,8 @@
 			<T key="nethost4_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net4</></P>
-				<P key="info"><>Montar carpetas /net4 como /dev_bdvd</></P>
+				<P key="title"><>Carpetas Net4</></P>
+				<P key="info"><>Monta todas las carpetas /net4 como /dev_bdvd locales.</></P>
 			</T>
 		</A>
 		<I>
@@ -226,31 +226,31 @@
 				<P key="bar_action"><>none</></P>
 			</T>
 			<T key="webman_nethost0" include="inc">
-				<P key="title"><>Montar /net0 como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0 como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/.</></P>
 			</T>
 			<T key="webman_nethost0_pkg" include="inc">
-				<P key="title"><>Montar /net0/PKG como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/PKG como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/PKG</></P>
 			</T>
 			<T key="webman_nethost0_video" include="inc">
-				<P key="title"><>Montar /net0/VIDEO como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/VIDEO como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/VIDEO</></P>
 			</T>
 			<T key="webman_nethost0_music" include="inc">
-				<P key="title"><>Montar /net0/MUSIC como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/MUSIC como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/MUSIC</></P>
 			</T>
 			<T key="webman_nethost0_picture" include="inc">
-				<P key="title"><>Montar /net0/PICTURE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/PICTURE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/PICTURE</></P>
 			</T>
 			<T key="webman_nethost0_roms" include="inc">
-				<P key="title"><>Montar /net0/ROMS como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/ROMS como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/ROMS</></P>
 			</T>
 			<T key="webman_nethost0_pup" include="inc">
-				<P key="title"><>Montar /net0/FIRMWARE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net0/FIRMWARE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net0/FIRMWARE</></P>
 			</T>
 		</A>
@@ -273,31 +273,31 @@
 				<P key="bar_action"><>none</></P>
 			</T>
 			<T key="webman_nethost1" include="inc">
-				<P key="title"><>Montar /net1 como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1 como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/.</></P>
 			</T>
 			<T key="webman_nethost1_pkg" include="inc">
-				<P key="title"><>Montar /net1/PKG como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/PKG como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/PKG</></P>
 			</T>
 			<T key="webman_nethost1_video" include="inc">
-				<P key="title"><>Montar /net1/VIDEO como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/VIDEO como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/VIDEO</></P>
 			</T>
 			<T key="webman_nethost1_music" include="inc">
-				<P key="title"><>Montar /net1/MUSIC como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/MUSIC como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/MUSIC</></P>
 			</T>
 			<T key="webman_nethost1_picture" include="inc">
-				<P key="title"><>Montar /net1/PICTURE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/PICTURE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/PICTURE</></P>
 			</T>
 			<T key="webman_nethost1_roms" include="inc">
-				<P key="title"><>Montar /net1/ROMS como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/ROMS como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/ROMS</></P>
 			</T>
 			<T key="webman_nethost1_pup" include="inc">
-				<P key="title"><>Montar /net1/FIRMWARE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net1/FIRMWARE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net1/FIRMWARE</></P>
 			</T>
 		</A>
@@ -320,31 +320,31 @@
 				<P key="bar_action"><>none</></P>
 			</T>
 			<T key="webman_nethost2" include="inc">
-				<P key="title"><>Montar /net2 como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2 como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/.</></P>
 			</T>
 			<T key="webman_nethost2_pkg" include="inc">
-				<P key="title"><>Montar /net2/PKG como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/PKG como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/PKG</></P>
 			</T>
 			<T key="webman_nethost2_video" include="inc">
-				<P key="title"><>Montar /net2/VIDEO como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/VIDEO como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/VIDEO</></P>
 			</T>
 			<T key="webman_nethost2_music" include="inc">
-				<P key="title"><>Montar /net2/MUSIC como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/MUSIC como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/MUSIC</></P>
 			</T>
 			<T key="webman_nethost2_picture" include="inc">
-				<P key="title"><>Montar /net2/PICTURE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/PICTURE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/PICTURE</></P>
 			</T>
 			<T key="webman_nethost2_roms" include="inc">
-				<P key="title"><>Montar /net2/ROMS como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/ROMS como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/ROMS</></P>
 			</T>
 			<T key="webman_nethost2_pup" include="inc">
-				<P key="title"><>Montar /net2/FIRMWARE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net2/FIRMWARE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net2/FIRMWARE</></P>
 			</T>
 		</A>
@@ -367,31 +367,31 @@
 				<P key="bar_action"><>none</></P>
 			</T>
 			<T key="webman_nethost3" include="inc">
-				<P key="title"><>Montar /net3 como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3 como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/.</></P>
 			</T>
 			<T key="webman_nethost3_pkg" include="inc">
-				<P key="title"><>Montar /net3/PKG como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/PKG como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/PKG</></P>
 			</T>
 			<T key="webman_nethost3_video" include="inc">
-				<P key="title"><>Montar /net3/VIDEO como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/VIDEO como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/VIDEO</></P>
 			</T>
 			<T key="webman_nethost3_music" include="inc">
-				<P key="title"><>Montar /net3/MUSIC como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/MUSIC como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/MUSIC</></P>
 			</T>
 			<T key="webman_nethost3_picture" include="inc">
-				<P key="title"><>Montar /net3/PICTURE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/PICTURE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/PICTURE</></P>
 			</T>
 			<T key="webman_nethost3_roms" include="inc">
-				<P key="title"><>Montar /net3/ROMS como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/ROMS como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/ROMS</></P>
 			</T>
 			<T key="webman_nethost3_pup" include="inc">
-				<P key="title"><>Montar /net3/FIRMWARE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net3/FIRMWARE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net3/FIRMWARE</></P>
 			</T>
 		</A>
@@ -414,31 +414,31 @@
 				<P key="bar_action"><>none</></P>
 			</T>
 			<T key="webman_nethost4" include="inc">
-				<P key="title"><>Montar /net4 como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4 como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/.</></P>
 			</T>
 			<T key="webman_nethost4_pkg" include="inc">
-				<P key="title"><>Montar /net4/PKG como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/PKG como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/PKG</></P>
 			</T>
 			<T key="webman_nethost4_video" include="inc">
-				<P key="title"><>Montar /net4/VIDEO como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/VIDEO como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/VIDEO</></P>
 			</T>
 			<T key="webman_nethost4_music" include="inc">
-				<P key="title"><>Montar /net4/MUSIC como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/MUSIC como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/MUSIC</></P>
 			</T>
 			<T key="webman_nethost4_picture" include="inc">
-				<P key="title"><>Montar /net4/PICTURE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/PICTURE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/PICTURE</></P>
 			</T>
 			<T key="webman_nethost4_roms" include="inc">
-				<P key="title"><>Montar /net4/ROMS como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/ROMS como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/ROMS</></P>
 			</T>
 			<T key="webman_nethost4_pup" include="inc">
-				<P key="title"><>Montar /net4/FIRMWARE como /dev_bdvd</></P>
+				<P key="title"><>Monta la carpeta /net4/FIRMWARE como /dev_bdvd.</></P>
 				<P key="module_action"><>/mount_ps3/net4/FIRMWARE</></P>
 			</T>
 		</A>
@@ -458,8 +458,8 @@
 		<A>
 			<T key="webman_refresh_xmb">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>Refrescar Juegos webMAN & XMB</></P>
-				<P key="info"><>El XMB se volverá a cargar luego de refrescar la lista de juegos</></P>
+				<P key="title"><>Actualizar juegos de webMAN y el XMB</></P>
+				<P key="info"><>El XMB se volverá a cargar tras actualizar la lista de juegos.</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/refresh_ps3?xmb</></P>
@@ -473,8 +473,8 @@
 		<A>
 			<T key="webman_refresh_xml">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>Refrescar Juegos webMAN</></P>
-				<P key="info"><>La lista de juegos será mostrada la próxima vez que cargue el XMB</></P>
+				<P key="title"><>Actualizar juegos de webMAN</></P>
+				<P key="info"><>La lista de juegos se mostrará la próxima vez que cargue el XMB.</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/refresh.ps3</></P>
@@ -488,8 +488,8 @@
 		<A>
 			<T key="webman_refresh_html">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshhtml.png</></P>
-				<P key="title"><>Refrescar Lista de Juegos Web</></P>
-				<P key="info"><>La lista de juegos en HTML será actualizada en el modo web</></P>
+				<P key="title"><>Actualizar lista web de juegos</></P>
+				<P key="info"><>La lista de juegos en formato HTML se actualizará para el modo web.</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/index.ps3?html</></P>
 			</T>
@@ -503,7 +503,7 @@
 			<T key="webman_cpursx">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/sysinfo.png</></P>
 				<P key="title"><>PS3 webMAN [Temperatura]</></P>
-				<P key="info"><>Monitorear la Temperatura del PS3 en el navegador Web</></P>
+				<P key="info"><>Gestiona la temperatura del sistema PS3 a través del navegador web.</></P>
 				<P key="module_name"><>webbrowser_plugin</></P>
 				<P key="module_action"><>http://0/cpursx.ps3</></P>
 			</T>
@@ -517,7 +517,7 @@
 			<T key="webman_games">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/gamesbrowser.png</></P>
 				<P key="title"><>PS3 webMAN [Juegos]</></P>
-				<P key="info"><>Listar mis juegos en el navegador Web</></P>
+				<P key="info"><>Lista mis juegos en el navegador web.</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/index.ps3</></P>
 			</T>
@@ -531,7 +531,7 @@
 			<T key="webman_files">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/filemanager.png</></P>
 				<P key="title"><>PS3 webMAN [Archivos]</></P>
-				<P key="info"><>Listar mis archivos en el navegador Web</></P>
+				<P key="info"><>Lista mis archivos en el navegador web.</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/</></P>
 			</T>
@@ -544,8 +544,8 @@
 		<A>
 			<T key="seg_webman_cache">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/cachefiles.png</></P>
-				<P key="title"><>PS3 webMAN [Cache]</></P>
-				<P key="info"><>Borrar archivos cache en /dev_hdd0/tmp/wmtmp</></P>
+				<P key="title"><>PS3 webMAN [Caché]</></P>
+				<P key="info"><>Borra los archivos de /dev_hdd0/tmp/wmtmp.</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -560,7 +560,7 @@
 			<T key="webman_setup">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/settings.png</></P>
 				<P key="title"><>PS3 webMAN [Configuración]</></P>
-				<P key="info"><>Configurar los dispositivos a escanear y las opciones de inicio</></P>
+				<P key="info"><>Configura los dispositivos a escanear y las opciones de inicio.</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/setup.ps3</></P>
 			</T>
@@ -573,8 +573,8 @@
 		<A>
 			<T key="webman_block_psn">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/blockpsn.png</></P>
-				<P key="title"><>Prevenir Accesso a PSN</></P>
-				<P key="info"><>Bloquear las direcciones URL de los servidores PSN en LV1 / LV2</></P>
+				<P key="title"><>Bloquear servidores de PSN</></P>
+				<P key="info"><>Bloquea el acceso a los servidores de PSN en LV1/LV2.</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/browser.ps3$block_servers</></P>
@@ -602,8 +602,8 @@
 		<A>
 			<T key="webman_gamedata">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/gamedata.png</></P>
-				<P key="title"><>Toggle external gameDATA</></P>
-				<P key="info"><>Turn on/off installation of game data on USB device</></P>
+				<P key="title"><>Uso de gameDATA externo</></P>
+				<P key="info"><>Activa o desactiva la instalación de datos de juego en un dispositivo USB.</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/extgd.ps3</></P>
@@ -617,8 +617,8 @@
 		<A>
 			<T key="webman_gamefix">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/gamefix.png</></P>
-				<P key="title"><>Arreglar juego en BDVD</></P>
-				<P key="info"><>Cambiar requerimiento mínimo del sistema a 4.20 (sólo juegos JB & hdd0)</></P>
+				<P key="title"><>Arreglo para juegos montados</></P>
+				<P key="info"><>Cambia el firmware mínimo necesario a 4.20 (solo juegos JB en el hdd0).</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/fixgame.ps3/dev_bdvd</></P>
 			</T>
@@ -631,7 +631,7 @@
 		<A>
 			<T key="webman_unmount">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/icon_wm_eject.png</></P>
-				<P key="title"><>Desmontar Disco</></P>
+				<P key="title"><>Desmontar disco</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/mount_ps3/unmount</></P>
@@ -645,7 +645,7 @@
 		<A>
 			<T key="webman_insert">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/icon_wm_insert.png</></P>
-				<P key="title"><>Insertar Disco</></P>
+				<P key="title"><>Introducir disco</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/insert.ps3</></P>
@@ -674,7 +674,7 @@
 			<T key="webman_unload">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/unload.png</></P>
 				<P key="title"><>Salir de webMAN</></P>
-				<P key="info"><>Descargar webMAN de la memoria [R2+L3+R3]</></P>
+				<P key="info"><>Descarga webMAN de la memoria [R2+L3+R3].</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/quit.ps3</></P>
@@ -688,7 +688,7 @@
 		<A>
 			<T key="wm_vsh_menu_load">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/vshmenu.png</></P>
-				<P key="title"><>Cargar VSH Menu</></P>
+				<P key="title"><>Cargar menú VSH</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/browser.ps3$vsh_menu</></P>
@@ -702,7 +702,7 @@
 		<A>
 			<T key="wm_slaunch_load">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/slaunch.png</></P>
-				<P key="title"><>Cargar sLaunch Menu</></P>
+				<P key="title"><>Cargar menú sLaunch</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/browser.ps3$slaunch</></P>
@@ -744,7 +744,7 @@
 		<A>
 			<T key="webman_help">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
-				<P key="title"><>PS3 webMAN MOD [Help]</></P>
+				<P key="title"><>PS3 webMAN MOD [Ayuda]</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/help.html</></P>
 			</T>
@@ -752,7 +752,7 @@
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Actualizar webMAN MOD</></P>
-				<P key="info"><>Descargue e instale la última versión. Reinicie manualmente.</></P>
+				<P key="info"><>Descarga e instala la última versión. Es necesario reiniciar manualmente tras la instalación.</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
