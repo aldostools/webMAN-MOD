@@ -76,23 +76,35 @@
 
 	<V id="seg_webman_redirect_usb_items">
 		<A>
-			<T key="remap_usb0">
+			<T key="inc">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/usbredirect.png</></P>
-				<P key="title"><>USB000 HDD'ye Yeniden Eşleştir</></P>
-				<P key="info"><>USB000 /dev_hdd0/packages içine yönlendirin</></P>
 				<P key="module_name"><>webrender_plugin</></P>
+			</T>
+			<T key="remap_home" include="inc">
+				<P key="title"><>USB000 Home Yeniden Eşle</></P>
+				<P key="info"><>/dev_usb000 bölümünü /dev_usb000/home üstüne yönlendir</></P>
+				<P key="module_action"><>http://0/remap.ps3/dev_hdd0/home&to=/dev_usb000/home</></P>
+			</T>
+			<T key="remap_usb0" include="inc">
+				<P key="title"><>USB000 HDD Yeniden Eşle</></P>
+				<P key="info"><>/dev_usb000 bölümünü /dev_hdd0/packages üstüne yönlendir</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_hdd0/packages</></P>
 			</T>
-			<T key="unmap_usb0">
-				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/usbredirect.png</></P>
+			<T key="remap_bdvd" include="inc">
+				<P key="title"><>USB000 BDVD Yeniden Eşle</></P>
+				<P key="info"><>/dev_usb000 bölümünü /dev_bdvd üstüne yönlendir</></P>
+				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_bdvd</></P>
+			</T>
+			<T key="unmap_usb0" include="inc">
 				<P key="title"><>USB000 Eşleşmesini Sıfırla</></P>
-				<P key="info"><>USB000 yeniden yönlendirme eşleşmesini geri yükleyin</></P>
-				<P key="module_name"><>webrender_plugin</></P>
-				<P key="module_action"><>http://0/unmap.ps3/dev_usb000</></P>
+				<P key="info"><>/dev_usb000 yeniden yönlendirme eşleşmlerini sıfırayın</></P>
+				<P key="module_action"><>http://0/unmap.ps3/dev_hdd0/home;/unmap.ps3/dev_usb000</></P>
 			</T>
 		</A>
 		<I>
+			<I class="type:x-xmb/module-action" key="remap_home" attr="remap_home"/>
 			<I class="type:x-xmb/module-action" key="remap_usb0" attr="remap_usb0"/>
+			<I class="type:x-xmb/module-action" key="remap_bdvd" attr="remap_bdvd"/>
 			<I class="type:x-xmb/module-action" key="unmap_usb0" attr="unmap_usb0"/>
 		</I>
 	</V>
@@ -143,7 +155,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net0 Klasörleri </></P>
 				<P key="info"><>Bağla /net0 klasörleri ve yerel /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -158,7 +169,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net1 Klasörleri</></P>
 				<P key="info"><>Bağla /net1 klasörleri ve yerel /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -173,7 +183,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net2 Klasörleri</></P>
 				<P key="info"><>Bağla /net2 klasörleri ve yerel /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -188,7 +197,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net3 Klasörleri</></P>
 				<P key="info"><>Bağla /net3 klasörleri ve yerel /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -203,7 +211,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net4 Klasörleri</></P>
 				<P key="info"><>Bağla /net4 klasörleri ve yerel /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -737,7 +744,7 @@
 		<A>
 			<T key="webman_help">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
-				<P key="title"><>PS3 webMAN MOD [Help]</></P>
+				<P key="title"><>PS3 webMAN MOD [Yardım]</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/help.html</></P>
 			</T>
