@@ -12,7 +12,9 @@ import ConfigParser
 import io
 import glob
 import re
-import msvcrt
+import sys
+if sys.platform.startswith('win'):
+	import msvcrt
 
 TYPE_NPDRMSELF = 0x1
 TYPE_RAW = 0x3
@@ -165,7 +167,8 @@ class Header(Struct):
 		return out
 
 def wait():
-	msvcrt.getch()
+	if sys.platform.startswith('win'):
+		msvcrt.getch()
 
 def listToString(inlist):
 	if isinstance(inlist, list):
