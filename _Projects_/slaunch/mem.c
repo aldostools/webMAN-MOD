@@ -3,6 +3,9 @@
 #include "include/mem.h"
 #include "include/vsh_exports.h"
 
+#ifndef CBE_CACHE_LINE
+#define CBE_CACHE_LINE 128
+#endif
 
 static sys_memory_container_t mc_app = (sys_memory_container_t)-1;
 static sys_addr_t heap_mem = 0;
@@ -41,8 +44,20 @@ int32_t create_heap(int32_t size)
 ***********************************************************************/
 void *mem_alloc(uint32_t size)
 {
-	uint32_t add = prx_heap;
-	if(((prx_heap-heap_mem)+size)<heap_size) {prx_heap += size; char *mem = (char*)prx_heap; *mem = 0;}
+	uint32_t add;
+	uint32_t align_bytes, pad_bytes;
+
+	align_bytes = CBE_CACHE_LINE - prx_heap%CBE_CACHE_LINE;
+	pad_bytes   = CBE_CACHE_LINE -     size%CBE_CACHE_LINE;
+
+	add  = prx_heap + align_bytes; // align to next cache line boundary (only first allocation)
+	size = size + pad_bytes;       // pad to next cache line boundary
+
+	if (((prx_heap + align_bytes - heap_mem) + size) < heap_size) {
+		prx_heap += align_bytes + size;
+		char *mem = (char*)prx_heap;
+		*mem = 0;
+	}
 
 	return (void*)add;
 }
@@ -52,8 +67,13 @@ void *mem_alloc(uint32_t size)
 ***********************************************************************/
 int32_t mem_free(uint32_t size)
 {
-	if(prx_heap>=size) prx_heap -= size; else return (-1);
-	return(0);
+	if (prx_heap >= size + CBE_CACHE_LINE - size%CBE_CACHE_LINE) {
+		prx_heap -= size + CBE_CACHE_LINE - size%CBE_CACHE_LINE;
+	} else {
+		return -1;
+	}
+
+	return 0;
 }
 
 void reset_heap(void)
