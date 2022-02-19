@@ -523,21 +523,32 @@ void set_texture_direct(uint32_t *texture, uint32_t x, uint32_t y, uint32_t widt
 
 void set_texture(uint8_t idx, uint32_t x, uint32_t y)
 {
-	uint32_t i, k, m, _width = ctx.img[idx].w/2;
-	uint64_t *canvas = (uint64_t*)ctx.img[idx].addr;
-	if(!ctx.img[idx].b)	// jpeg - no transparency
-		for(m = i = 0; i < ctx.img[idx].h; i++, m = i * _width)
-			for(k = 0; k < _width; k++)
-				*(uint64_t*)(OFFSET(k*2+x, (i+y))) =
-					 canvas[k + m];
-	else				// png - blend with 18% gray background
-		for(m = i = 0; i < ctx.img[idx].h; i++, m = i * _width)
-			for(k = 0; k < _width; k++)
-			{
-				*(uint64_t*)(OFFSET(k*2+x, (i+y))) =
-					 ((uint64_t)(mix_color(0x80303030, (canvas[k + m])>>32))<<32)
-								| (mix_color(0x80303030, canvas[k + m]));
+	if (!(ctx.img[idx].w%4) && !ctx.img[idx].b) { // Use VMX SIMD
+		uint32_t i, k, m, _width = ctx.img[idx].w/4;
+		vec_uint4 *canvas = (vec_uint4*)ctx.img[idx].addr;
+
+		for (m = i = 0; i < ctx.img[idx].h; i++, m = i * _width) {
+			for (k = 0; k < _width; k++) {
+				*(vec_uint4*)(OFFSET(k*4+x, (i+y))) = canvas[k + m];
 			}
+		}
+	} else {
+		uint32_t i, k, m, _width = ctx.img[idx].w/2;
+		uint64_t *canvas = (uint64_t*)ctx.img[idx].addr;
+		if(!ctx.img[idx].b)	// jpeg - no transparency
+			for(m = i = 0; i < ctx.img[idx].h; i++, m = i * _width)
+				for(k = 0; k < _width; k++)
+					*(uint64_t*)(OFFSET(k*2+x, (i+y))) =
+						 canvas[k + m];
+		else				// png - blend with 18% gray background
+			for(m = i = 0; i < ctx.img[idx].h; i++, m = i * _width)
+				for(k = 0; k < _width; k++)
+				{
+					*(uint64_t*)(OFFSET(k*2+x, (i+y))) =
+						 ((uint64_t)(mix_color(0x80303030, (canvas[k + m])>>32))<<32)
+									| (mix_color(0x80303030, canvas[k + m]));
+				}
+	}
 }
 
 void set_backdrop(uint8_t idx, uint8_t restore)
