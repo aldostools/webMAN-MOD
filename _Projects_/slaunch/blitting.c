@@ -1,4 +1,5 @@
 #include "include/blitting.h"
+#include "include/argb_dec.h"
 #include "include/png_dec.h"
 #include "include/jpg_dec.h"
 #include "include/misc.h"
@@ -412,6 +413,8 @@ retry:
 
 	if(strstr((char*)path, ".png") || strstr((char*)path, ".PNG"))
 		ctx.img[idx] = load_png(path, buf);
+	else if(strstr((char*)path, ".argb") || strstr((char*)path, ".ARGB"))
+		ctx.img[idx] = load_argb(path, buf);
 	else
 		ctx.img[idx] = load_jpg(path, buf);
 
