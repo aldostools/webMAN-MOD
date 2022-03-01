@@ -2,7 +2,8 @@
  *  Copyright (C) 2022 Darjan Krijan <krijan@dkmechatronics.eu>
  *
  *  Convert a PNG to a simple uncompressed ARGB image format for slaunch.
- *  Uses libspng for simplicity and performance reasons.
+ *  Uses libspng [BSD 2-Clause] for simplicity and performance reasons.
+ *  libspng uses zlib for decompression in this case
  *
  *  Usage:
  *  png2argb <png input file> [<argb output file>]
@@ -14,9 +15,7 @@
 #include <string.h>
 #include <inttypes.h>
 
-#if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-#include <byteswap.h>
-#endif
+#include "common.h"
 
 #include "spng.h"
 
@@ -66,16 +65,23 @@ int main(int argc, char *argv[]) {
 	char file_argb[4096] = {0};
 	FILE *fp_argb;
 
-	if (argc < 2) {
-		printf("No input file\n");
-		printf("Usage: %s <png input file> [<argb output file>]\n", argv[0]);
-		printf("Not providing an output file will produce an argb image next to the PNG image.\n", argv[0]);
+	if (argc < 2 || argc > 3) {
+ 		printf("Copyright (C) 2022 Darjan Krijan <krijan@dkmechatronics.eu>\n\n");
 
-		return EXIT_FAILURE;
-	} else if (argc > 3) {
-		printf("Too many input arguments\n");
-		printf("Usage: %s <png input file> [<argb output file>]\n", argv[0]);
-		printf("Not providing an output file will produce an argb image next to the PNG image.\n", argv[0]);
+		printf("png2argb converts a PNG to a simple uncompressed ARGB image format for slaunch.\n");
+		printf("Provided under [GPLv3].\n");
+		printf("Uses libspng [BSD 2-Clause License] for simplicity and performance reasons.\n");
+		printf("libspng uses zlib [zlib License] for decompression in this case.\n\n");
+
+		if (argc < 2) {
+			printf("No input file provided!\n");
+			printf("Usage: %s <png input file> [<argb output file>]\n", argv[0]);
+			printf("Not providing an output file will produce an argb image next to the PNG image.\n", argv[0]);
+		} else if (argc > 3) {
+			printf("Too many input arguments!\n");
+			printf("Usage: %s <png input file> [<argb output file>]\n", argv[0]);
+			printf("Not providing an output file will produce an argb image next to the PNG image.\n", argv[0]);
+		}
 
 		return EXIT_FAILURE;
 	}
@@ -172,9 +178,9 @@ int main(int argc, char *argv[]) {
 	memcpy(argb.magic, argb_magic, strlen(argb_magic));
 
 #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-	argb.nx    = bswap_32(argb.nx);
-	argb.ny    = bswap_32(argb.ny);
-	argb.flags = bswap_32(argb.flags);
+	argb.nx    = BE32(argb.nx);
+	argb.ny    = BE32(argb.ny);
+	argb.flags = BE32(argb.flags);
 #endif
 
 	fwrite(&argb, sizeof(uint8_t), 128, fp_argb);
