@@ -11,9 +11,9 @@ CRT_HEAD += $(shell ppu-lv2-gcc -print-file-name'='ecrtn.o)
 ROOT_PATH = ../..
 
 PPU_SRCS = $(ROOT_PATH)/libc.c mem.c misc.c argb_dec.c png_dec.c jpg_dec.c blitting.c slaunch.c
-PPU_INCDIRS	= -I $(ROOT_PATH)/vsh
+PPU_INCDIRS	= -I$(ROOT_PATH)/vsh
 PPU_PRX_TARGET = slaunch.prx
-PPU_PRX_LDFLAGS = -L $(ROOT_PATH)/lib -Wl,--strip-unused-data
+PPU_PRX_LDFLAGS = -L$(ROOT_PATH)/lib -Wl,--strip-unused-data
 PPU_PRX_STRIP_FLAGS = -s
 PPU_PRX_LDLIBS 	+= -lfs_stub -lnet_stub -lrtc_stub -lio_stub -lnetctl_stub -ljpgdec_stub \
                    -lstdc_export_stub \
