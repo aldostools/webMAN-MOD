@@ -85,9 +85,18 @@ static int slisten(int port, int backlog)
 	sa.sin_port = htons(port);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	bind(s, (struct sockaddr *)&sa, sin_len);
-	listen(s, backlog);
+	if(bind(s, (struct sockaddr *)&sa, sin_len) < 0){
+		shutdown(s, SHUT_RDWR);
+		socketclose(s);
+		return FAILED;
+	}
 
+	if(listen(s, backlog) < 0){
+		shutdown(s, SHUT_RDWR);
+		socketclose(s);
+		return FAILED;
+	}
+	
 	return s;
 }
 

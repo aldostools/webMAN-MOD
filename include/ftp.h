@@ -701,7 +701,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							sprintf(pasv_output, "227 Entering Passive Mode (%s,%i,%i)\r\n", ip_address, p1x, p2x);
 							ssend(conn_s_ftp, pasv_output);
 
-							if((data_s = accept(pasv_s, NULL, NULL)) > 0)
+							if((data_s = accept(pasv_s, NULL, NULL)) >= 0)
 							{
 								setsockopt(pasv_s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 
