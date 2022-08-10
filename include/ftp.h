@@ -67,7 +67,20 @@ static u8 parsePath(char *absPath_s, const char *path, const char *cwd, bool sca
 			if(file_exists(absPath_s)) return 0;
 
 			normalize_path((char*)cwd, false);
-			sprintf(absPath_s, "%s/%s", cwd, path);
+			
+			if(absPath_s[0] != '/'){
+				// Path is relative, need to concat it after cwd
+				if(cwd[strlen(cwd) - 1] != '/'){
+					// cwd doesn't end with a slash
+					sprintf(absPath_s, "%s/%s", cwd, path); // TODO: Solve buffer overflow risk
+				} else {
+					// cwd ends with a slash
+					sprintf(absPath_s, "%s%s", cwd, path); // TODO: Buffer overflow risk
+				}
+			} else {
+				// Path is absolute
+				sprintf(absPath_s, "%s", path); // TODO: Buffer overflow risk
+			}
 		}
 
 	filepath_check(absPath_s);
