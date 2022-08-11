@@ -1,3 +1,5 @@
+#include <netex/ifctl.h>
+
 #define FTP_OK_150			"150 OK\r\n"						// File status okay; about to open data connection.
 #define FTP_OK_200			"200 OK\r\n"						// The requested action has been successfully completed.
 #define FTP_OK_202			"202 OK\r\n"						// Command not implemented, superfluous at this site.
@@ -33,6 +35,10 @@ static u8 ftp_session = 1;
 #define FTP_FILE_UNAVAILABLE    -4
 #define FTP_OUT_OF_MEMORY       -6
 #define FTP_DEVICE_IS_FULL      -8
+
+#define MIN_KERNEL_FREE_SPACE 256*1024 // 256KiB
+#define MIN_KERNEL_MAX_TRIES 10 // Try 10 times
+#define MIN_KERNEL_RETRY_PAUSE 2 // 2 seconds
 
 static u8 parsePath(char *absPath_s, const char *path, const char *cwd, bool scan)
 {
@@ -703,6 +709,38 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					{
 						if(data_s >= 0) sclose(&data_s);
 						if(pasv_s >= 0) sclose(&pasv_s);
+
+						bool kernel_full = false;
+						int failures = 0;
+						while(true)
+						{
+							unsigned int kernel_free_current = 0;
+							sys_net_if_ctl(0, SYS_NET_CC_GET_MEMORY_FREE_CURRENT, &kernel_free_current, sizeof(kernel_free_current));
+
+							if(kernel_free_current >= MIN_KERNEL_FREE_SPACE)
+							{
+								break; // There's enough space for new socket
+							}
+							else
+							{
+								failures++;
+
+								if(failures >= MIN_KERNEL_MAX_TRIES)
+								{
+									kernel_full = true;
+									break; // Not enough space found
+								}
+
+								sys_ppu_thread_sleep(MIN_KERNEL_RETRY_PAUSE); // Give kernel more time to free up space
+							}
+						}
+
+						if(kernel_full == true)
+						{
+							// Kernel space is full, tell client to retry later
+							ssend(conn_s_ftp, "421 Could not create socket\r\n");
+							break; // Abort PASV command
+						}
 
 						p1x = ( (pasv_port & 0xff00) >> 8) | 0x80; // use ports 32768 -> 65528 (0x8000 -> 0xFFF8)
 						p2x = ( (pasv_port & 0x00ff)     );
