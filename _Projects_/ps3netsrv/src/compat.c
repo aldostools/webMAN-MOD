@@ -352,7 +352,7 @@ file_t open_file(const char *path, int oflag)
 	if(!path)
 		return INVALID_FD;
 
-	return open(path, oflag);
+	return open(path, oflag, 0666);
 }
 
 int close_file(file_t fd)
