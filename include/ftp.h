@@ -686,7 +686,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					if(split)
 					{
 						// param = "YYYYMMDDHHMMSS filename"
-						if(str_num_length(param, MFMT_MODTIME_LEN) == MFMT_MODTIME_LEN && param[MFMT_MODTIME_LEN] == ' '){
+						if(str_num_length(param, MFMT_MODTIME_LEN) == MFMT_MODTIME_LEN && param[MFMT_MODTIME_LEN] == ' ')
+						{
 							param[MFMT_MODTIME_LEN] = 0; // Null delimiter, split param into two strings
 							char *param_modtime = &param[0];
 							char *param_file = &param[MFMT_MODTIME_LEN + 1]; // Filename begins after the space
@@ -705,7 +706,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							time_t timestamp;
 							cellRtcGetTime_t(&datetime, &timestamp);
 
-							if(is_ntfs_path(filename)){
+							if(is_ntfs_path(filename))
+							{
 								ssend(conn_s_ftp, FTP_ERROR_501); // NTFS attribute modifications are currently unavailable
 								is_ntfs = true;
 							}
