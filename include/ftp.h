@@ -34,6 +34,8 @@ static u8 ftp_session = 1;
 #define FTP_OUT_OF_MEMORY       -6
 #define FTP_DEVICE_IS_FULL      -8
 
+#define MFMT_MODTIME_LEN 14 // MFMT modification time is 14 digits long
+
 static u8 parsePath(char *absPath_s, const char *path, const char *cwd, bool scan)
 {
 	if(!absPath_s || !path || !cwd) return 0;
@@ -120,6 +122,36 @@ static int ssplit(const char *str, char *left, u16 lmaxlen, char *right, u16 rma
 	right[rsize] = '\0';
 
 	return (sep != NULL);
+}
+
+// Returns length of a number in digits 
+static int str_num_length(char *ptr, int max_digits)
+{
+	if(ptr == NULL) return 0;
+
+	int num_len = 0;
+
+	for(int i = 0; i < max_digits; i++)
+	{
+		if(ptr[i] < '0' || ptr[i] > '9') return num_len;
+
+		num_len++;
+	}
+
+	return num_len;
+}
+
+// Returns long from a string limited to max number of digits
+static long str_extract_long(char *ptr, int max_digits)
+{
+	if(ptr == NULL) return 0;
+
+	char tmp[max_digits + 1];
+	memcpy(tmp, ptr, max_digits);
+	tmp[max_digits] = 0; // null termination
+
+	char *end;
+	return strtol(tmp, &end, 10);
 }
 
 
@@ -646,6 +678,71 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					else
 					{
 						ssend(conn_s_ftp, FTP_ERROR_501);		// Syntax error in parameters or arguments.
+					}
+				}
+				else
+				if(_IS(cmd, "MFMT"))
+				{
+					if(split)
+					{
+						// param = "YYYYMMDDHHMMSS filename"
+						if(str_num_length(param, MFMT_MODTIME_LEN) == MFMT_MODTIME_LEN && param[MFMT_MODTIME_LEN] == ' '){
+							param[MFMT_MODTIME_LEN] = 0; // Null delimiter, split param into two strings
+							char *param_modtime = &param[0];
+							char *param_file = &param[MFMT_MODTIME_LEN + 1]; // Filename begins after the space
+
+							findPath(filename, param_file, cwd);
+
+							CellRtcDateTime datetime;
+							datetime.year = str_extract_long(&param_modtime[0], 4);
+							datetime.month = str_extract_long(&param_modtime[4], 2);
+							datetime.day = str_extract_long(&param_modtime[6], 2);
+							datetime.hour = str_extract_long(&param_modtime[8], 2);
+							datetime.minute = str_extract_long(&param_modtime[10], 2);
+							datetime.second = str_extract_long(&param_modtime[12], 2);
+							datetime.microsecond = 0;
+
+							time_t timestamp;
+							cellRtcGetTime_t(&datetime, &timestamp);
+
+							if(is_ntfs_path(filename)){
+								ssend(conn_s_ftp, FTP_ERROR_501); // NTFS attribute modifications are currently unavailable
+								is_ntfs = true;
+							}
+							
+							if (!is_ntfs)
+							{
+								CellFsUtimbuf newTime;
+								newTime.actime = timestamp;
+								newTime.modtime = timestamp;
+								CellFsErrno ret = cellFsUtime(filename, &newTime);
+
+								if(ret == CELL_FS_SUCCEEDED)
+								{
+									sprintf(buffer, "213 Modify=%s; %s\r\n", param_modtime, param_file);
+									ssend(conn_s_ftp, buffer);
+									dataactive = 1;
+								}
+								else if(ret == CELL_FS_ENOENT)
+								{
+									send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer); // Error 550, file doesn't exist
+								}
+								else
+								{
+									ssend(conn_s_ftp, FTP_ERROR_501);
+								}
+								
+							}
+						}
+						else
+						{
+							ssend(conn_s_ftp, FTP_ERROR_501);	// Syntax error in parameters or arguments.
+						}
+						
+					}
+					else
+					{
+						ssend(conn_s_ftp, FTP_ERROR_501);	// Syntax errors in parameters or arguments.
 					}
 				}
 				else
@@ -1317,6 +1414,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										" LIST\r\n"
 										" MLSD\r\n"
 										" MDTM\r\n"
+										" MFMT\r\n"
 										" MLST type*;size*;modify*;UNIX.mode*;UNIX.uid*;UNIX.gid*;\r\n"
 										"211 End\r\n");
 				}
