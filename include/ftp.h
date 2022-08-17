@@ -12,6 +12,7 @@
 #define FTP_OK_REST_350		"350 REST command successful\r\n"	// Requested file action pending further information.
 #define FTP_OK_RNFR_350		"350 RNFR OK\r\n"					// Requested file action pending further information.
 
+#define FTP_ERROR_421_MCT	"421 Max concurrent transfers reached\r\n"	// All transfer slots are full, retry later.
 #define FTP_ERROR_425		"425 Error in data connection\r\n"	// Can't open data connection.
 #define FTP_ERROR_430		"430 Invalid login\r\n"				// Invalid username or password.
 #define FTP_ERROR_450		"450 Can't access file\r\n"			// Can't access file.
@@ -28,6 +29,8 @@ static u8 ftp_active = 0;
 static u8 ftp_working = 0;
 static u8 ftp_session = 1;
 
+static sys_semaphore_t g_sem_transfer_limit = SYS_SEMAPHORE_ID_INVALID;
+
 #define FTP_RECV_SIZE  (STD_PATH_LEN + 20)
 
 #define FTP_FILE_UNAVAILABLE    -4
@@ -35,6 +38,9 @@ static u8 ftp_session = 1;
 #define FTP_DEVICE_IS_FULL      -8
 
 #define MFMT_MODTIME_LEN 14 // MFMT modification time is 14 digits long
+
+#define MAX_TRANSFERS 2 // Max 2 concurrent transfers
+#define MAX_TRANSFER_WAIT 15000000 // 15 seconds
 
 static u8 parsePath(char *absPath_s, const char *path, const char *cwd, bool scan)
 {
@@ -286,7 +292,9 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 				{
 					if(data_s < 0 && pasv_s >= 0) data_s = accept(pasv_s, NULL, NULL);
 
-					if(data_s >= 0)
+					int semStatus = sys_semaphore_wait(g_sem_transfer_limit, MAX_TRANSFER_WAIT);
+
+					if(data_s >= 0 && semStatus == CELL_OK)
 					{
 						if(split)
 						{
@@ -381,6 +389,12 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						{
 							ssend(conn_s_ftp, FTP_ERROR_501);			// Syntax error in parameters or arguments.
 						}
+
+						sys_semaphore_post(g_sem_transfer_limit, 1);
+					}
+					else if(semStatus == ETIMEDOUT)
+					{
+						ssend(conn_s_ftp, FTP_ERROR_421_MCT);
 					}
 					else
 					{
@@ -392,7 +406,9 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 				{
 					if(data_s < 0 && pasv_s >= 0) data_s = accept(pasv_s, NULL, NULL);
 
-					if(data_s >= 0)
+					int semStatus = sys_semaphore_wait(g_sem_transfer_limit, MAX_TRANSFER_WAIT);
+
+					if(data_s >= 0 && semStatus == CELL_OK)
 					{
 						if(split)
 						{
@@ -517,6 +533,12 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						{
 							ssend(conn_s_ftp, FTP_ERROR_501);		// Syntax error in parameters or arguments.
 						}
+
+						sys_semaphore_post(g_sem_transfer_limit, 1);
+					}
+					else if(semStatus == ETIMEDOUT)
+					{
+						ssend(conn_s_ftp, FTP_ERROR_421_MCT);
 					}
 					else
 					{
@@ -1509,6 +1531,15 @@ static void ftpd_thread(__attribute__((unused)) u64 arg)
 	ftp_active = 0;
 	ftp_working = 1;
 
+	if(g_sem_transfer_limit == SYS_SEMAPHORE_ID_INVALID)
+	{
+		sys_semaphore_attribute_t sem_attr;
+		sys_semaphore_attribute_initialize(sem_attr);
+		sys_semaphore_attribute_name_set(sem_attr.name, "FTP_MCT");
+
+		sys_semaphore_create(&g_sem_transfer_limit, &sem_attr, MAX_FTP_TRANSFERS, MAX_FTP_TRANSFERS);
+	}
+
 relisten:
 	if(!working) goto end;
 
@@ -1548,6 +1579,18 @@ relisten:
 	}
 end:
 	sclose(&list_s);
+
+	if(g_sem_transfer_limit != SYS_SEMAPHORE_ID_INVALID)
+	{
+		// No threads can block for the semaphore to get deallocated
+		while(sys_semaphore_destroy(g_sem_transfer_limit) == EBUSY)
+		{
+			// Sleep for 1 second and retry
+			sys_ppu_thread_sleep(1);
+		}
+
+		g_sem_transfer_limit = SYS_SEMAPHORE_ID_INVALID;
+	}
 
 	//thread_id_ftpd = SYS_PPU_THREAD_NONE;
 	sys_ppu_thread_exit(0);
