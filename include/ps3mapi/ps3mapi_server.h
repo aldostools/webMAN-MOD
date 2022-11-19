@@ -422,6 +422,77 @@ static void handleclient_ps3mapi(u64 conn_s_ps3mapi_p)
 						}
 						else {ssend(conn_s_ps3mapi, PS3MAPI_ERROR_425); split = 425;}
 					}
+					else if (_IS(cmd, "PAGEALLOCATE"))	// MEMORY PAGEALLOCATE <pid> <size> <page_size> <flags> <is_executable>
+					{
+						if (split)
+						{
+							split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+							if (split)
+							{
+								u32 pid = val(param1);
+								split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+								if (split)
+								{
+									u32 size = (u32)val(param1);
+									split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+									if (split)
+									{
+										u64 page_size = convertH(param1);
+										split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+										if (split)
+										{
+											u32 flags = (u32)val(param1);
+											u32 is_executable = (u32)val(param2);
+
+											u64 page_table[2] = { 0, 0 };
+											{system_call_8(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PROC_PAGE_ALLOCATE, (u64)pid, (u64)size, (u64)page_size, (u64)flags, (u64)is_executable, (u64)(u32)page_table); }
+
+											split = sprintf(buffer, "200 %016llX|%016llX\r\n", page_table[0], page_table[1]);
+											ssend(conn_s_ps3mapi, buffer);
+										}
+										else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+									}
+									else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+								}
+								else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+							}
+							else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+						}
+						else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+					}
+					else if (_IS(cmd, "PAGEFREE"))	// MEMORY PAGEFREE <pid> <flags> <page_table_0> <page_table_1>
+					{
+						if (split)
+						{
+							split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+							if (split)
+							{
+								u32 pid = val(param1);
+								split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+								if (split)
+								{
+									u32 flags = (u32)val(param1);
+									split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+									if (split)
+									{
+										u64 page_table_0 = convertH(param1);
+										u64 page_table_1 = convertH(param2);
+
+										u64 _page_table[2];
+										_page_table[0] = page_table_0;
+										_page_table[1] = page_table_1;
+										{system_call_5(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PROC_PAGE_FREE, (u64)pid, (u64)flags, (u64)(u32)_page_table); }
+
+										ssend(conn_s_ps3mapi, PS3MAPI_OK_200);
+									}
+									else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+								}
+								else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+							}
+							else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+						}
+						else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+					}
 					else {ssend(conn_s_ps3mapi, PS3MAPI_ERROR_502); split = 502;}
 				}
 
@@ -535,10 +606,138 @@ static void handleclient_ps3mapi(u64 conn_s_ps3mapi_p)
 							ssend(conn_s_ps3mapi, buffer);
 						}
 					}
+					else if(_IS(cmd, "GETSEGMENTS"))	// MODULE GETSEGMENTS <pid> <prx-id>
+					{
+						if (split)
+						{
+							split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+							if (split)
+							{
+								sys_prx_module_info_t moduleInfo;
+								sys_prx_segment_info_t moduleSegments[10];
+								char filename[SYS_PRX_MODULE_FILENAME_SIZE];
+								_memset(filename, sizeof(filename));
+								_memset(moduleSegments, sizeof(moduleSegments));
+
+								moduleInfo.size = sizeof(moduleInfo);
+								moduleInfo.segments = moduleSegments;
+								moduleInfo.segments_num = sizeof(moduleSegments) / sizeof(sys_prx_segment_info_t);
+								moduleInfo.filename = filename;
+								moduleInfo.filename_size = sizeof(filename);
+								_memset(moduleInfo.segments, sizeof(moduleInfo.segments));
+								_memset(moduleInfo.filename, sizeof(moduleInfo.filename));
+
+								u32 pid = val(param1);
+								s32 prx_id = val(param2);
+
+								_memset(buffer, sizeof(buffer));
+								u32 buf_len = sprintf(buffer, "200 ");
+								{system_call_5(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_GET_PROC_MODULE_SEGMENTS, (u64)pid, (u64)prx_id, (u64)(u32)&moduleInfo); }
+
+								buf_len += sprintf(buffer + buf_len, "%s|", moduleInfo.name);
+								buf_len += sprintf(buffer + buf_len, "%s|", moduleInfo.filename);
+								buf_len += sprintf(buffer + buf_len, "%i|", moduleInfo.filename_size);
+								buf_len += sprintf(buffer + buf_len, "%i|", moduleInfo.modattribute);
+								buf_len += sprintf(buffer + buf_len, "%i|", moduleInfo.start_entry);
+								buf_len += sprintf(buffer + buf_len, "%i|", moduleInfo.stop_entry);
+
+								buf_len += sprintf(buffer + buf_len, "seg0|%016llX|%016llX|%016llX|%016llX|%016llX", 
+									moduleInfo.segments[0].base, moduleInfo.segments[0].filesz, moduleInfo.segments[0].memsz, 
+									moduleInfo.segments[0].index, moduleInfo.segments[0].type);
+								buf_len += sprintf(buffer + buf_len, "seg1|%016llX|%016llX|%016llX|%016llX|%016llX",
+									moduleInfo.segments[1].base, moduleInfo.segments[1].filesz, moduleInfo.segments[0].memsz,
+									moduleInfo.segments[1].index, moduleInfo.segments[1].type);
+								buf_len += sprintf(buffer + buf_len, "seg2|%016llX|%016llX|%016llX|%016llX|%016llX",
+									moduleInfo.segments[2].base, moduleInfo.segments[2].filesz, moduleInfo.segments[0].memsz,
+									moduleInfo.segments[2].index, moduleInfo.segments[2].type);
+								buf_len += sprintf(buffer + buf_len, "seg3|%016llX|%016llX|%016llX|%016llX|%016llX",
+									moduleInfo.segments[3].base, moduleInfo.segments[3].filesz, moduleInfo.segments[0].memsz,
+									moduleInfo.segments[3].index, moduleInfo.segments[3].type);
+
+								buf_len += sprintf(buffer + buf_len, "\r\n");
+								send(conn_s_ps3mapi, buffer, buf_len, 0);
+							}
+						}
+					}
 					else {ssend(conn_s_ps3mapi, PS3MAPI_ERROR_502); split = 502;}
 				}
 
 				if(!split) ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+			}
+			else if (_IS(cmd, "THREAD"))
+			{
+				if (split)
+				{
+					split = ssplit(param1, cmd, 19, param2, PS3MAPI_MAX_LEN);
+					if (_IS(cmd, "CREATE"))	// THREAD CREATE <pid> <page_table_0> <toc> <arg> <prio> <stack_size> <name>
+					{
+						if (split)
+						{
+							split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+							if (split)
+							{
+								u32 pid = val(param1);
+								split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+								if (split)
+								{
+									u64 page_table_0 = convertH(param1);
+									split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+									if (split)
+									{
+										u64 toc_memory_address = convertH(param1);
+										split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+										if (split)
+										{
+											u64 thread_arg = convertH(param1);
+											split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+											if (split)
+											{
+												u32 thread_prio = val(param1);
+												split = ssplit(param2, param1, PS3MAPI_MAX_LEN, param2, PS3MAPI_MAX_LEN);
+												if (split)
+												{
+													u32 thread_stack_size = (u32)val(param1);
+													char* thread_name = param2;
+
+													u64 threadOpd[2];
+													threadOpd[0] = page_table_0; // assuming main() is the first function in page_table_0
+													threadOpd[1] = toc_memory_address;
+
+													typedef struct
+													{
+														void* unk_0; // ptr to some funcs
+														u64 unk_8;
+														u32 unk_10;
+														u32 unk_14;
+														void* unk_18;
+														void* unk_20; // same as unk_18? :S
+														u64 unk_28[3];
+														void* unk_40; // same as unk_0?
+														// ...
+													} thread_t;
+
+													thread_t thrd;
+													{system_call_8(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PROC_CREATE_THREAD, (u64)pid, (u64)(u32)&thrd, (u64)(u32)threadOpd, (u64)thread_arg, (u64)thread_prio, (u64)thread_stack_size, (u64)(u32)thread_name); }
+
+													ssend(conn_s_ps3mapi, PS3MAPI_OK_200);
+												}
+												else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+											}											
+											else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+										}
+										else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+									}
+									else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+								}
+								else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+							}
+							else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+						}
+						else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+					}
+					else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
+				}
+				else ssend(conn_s_ps3mapi, PS3MAPI_ERROR_501);
 			}
 			#ifdef DEBUG_XREGISTRY
 			else if(_IS(cmd, "REGISTRY"))
