@@ -32,6 +32,7 @@ static u64 sc_142 = 0;
 #define FH482	0x323031372F30392FULL // 2017/09/
 #define FW483	0x323031382F30392FULL // 2018/09/
 #define FW484	0x323031392F30312FULL // 2019/01/
+#define FW484P	0x323032332F30312FULL // 2023/01/
 #define FW485	0x323031392F30382FULL // 2019/08/
 #define FW486	0x323032302F30312FULL // 2020/01/
 #define FW487	0x323032302F30372FULL // 2020/07/
@@ -147,15 +148,16 @@ static void detect_firmware(void)
 #endif  // #ifndef LAST_FIRMWARE_ONLY
 
 #ifdef DEX_SUPPORT
-		if(peek(0x30F3B0) == DEX) {SYSCALL_TABLE = SYSCALL_TABLE_481D; c_firmware = (peek(0x31F028) == FW484) ? 4.84f :
+		if(peek(0x30F3B0) == DEX) {SYSCALL_TABLE = SYSCALL_TABLE_481D; c_firmware = (peek(0x31F028) == FW484P) ? 4.89f : // Ported 4.84 in 4.89.3 Evilnat
+																					(peek(0x31F028) == FW484)  ? 4.84f :
  #ifndef LAST_FIRMWARE_ONLY
-																					(peek(0x31F028) == FW489) ? 4.89f :
-																					(peek(0x31F028) == FW488) ? 4.88f :
-																					(peek(0x31F028) == FW487) ? 4.87f :
-																					(peek(0x31F028) == FW486) ? 4.86f :
-																					(peek(0x31F028) == FW485) ? 4.85f :
-																					(peek(0x31F028) == FW482) ? 4.82f :
-																					(peek(0x31F028) == FW481) ? 4.81f :
+																					(peek(0x31F028) == FW489)  ? 4.89f :
+																					(peek(0x31F028) == FW488)  ? 4.88f :
+																					(peek(0x31F028) == FW487)  ? 4.87f :
+																					(peek(0x31F028) == FW486)  ? 4.86f :
+																					(peek(0x31F028) == FW485)  ? 4.85f :
+																					(peek(0x31F028) == FW482)  ? 4.82f :
+																					(peek(0x31F028) == FW481)  ? 4.81f :
  #endif
 																					get_firmware_version(); dex_mode = 2;} else
  #ifndef LAST_FIRMWARE_ONLY
@@ -477,16 +479,16 @@ static void detect_firmware(void)
 static void apply_noBD_patches(u8 noBD)
 {
 	// noBD LV1 4.75 - 4.89
-	if(ALLOW_NOBD)
+	if(ALLOW_NOBD && noBD)
 	{
 		//00712790  78 84 00 20 F8 01 00 70  F9 21 00 78 40 9E 00 0C
-		poke_lv1(0x712798ULL, noBD ? 0xF921007860000000ULL : 0xF9210078409E000CULL);
+		poke_lv1(0x712798ULL, 0xF921007860000000ULL);
 		//00712890  F9 21 00 78 40 9D 00 14  E8 62 96 08 E8 BF 00 40
-		poke_lv1(0x712890ULL, noBD ? 0xF921007860000000ULL : 0xF9210078409D0014ULL);
+		poke_lv1(0x712890ULL, 0xF921007860000000ULL);
 		//00712C10  2F BF 00 A7 41 9E 00 0C  2F BF 00 A5 40 9E 00 54
-		poke_lv1(0x712C18ULL, noBD ? 0x2FBF00A560000000ULL : 0x2FBF00A5409E0054ULL);
+		poke_lv1(0x712C18ULL, 0x2FBF00A560000000ULL);
 		//00714BE0  78 63 00 20 40 9E 00 18  E8 01 00 90 EB E1 00 78
-		poke_lv1(0x714BE0ULL, noBD ? 0x7863002060000000ULL : 0x78630020409E0018ULL);
+		poke_lv1(0x714BE0ULL,0x7863002060000000ULL);
 	}
 }
 #endif
