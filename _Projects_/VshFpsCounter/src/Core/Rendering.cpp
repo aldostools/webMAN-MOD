@@ -7,7 +7,7 @@ void Render::OnUpdate()
    if (!g_Helpers.system_plugin)
       return;
 
-   if (!g_Helpers.page_autooff_guide)
+   if (!g_Helpers.page_notification)
    {
       DestroyWidgets();
       return;
@@ -62,10 +62,10 @@ void Render::Text(const std::string& text, vsh::vec2 position, float height, Ali
 
 vsh::paf::PhText* Render::CreateText(const std::string& widgetName)
 {
-   if (!g_Helpers.page_autooff_guide)
+   if (!g_Helpers.page_notification)
       return nullptr;
 
-   vsh::paf::PhText* phText = new vsh::paf::PhText(g_Helpers.page_autooff_guide);
+   vsh::paf::PhText* phText = new vsh::paf::PhText(g_Helpers.page_notification);
    phText->SetName(widgetName)
       .SetColor(vsh::vec4())
       .SetStyle(0x13, 0x70);
@@ -85,7 +85,7 @@ vsh::paf::PhText* Render::GetText(int index)
 
 void Render::CreateWidgets()
 {
-   if (!g_Helpers.page_autooff_guide)
+   if (!g_Helpers.page_notification)
       return;
 
    // don't create any more planes if we already created the first one
@@ -109,7 +109,7 @@ void Render::CreateWidgets()
 
 void Render::DestroyWidgets()
 {
-   if (!g_Helpers.page_autooff_guide)
+   if (!g_Helpers.page_notification)
       return;
 
    // clear pointers if no longer valid
@@ -136,7 +136,7 @@ void Render::DestroyWidgets()
 
 void Render::ClearTexts()
 {
-   if (!g_Helpers.page_autooff_guide)
+   if (!g_Helpers.page_notification)
       return;
 
    if (vsh::paf::PhText* phText = GetText(0))

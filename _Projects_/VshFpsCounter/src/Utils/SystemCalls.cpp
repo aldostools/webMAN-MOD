@@ -312,6 +312,16 @@ __attribute__((noinline)) void PokeLv2(uint64_t addr, uint64_t val)
    return_to_user_prog(void);
 }
 
+uint8_t PeekUint8LV1(uint64_t addr)
+{
+    return (PeekLv1(addr) >> 56) & 0xFFUL;
+}
+
+uint32_t PeekUint32LV1(uint64_t addr)
+{
+    return (PeekLv1(addr) >> 32) & 0xFFFFFFFFUL;
+}
+
 bool PeekChunkLV1(uint64_t start, uint64_t* buffer, uint64_t size)
 {
     if (PeekLv1(start) == 0xFFFFFFFF80010003)
@@ -721,4 +731,11 @@ sys_prx_id_t _sys_prx_get_my_module_id()
 void _sys_ppu_thread_exit(uint64_t val)
 {
    system_call_1(SC_PPU_THREAD_EXIT, val);
+}
+
+void UnloadMyModule()
+{
+    sys_prx_id_t prxId = _sys_prx_get_my_module_id();
+    uint64_t meminfo[5]{ 0x28, 2, 0, 0, 0 };
+    _sys_prx_stop_module(prxId, 0, meminfo, NULL, 0, NULL);
 }

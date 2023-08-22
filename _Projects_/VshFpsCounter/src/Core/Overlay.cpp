@@ -486,6 +486,33 @@ void Overlay::UpdateInfoThread(uint64_t arg)
 
 void Overlay::LoadExternalOffsets(uint64_t arg)
 {
+#if 0
+    // Reference: https://github.com/Evilnat/xai_plugin/blob/fbfd74636f9f947bea097a1b6990d46115fd1c31/xai_plugin/cfw_settings.cpp#L575-L627
+    char rsxData[120];
+    char core[25], memory[25];
+    uint8_t hex[8];
+    uint64_t rsx_values = 0;
+
+    for (uint64_t offset = 0x600000; offset < 0x700000; offset++)
+    {
+        if (PeekUint32LV1(offset) == 0x7670653A &&
+            (PeekUint32LV1(offset + 7) == 0x7368643A || PeekUint32LV1(offset + 8) == 0x7368643A) &&
+            PeekUint8LV1(offset - 5) == 0x2F)
+        {
+            rsx_values = PeekLv1(offset - 8);
+            break;
+        }
+    }
+
+
+    vsh::memcpy(hex, &rsx_values, 8);
+
+    for (int i = 0; i < 8; i++)
+        vsh::snprintf(&rsxData[i], sizeof(rsxData), "%c", hex[i]);
+
+    vsh::strncpy(core, rsxData, 3);
+    vsh::strncpy(memory, rsxData + 4, 3);
+#else
     std::vector<uint32_t> foundOffsets;
     foundOffsets.reserve(3); // reserve 3 offsets for our use case
 
@@ -495,14 +522,14 @@ void Overlay::LoadExternalOffsets(uint64_t arg)
         { "\x00\x00\x00\x05\x00\x00\x00\x03\x00\x00\x00\x06\x00\x00\x40\x10\x00\x00\x40\x14", "???x???x???x??xx??xx", false }
     };
 
-    FindPatternHypervisorSimultaneously(patterns, foundOffsets);
+    FindPatternsHypervisorInParallel(patterns, foundOffsets);
     
     g_Overlay.m_CpuClockSpeedOffsetInLv1 = foundOffsets[0] + 0x24;
     g_Overlay.m_GpuClockSpeedOffsetInLv1 = foundOffsets[1] + 0x14;
     g_Overlay.m_GpuGddr3RamClockSpeedOffsetInLv1 = foundOffsets[2] + 0x14;
 
 
-    /*
+#ifdef OLD_CODE
     uint32_t addr = FindPatternHypervisor(
         "be.0.ref_clk",
         vsh::strlen("be.0.ref_clk"),
@@ -520,7 +547,9 @@ void Overlay::LoadExternalOffsets(uint64_t arg)
         20,
         "???x???x???x??xx??xx");
     g_Overlay.m_GpuGddr3RamClockSpeedOffsetInLv1 = addr + 0x14;
-    */
+#endif // OLD_CODE
+
+#endif
 
     sys_ppu_thread_exit(0);
 }

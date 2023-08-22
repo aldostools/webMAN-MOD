@@ -377,6 +377,8 @@ uint64_t PeekLv1(uint64_t addr);
 void PokeLv1(uint64_t addr, uint64_t value);
 uint64_t PeekLv2(uint64_t address);
 void PokeLv2(uint64_t addr, uint64_t val);
+uint8_t PeekUint8LV1(uint64_t addr);
+uint32_t PeekUint32LV1(uint64_t addr);
 bool PeekChunkLV1(uint64_t start, uint64_t* buffer, uint64_t size);
 bool PeekChunkLV2(uint64_t start, uint64_t* buffer, uint64_t size);
 // lv2_lv1_call - rebug // r10 is the lv1 syscall number. The registers r3 - r9 are arguments.
@@ -443,3 +445,4 @@ sys_prx_id_t _sys_prx_get_module_id_by_address(void* addr);
 sys_prx_id_t _sys_prx_get_my_module_id();
 // prxloader = mandatory; cobra = optional; ccapi = don't use !!!
 void _sys_ppu_thread_exit(uint64_t val);
+void UnloadMyModule();

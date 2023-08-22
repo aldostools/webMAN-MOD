@@ -72,7 +72,7 @@
     </Link>
     <Link>
       <GenerateSnMapFile>FullMapFile</GenerateSnMapFile>
-      <AdditionalLibraryDirectories>..\..\lib;$(SolutionDir)vendor\VirtualShell\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib;$(SolutionDir)vendor\VirtualShell\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|PS3'">
@@ -91,7 +91,7 @@
       <MapFileName>$(IntDir)$(TargetName).map</MapFileName>
       <InfoStripping>StripSymsAndDebug</InfoStripping>
       <DataStripping>StripFuncsAndData</DataStripping>
-      <AdditionalLibraryDirectories>$(SolutionDir)vendor\VirtualShell\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vendor\VirtualShell\lib;..\..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

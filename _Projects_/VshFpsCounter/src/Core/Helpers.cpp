@@ -14,7 +14,8 @@ void Helpers::OnUpdate()
    system_plugin = vsh::paf::View::Find("system_plugin");
    xmb_plugin = vsh::paf::View::Find("xmb_plugin");
 
-   page_autooff_guide = system_plugin ? system_plugin->FindWidget("page_autooff_guide") : nullptr;
+   page_notification = system_plugin ? system_plugin->FindWidget("page_notification") : nullptr;
+   page_xmb_indicator = system_plugin ? system_plugin->FindWidget("page_xmb_indicator") : nullptr;
 
 
    MonitorGameState();

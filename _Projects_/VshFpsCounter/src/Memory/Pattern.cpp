@@ -90,7 +90,7 @@ uint32_t FindPatternHypervisor(const char* bytes, size_t len, const char* mask)
     return address;
 }
 
-bool FindPatternHypervisorSimultaneously(uint32_t startAddress, uint32_t m, uint32_t chunk_size, char* mem, const char* sfind, const char* mask, uint32_t* found_offset)
+bool FindPatternHypervisorWithResult(uint32_t startAddress, uint32_t m, uint32_t chunk_size, char* mem, const char* sfind, const char* mask, uint32_t* found_offset)
 {
     for (uint32_t offset = 0; offset < m; offset += 4)
     {
@@ -106,7 +106,7 @@ bool FindPatternHypervisorSimultaneously(uint32_t startAddress, uint32_t m, uint
     return false;
 }
 
-void FindPatternHypervisorSimultaneously(std::vector<Pattern>& patterns, std::vector<uint32_t>& foundOffsets)
+void FindPatternsHypervisorInParallel(std::vector<Pattern>& patterns, std::vector<uint32_t>& foundOffsets)
 {
     const uint32_t chunk_size = 65536; // 64KB
 
@@ -131,7 +131,7 @@ void FindPatternHypervisorSimultaneously(std::vector<Pattern>& patterns, std::ve
                 continue;
 
             uint32_t offset = 0;
-            if (FindPatternHypervisorSimultaneously(startAddress, m, chunk_size, mem, pat.sfind, pat.mask, &offset))
+            if (FindPatternHypervisorWithResult(startAddress, m, chunk_size, mem, pat.sfind, pat.mask, &offset))
             {
                 foundOffsets.push_back(offset);
                 pat.found = true;

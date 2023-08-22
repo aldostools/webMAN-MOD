@@ -23,7 +23,8 @@ public:
    vsh::paf::View* game_plugin{};
    vsh::paf::View* system_plugin{};
    vsh::paf::View* xmb_plugin{};
-   vsh::paf::PhWidget* page_autooff_guide{};
+   vsh::paf::PhWidget* page_notification{};
+   vsh::paf::PhWidget* page_xmb_indicator{};
 
    bool m_IsHen{};
    bool m_StateGameRunning{};

@@ -27,8 +27,8 @@ uintptr_t FindPatternVshInTextSegment(uint8_t* bytes, const char* mask);
 
 uint32_t FindPatternHypervisor(uint32_t startAddress, uint32_t stopAddress, uint8_t step, const char* sfind, size_t len, const char* mask);
 uint32_t FindPatternHypervisor(const char* bytes, size_t len, const char* mask);
-bool FindPatternHypervisorSimultaneously(uint32_t startAddress, uint32_t m, uint32_t chunk_size, char* mem, const char* sfind, const char* mask, uint32_t* found_offset);
-void FindPatternHypervisorSimultaneously(std::vector<Pattern>& patterns, std::vector<uint32_t>& foundOffsets);
+bool FindPatternHypervisorWithResult(uint32_t startAddress, uint32_t m, uint32_t chunk_size, char* mem, const char* sfind, const char* mask, uint32_t* found_offset);
+void FindPatternsHypervisorInParallel(std::vector<Pattern>& patterns, std::vector<uint32_t>& foundOffsets);
 
 
 uint64_t FindPatternKernel(uint64_t startAddress, uint64_t stopAddress, uint8_t step, const char* sfind, size_t len, const char* mask);
