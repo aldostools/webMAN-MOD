@@ -261,7 +261,7 @@ static void start_vsh_gui(bool vsh_menu)
 
 #ifdef PS3MAPI
 
-static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t stacksize, char *error_msg);
+static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t stacksize, uint64_t outPageTable[2], char* error_msg)
 
 static void ps3mapi_syscall8(char *buffer, char *templn, const char *param);
 static void ps3mapi_setmem(char *buffer, char *templn, const char *param);
@@ -1163,7 +1163,8 @@ static void ps3mapi_payload(char *buffer, char *templn, const char *param)
 		else if(file_exists(payload))
 		{
 			char error_msg[64];
-			uint64_t executableMemoryAddress = StartGamePayload(pid, payload, 0x7D0, 0x4000, error_msg);
+			uint64_t pageTable[2];
+			uint64_t executableMemoryAddress = StartGamePayload(pid, payload, 0x7D0, 0x4000, pageTable, error_msg);
 
 			sprintf(templn, "<br><b>%s %s %s</b> (pid=0x%X)", payload, executableMemoryAddress ? STR_LOADED : STR_ERROR,
 															  error_msg, pid);

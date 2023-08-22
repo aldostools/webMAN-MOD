@@ -10,13 +10,13 @@ static int ps3mapi_process_page_allocate(sys_pid_t pid, uint64_t size, uint64_t 
 	system_call_8(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PROC_PAGE_ALLOCATE, (uint64_t)(uint32_t)pid, (uint64_t)(uint32_t)size, (uint64_t)(uint32_t)page_size, (uint64_t)(uint32_t)flags, (uint64_t)(uint32_t)is_executable, (uint64_t)(uint32_t)page_table);
 	return_to_user_prog(int);
 }
-/*
+
 static int ps3mapi_process_page_free(sys_pid_t pid, uint64_t flags, uint64_t* page_table)
 {
 	system_call_5(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_PROC_PAGE_FREE, (uint64_t)(uint32_t)pid, (uint64_t)(uint32_t)flags, (uint64_t)(uint32_t)page_table);
 	return_to_user_prog(int);
 }
-*/	
+
 static int ps3mapi_get_proc_memory(sys_pid_t pid, void* destination, void* source, size_t size)
 {
 	system_call_6(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_GET_PROC_MEM, (uint64_t)(uint32_t)pid, (uint64_t)(uint32_t)destination, (uint64_t)(uint32_t)source, size);
@@ -58,12 +58,12 @@ static int WritePayload(sys_pid_t pid, const char* fileName, uintptr_t startAddr
 	return SUCCEEDED;
 }
 
-// StartGamePayload(GetGameProcessID(), "/dev_hdd0/payload.bin", 0x7D0, 0x4000, error_msg);
+// StartGamePayload(GetGameProcessID(), "/dev_hdd0/payload.bin", 0x7D0, 0x4000, outPageTable, error_msg);
 
-static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t stacksize, char *error_msg)
+static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t stacksize, uint64_t outPageTable[2], char *error_msg)
 {
 	// Starting to inject payload fileName
-	uint64_t executableMemoryAddress = 0; *error_msg = NULL;
+	*error_msg = NULL;
 
 	uint64_t fileSizeOnDisk = file_size(fileName);
 	if (fileSizeOnDisk < 8)
@@ -73,10 +73,11 @@ static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t
 		show_error(error_msg);
 		return 0;
 	}
-	
+
+	// I need to find a way to get file size on disk; see https://imgur.com/a/bSFHbGT --- attempt here: https://github.com/TheRouletteBoi/RouLetteVshMenu/blob/939f0c3fc5cb38c96d356e94116429f0c0a2472b/src/Core/Menu/Submenus.cpp#L296-L350
 	fileSizeOnDisk = (fileSizeOnDisk + _4KB_) & 0xFFFF000;
 
-	int ret = ps3mapi_process_page_allocate(pid, fileSizeOnDisk, 0x100, 0x2F, 0x1, &executableMemoryAddress);
+	int ret = ps3mapi_process_page_allocate(pid, fileSizeOnDisk, 0x100, 0x2F, 0x1, outPageTable);
 	if (ret)
 	{
 		// Failed to allocate executable memory
@@ -87,6 +88,10 @@ static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t
 
 	sys_ppu_thread_sleep(1);
 
+	// outPageTable[0] is the userland page memory address 
+	// outPageTable[1] is the kernel page memory address
+	uint64_t executableMemoryAddress = outPageTable[0];
+
 	uint32_t temp_bytes = 0;
 	ret = ps3mapi_get_proc_memory(pid, (void*)(uintptr_t)executableMemoryAddress, (void*)&temp_bytes, 4);
 	if (ret)
@@ -94,6 +99,7 @@ static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t
 		// Failed to read executable memory
 		strcpy(error_msg, "Failed to read executable memory");
 		show_error(error_msg);
+		ps3mapi_process_page_free(pid, 0x2F, outPageTable);
 		return 0;
 	}
 
@@ -105,6 +111,7 @@ static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t
 		// Failedto read payload fileName
 		strcpy(error_msg, "Failed to read payload file");
 		show_error(error_msg);
+		ps3mapi_process_page_free(pid, 0x2F, outPageTable);
 		return 0;
 	}
 
@@ -121,6 +128,7 @@ static uint64_t StartGamePayload(int pid, const char* fileName, int prio, size_t
 		// Failed to start payload
 		strcpy(error_msg, "Failed to start payload");
 		show_error(error_msg);
+		ps3mapi_process_page_free(pid, 0x2F, outPageTable);
 		return 0;
 	}
 
