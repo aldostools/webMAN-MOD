@@ -103,6 +103,7 @@ typedef struct
 	u16 ftp_port;     // default: 21
 	u8  ftp_timeout;  // 0=20 seconds, 1-255= number of minutes
 	char ftp_password[20];
+	u8 ftp_password_null;
 	char allow_ip[16]; // block all remote IP addresses except this
 
 	u8 padding6[7];
