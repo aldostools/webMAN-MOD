@@ -144,6 +144,7 @@ typedef struct
 	uint16_t ftp_port;
 	uint8_t  ftp_timeout;
 	char ftp_password[20];
+	u8 ftp_password_null;
 	char allow_ip[16];
 
 	uint8_t padding6[7];
