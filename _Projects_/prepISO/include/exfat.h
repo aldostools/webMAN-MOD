@@ -106,6 +106,32 @@ static int dir_read (char *dpath)
 					continue;
 				}
 				//---------------
+				 
+				// If the key exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
+				// decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat) 				
+				if(strcasestr(ext, ".key"))
+				{
+					FIL fd;
+					char output[256];
+					snprintf (fn, 255, "%s/%s", dpath, fno.fname);
+					sprintf(output, "/dev_hdd0/tmp/wmtmp/%s", fno.fname);
+					
+					if (!f_open(&fd, fn, FA_READ))
+					{
+						UINT re;
+						uint8_t data[0x10];
+						f_read(&fd, data, 0x10, &re);
+						f_close (&fd);
+
+						int fda = ps3ntfs_open(output, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+						if(fda >= 0)
+						{
+							ps3ntfs_write(fda, (void *)data, 0x10);
+							ps3ntfs_close(fda);
+						}
+					}
+
+				}
 
 				//--- is ISO?
 				is_iso =	( (strcasestr(ext, ".iso")) ) ||
