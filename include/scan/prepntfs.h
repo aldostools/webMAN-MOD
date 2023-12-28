@@ -203,6 +203,15 @@ static void create_ntfs_file(char *iso_path, char *filename, size_t plen)
 			force_copy(sfo_path, tmp_path);
 		}
 
+		// copy external .key to WMTMP
+		if(ntfs_m == id_PS3ISO)
+		{
+			char *key_path = iso_path;
+			strcpy(key_path + plen, ".key");
+			strcpy(tmp_path + tlen, ".key");
+			force_copy(key_path, tmp_path);
+		}
+
 		// copy external image to WMTMP if exists
 		char *img_path = iso_path;
 		if(!get_image_file(img_path, plen)) // image not found in NTFS

@@ -268,6 +268,16 @@ int main(int argc, const char* argv[])
 								}
 								//---------------
 
+								// If the key exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
+								// decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat)
+								if(strcasestr(ext, ".key"))
+								{
+									char output[256];
+									snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s", dir.d_name);
+
+									copy_file(filename, output);
+								}
+
 								//--- is ISO?
 								is_iso =	( (strcasestr(ext, ".iso")) ) ||
 								(m > 0 && ( ( (strcasestr(ext, ".bin")) ) ||

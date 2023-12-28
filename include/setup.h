@@ -1231,7 +1231,13 @@ static void read_settings(void)
 	webman_config->ps2_rate = 40;      //% ps2 fan speed
 
 	if(payload_ps3hen) webman_config->man_speed = 0x5A; // ps3hen default is 35% manual
-
+/*
+	if(payload_ps3hen) 
+	{
+		webman_config->man_rate = 30;      //% manual fan speed
+		webman_config->man_speed = 0x4C; // ps3hen default is 30% manual
+	}
+*/
 	webman_config->minfan = DEFAULT_MIN_FANSPEED; // 25% defined in fancontrol.h
 	webman_config->maxfan = DEFAULT_MAX_FANSPEED; // 80% defined in fancontrol.h
 
