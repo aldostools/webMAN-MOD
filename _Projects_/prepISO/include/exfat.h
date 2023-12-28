@@ -106,7 +106,7 @@ static int dir_read (char *dpath)
 					continue;
 				}
 				//---------------
-				 
+
 				// If the key exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
 				// decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat)
 				if(strcasestr(ext, ".key"))
