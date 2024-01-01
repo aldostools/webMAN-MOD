@@ -55,6 +55,22 @@ u64 get_filesize(char *path)
 	return st.st_size;
 }
 
+int readfile_ntfs(char *file, char *data, u64 size)
+{
+	if(size==0) return FAILED;
+
+	int fd = ps3ntfs_open(file, O_RDONLY, 0);
+	if(fd >= 0)
+	{
+		int re = ps3ntfs_read(fd, (void *)data, size);
+		ps3ntfs_close(fd);
+
+		return (re == size) ? SUCCESS : FAILED;
+	}
+
+	return FAILED;
+}
+
 int copy_file(char *src_file, char *out_file)
 {
 	u64 size=get_filesize(src_file);

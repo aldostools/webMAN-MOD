@@ -21,7 +21,35 @@ void addlog(char *msg1, char *msg2)
 */
 static int s_mode; // 0 = png/jpg/sfo, 1=iso/bin/img/mdf
 
-int copy_exfat(char *src_file, char *out_file, u64 size)
+static void convert_dkey_to_key(uint8_t disckey[0x10], char dkey[0x20])
+{	
+	for (int i = 0; i < 0x10; i++)
+	{
+		char byte[3];
+		strncpy(byte, &dkey[i * 2], 2);
+		byte[2] = 0;
+		disckey[i] = strtol(byte, NULL, 16);
+	}
+}
+
+static int readfile_exfat(char *file, char *data, u64 size)
+{
+	if(size == 0) return FAILED;
+
+	FIL fd;
+	UINT re;
+
+	if (!f_open(&fd, file, FA_READ))
+	{								
+		f_read(&fd, data, size, &re);
+		f_close(&fd);
+		return SUCCESS;
+	}	
+
+	return FAILED;
+}
+
+static int copy_exfat(char *src_file, char *out_file, u64 size)
 {
 	if(size == 0) return FAILED;
 
@@ -107,29 +135,30 @@ static int dir_read (char *dpath)
 				}
 				//---------------
 
+				char output[256], filename[256];
+				uint8_t disckey[0x10];
+				char dkey[0x20];
+				strcpy(filename, fno.fname);
+				snprintf(fn, 255, "%s/%s", dpath, fno.fname);
+				snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s", fno.fname);
+
 				// If the key exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
 				// decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat)
 				if(strcasestr(ext, ".key"))
-				{
-					FIL fd;
-					char output[256];
-					snprintf (fn, 255, "%s/%s", dpath, fno.fname);
-					snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s", fno.fname);
-					
-					if (!f_open(&fd, fn, FA_READ))
+					copy_exfat(fn, output, 0x10);
+				
+				// If the dkey exists, we convert it to disckey and copy it to "/dev_hdd0/tmp/wmtmp" 
+				// to decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat)
+				if(strcasestr(fno.fname + flen - 5, ".dkey"))
+				{ 		
+					if(!readfile_exfat(fn, dkey, 0x20))
 					{
-						UINT re;
-						uint8_t data[0x10];
-						f_read(&fd, data, 0x10, &re);
-						f_close (&fd);
+						filename[strlen(filename) - 5] = '\0';
+						snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s.key", filename);
 
-						int fda = ps3ntfs_open(output, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-						if(fda >= 0)
-						{
-							ps3ntfs_write(fda, (void *)data, 0x10);
-							ps3ntfs_close(fda);
-						}
-					}
+						convert_dkey_to_key(disckey, dkey);
+						SaveFile(output, (char *)disckey, 0x10);
+					}		
 				}
 
 				//--- is ISO?

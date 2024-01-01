@@ -64,7 +64,10 @@ uint8_t plugin_args[PLUGIN_ARGS_SIZE];
 
 #define MAX_PATH_LEN  0x420
 
+static char key_path[MAX_PATH_LEN];
+static char output[MAX_PATH_LEN];
 static char path[MAX_PATH_LEN];
+static char full_path[MAX_PATH_LEN];
 static char wm_path[MAX_PATH_LEN];
 static char image_file[MAX_PATH_LEN];
 
@@ -127,6 +130,7 @@ int main(int argc, const char* argv[])
 	char path0[MAX_PATH_LEN], subpath[MAX_PATH_LEN];
 	char direntry[MAX_PATH_LEN];
 	char filename[MAX_PATH_LEN];
+	char filekey[MAX_PATH_LEN];
 	bool has_dirs, is_iso = false;
 	char *ext;
 	u16 flen;
@@ -221,6 +225,7 @@ int main(int argc, const char* argv[])
 						has_dirs = false;
 
 						snprintf(path, sizeof(path), "%s:/%s%s%s", mounts[i].name, prefix[p], c_path[m], SUFIX(profile));
+						strcpy(full_path, path);
 
 						pdir = ps3ntfs_diropen(path);
 						if(pdir != NULL)
@@ -228,6 +233,7 @@ int main(int argc, const char* argv[])
 							while(ps3ntfs_dirnext(pdir, dir.d_name, &st) == 0)
 							{
 								flen = sprintf(filename, "%s", dir.d_name);
+								strcpy(filekey, filename);
 
 								ext_len = 4;
 								if(flen < ext_len) continue; ext = filename + flen - ext_len;
@@ -268,14 +274,35 @@ int main(int argc, const char* argv[])
 								}
 								//---------------
 
-								// If the key exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
-								// decrypt on-the-fly with Cobra when the ISO is mounted (By Evilnat)
-								if(strcasestr(ext, ".key"))
-								{
-									char output[256];
-									snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s", dir.d_name);
+								/* 	By Evilnat
 
-									copy_file(filename, output);
+									If disckey ('.key' file) exists, copy it to "/dev_hdd0/tmp/wmtmp" to 
+									decrypt on-the-fly with Cobra when the ISO is mounted
+								
+									If dkey ('.dkey' file) exists, we will transform it to disckey and 
+									copy it to "/dev_hdd0/tmp/wmtmp" 
+								*/
+								if(strcasestr(ext, ".key") || strcasestr(filename + flen - 5, ".dkey"))
+								{			
+									snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s", dir.d_name);
+									sprintf(key_path, "%s/%s", full_path, filename);	
+
+									if(strcasestr(filename + flen - 5, ".dkey"))
+									{
+										uint8_t disckey[0x10];
+										char dkey[0x20];
+
+										if(!readfile_ntfs(key_path, dkey, 0x20))
+										{
+											filekey[strlen(filekey) - 5] = '\0';
+											snprintf(output, 255, "/dev_hdd0/tmp/wmtmp/%s.key", filekey);
+
+											convert_dkey_to_key(disckey, dkey);
+											SaveFile(output, (char *)disckey, 0x10);
+										}
+									}
+									else
+										copy_file(key_path, output);
 								}
 
 								//--- is ISO?
