@@ -41,6 +41,7 @@ static u64 sc_142 = 0;
 #define FW490	0x323032322F31322FULL // 2022/12/
 #define FW490P	0x323032332F30332FULL // 2023/03/ # Ported 4.84 in 4.90.x Evilnat
 #define FW491	0x323032332F31322FULL // 2023/12/
+#define FW491P	0x323032342F30322FULL // 2024/02/  # Ported 4.84 in 4.91.x Evilnat
 
 #define SC_GET_PLATFORM_INFO		(387)
 #define SC_GET_CONSOLE_TYPE			(985)
@@ -156,6 +157,7 @@ static void detect_firmware(void)
 		if(peek(0x30F3B0) == DEX) {SYSCALL_TABLE = SYSCALL_TABLE_481D; c_firmware = (peek(0x31F028) == FW484) ? 4.84f :
 																					(peek(0x31F028) == FW489P)? 4.89f : // Ported 4.84 in 4.89.3 Evilnat
 																					(peek(0x31F028) == FW490P)? 4.90f : // Ported 4.84 in 4.90.x Evilnat
+																					(peek(0x31F028) == FW491P)? 4.91f : // Ported 4.84 in 4.91.x Evilnat
  #ifndef LAST_FIRMWARE_ONLY
 																				//	(peek(0x31F028) == FW489) ? 4.89f :
 																				//	(peek(0x31F028) == FW488) ? 4.88f :
