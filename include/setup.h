@@ -391,7 +391,7 @@ static void setup_parse_settings(char *param)
 	get_param("uacc=", webman_config->uaccount, param, 8);
 	#endif
 
-	if(IS_MARKED("hm=")) webman_config->homeb = 1;
+	webman_config->homeb = IS_MARKED("hm=1");
 
 	get_param("hurl=", webman_config->home_url, param, 255);
 #endif

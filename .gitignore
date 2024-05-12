@@ -21,6 +21,10 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+[Oo]bjs/
+webftp_server.prx
+webftp_server.sprx
+webftp_server.sym
 
 # Visual Studio 2015 cache/options directory
 .vs/
