@@ -17,6 +17,7 @@
 
 			do_umount(false);
 
+			unmap_app_home();
 			sys_map_path(APP_HOME_DIR, _path);
 			if(isDir(PKGLAUNCH_DIR)) sys_map_path(PKGLAUNCH_DIR, _path);
 
