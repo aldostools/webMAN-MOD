@@ -77,7 +77,6 @@ mounted_ntfs:
 		{
 			get_name(templn, _path, GET_WMTMP);
 			cache_icon0_and_param_sfo(templn);
-			set_bdvd_as_app_home(); // mount (NTFS) PS3ISO in /app_home
 #ifdef FIX_GAME
 			fix_game(_path, title_id, webman_config->fixgame);
 #endif

@@ -134,7 +134,6 @@ if(BETWEEN('0', netid, '4'))
 	{
 		mount_unk = netiso_args.emu_mode = EMU_PS3;
 		if(!is_iso) sprintf(netiso_args.path, "/***PS3***%s", netpath);
-		set_bdvd_as_app_home(); // mount (NET) PS3ISO in /app_home
 	}
 	else if(islike(netpath, "/ROMS"))
 	{

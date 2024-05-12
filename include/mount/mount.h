@@ -918,7 +918,7 @@ static bool game_mount(char *buffer, char *templn, char *param, char *tempstr, b
 
 static void unmap_app_home(void)
 {
-	// force remove "/app_home", "/app_home/PS3_GAME", "/app_home/USRDIR"
+	// force remove "/app_home", "/app_home/PS3_GAME"
 	for(u8 retry = 0; retry < 3; retry++)
 	{
 		sys_map_path("/app_home", NULL);
@@ -926,7 +926,7 @@ static void unmap_app_home(void)
 	}
 }
 
-static u8 gm = 01;	// remembers last multi-game folder.
+static u8 gm = 00;	// remembers last multi-game folder.
 					// If PS3_GM01 exists, it's mapped to app_home and gm is incremented.
 					// if the same game is mounted again PS3_GM02 is mapped and gm is incremented again
 					// if PS3_GMxx doesn't exists, PS3_GAME is mapped and gm resets to 01.
@@ -935,27 +935,19 @@ void map_app_home(const char *path)
 {
 	unmap_app_home();
 
-	sys_map_path("/app_home", path);
-
 	// remap app_home for multi-game discs
-	char *mpath = (char *)malloc(strlen(path) + 11);
+	char *mpath = (char *)malloc(strlen(path) + sizeof("/PS3_GAME") + 1);
 	if(mpath)
 	{
 		sprintf(mpath, "%s/PS3_GM%02i", path, gm);
 		if(not_exists(mpath))
 		{
-			gm = 01; sprintf(mpath, "%s/PS3_GM%02i", path, gm);
-		}
-
-		if(file_exists(mpath))
-		{
-			sys_map_path("/app_home/PS3_GAME", mpath); gm++;
+			gm = 01;
+			sys_map_path("/app_home", path);
 		}
 		else
 		{
-			sprintf(mpath, "%s/PS3_GAME", path);
-			if(file_exists(mpath))
-				sys_map_path("/app_home/PS3_GAME", mpath);
+			sys_map_path(APP_HOME_DIR, mpath); gm++;
 		}
 
 		free(mpath);
@@ -985,12 +977,6 @@ static void set_app_home(const char *game_path)
 		else
 			sys_map_path("/app_home", game_path);
 	}
-}
-
-static void set_bdvd_as_app_home(void)
-{
-	if(!(webman_config->app_home))
-		map_app_home("/dev_bdvd");
 }
 
 static void do_umount_iso(bool clean)

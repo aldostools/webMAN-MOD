@@ -148,7 +148,6 @@ mount_again:
 				cobra_mount_ps3_disc_image(cobra_iso_list, iso_parts);
 				sys_ppu_thread_usleep(2500);
 				cobra_send_fake_disc_insert_event();
-				set_bdvd_as_app_home(); // mount (normal) PS3ISO in /app_home
 
 				{
 					get_name(templn, _path, GET_WMTMP);
