@@ -17,12 +17,14 @@ If webMAN MOD did not load after return to XMB, run the addon again with the but
 ## Combos
 
 If you press and hold these buttons:
+```
 L1 = Load webMAN MOD plugin in slot 2
 L2 = Load webMAN MOD plugin in slot 3
 R1 = Load webMAN MOD plugin in slot 4
 R2 = Load webMAN MOD plugin in slot 5
 
 SQUARE = Create /dev_hdd0/boot_plugins.txt and reboots (if the plugin exists)
+```
 
 ## Use Cases
 - Load webMAN MOD on demand.
