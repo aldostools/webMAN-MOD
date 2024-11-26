@@ -869,7 +869,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 					if(!(is_MLST || nolist) && sysmem) {sys_memory_free(sysmem); sysmem = NULL;}
 
-					if(data_s >= 0)
+					if(data_s >= 0 || is_MLST)
 					{
 						// --- get d_path & wildcard ---
 						char *pw, *ps, wcard[STD_PATH_LEN]; *wcard = NULL;
@@ -991,7 +991,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 													(unsigned long long)entry.attribute.st_size, smonth[rDate.month - 1], rDate.day,
 													rDate.hour, rDate.minute, entry_name);
 									}
-									if(send(data_s, buffer, slen, 0) < 0) break;
+									if(send(is_MLST ? conn_s_ftp : data_s, buffer, slen, 0) < 0) break;
 								#ifdef USE_NTFS
 								}
 								#endif
