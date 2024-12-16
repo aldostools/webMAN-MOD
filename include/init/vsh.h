@@ -401,7 +401,7 @@ static void reload_xmb(u8 use_app)
 	if(IS_ON_XMB && USER_LOGGEDIN)
 	{
 		#if defined(LITE_EDITION) || !defined(VIRTUAL_PAD)
-		if(!cobra_version)
+		if(cobra_version)
 		#else
 		if((webman_config->reloadxmb == 2) || (!use_app && has_one_user_dir())) use_app = true;
 
