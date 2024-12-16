@@ -132,7 +132,7 @@ mount_again:
 			// mount PS3 ISO
 			// --------------
 
-			if(strstr(_path, "/PS3ISO") || (mount_unk == EMU_PS3))
+			if(strstr(_path, "/PS3ISO") || (mount_unk == EMU_PS3) || strstr(_path, "/RELOAD_XMB.ISO"))
 			{
 				#ifdef FIX_GAME
 				if(webman_config->fixgame != FIX_GAME_DISABLED)
