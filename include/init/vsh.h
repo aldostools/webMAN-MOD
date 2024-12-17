@@ -288,6 +288,7 @@ static bool is_app_home_onxmb(void)
 	{
 		char *buffer = (char*)sysmem;
 		size_t read_e = read_file(CATEGORY_GAME_XML, buffer, _8KB_, 0);
+		buffer[read_e] = 0;
 		has_app_home = (read_e > 100) && strstr(buffer, "seg_gamedebug");
 		sys_memory_free(sysmem);
 	}
