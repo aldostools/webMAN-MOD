@@ -908,7 +908,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						#endif
 						if(is_ntfs || cellFsOpendir(d_path, &fd) == CELL_FS_SUCCEEDED)
 						{
-							ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
+							if (!is_MLST) ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
 
 							CellFsDirectoryEntry entry; u32 read_f;
 							CellFsDirent entry_s; u64 read_e; // list root folder using the slower readdir
@@ -1008,14 +1008,14 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 							if(is_root)
 							{
-								sprintf(buffer, "226 [/] [%s]\r\n", cpursx);
+								sprintf(buffer, "%d [/] [%s]\r\n", is_MLST ? 250 : 226, cpursx);
 								ssend(conn_s_ftp, buffer);
 							}
 							else
 							{
 								char *size = cpursx + 0x20;
 								free_size(d_path, size);
-								sprintf(buffer, "226 [%s] [%s %s]\r\n", d_path, size, cpursx);
+								sprintf(buffer, "%d [%s] [%s %s]\r\n", is_MLST ? 250 : 226, d_path, size, cpursx);
 								ssend(conn_s_ftp, buffer);
 							}
 						}
