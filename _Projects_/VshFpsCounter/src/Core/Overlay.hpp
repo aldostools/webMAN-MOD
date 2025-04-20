@@ -58,8 +58,6 @@ public:
    uint32_t m_CpuClock{};
    uint32_t m_GpuClock{};
    uint32_t m_GpuGddr3RamClock{};
-   uint64_t m_GpuClockSpeedOffsetInLv1{};
-   uint64_t m_GpuGddr3RamClockSpeedOffsetInLv1{};
    uint64_t m_CpuClockSpeedOffsetInLv1{};
 
 private:

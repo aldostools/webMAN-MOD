@@ -276,47 +276,42 @@ void Overlay::GetGameName(char outTitleId[16], char outTitleName[64])
     vsh::snprintf(outTitleName, 63, "%s", _gameInfo + 0x14);
 }
 
+union clock_s
+{
+public:
+	struct
+	{
+	public:
+		uint32_t junk0;
+		uint8_t junk1;
+		uint8_t junk2;
+		uint8_t mul;
+		uint8_t junk3;
+	};
+
+	uint64_t value;
+};
+
 uint32_t Overlay::GetGpuClockSpeed()
 {
-    if (IsConsoleHen())
-        return 0;
+	clock_s clock;
+	clock.value = PeekLv1(0x28000004028);
 
-    if (!m_GpuClockSpeedOffsetInLv1)
-        return 0;
+	if (clock.value == 0xFFFFFFFF80010003) // if cfw syscalls are disabled 
+		return 0;
 
-    uint64_t frequency = PeekLv1(m_GpuClockSpeedOffsetInLv1);
-
-    if (frequency == 0xFFFFFFFF80010003) // if cfw syscalls are disabled 
-        return 0;
-
-    return (static_cast<uint32_t>(frequency >> 32) / 0xF4240) & 0x1FFF;
+	return (clock.mul * 50);
 }
 
 uint32_t Overlay::GetGpuGddr3RamClockSpeed()
 {
-    if (IsConsoleHen())
-        return 0;
+	clock_s clock;
+	clock.value = PeekLv1(0x28000004010);
 
-    if (!m_GpuGddr3RamClockSpeedOffsetInLv1)
-        return 0;
+	if (clock.value == 0xFFFFFFFF80010003) // if cfw syscalls are disabled 
+		return 0;
 
-    uint64_t frequency = PeekLv1(m_GpuGddr3RamClockSpeedOffsetInLv1);
-
-    if (frequency == 0xFFFFFFFF80010003) // if cfw syscalls are disabled 
-        return 0;
-
-    return (static_cast<uint32_t>(frequency >> 32) / 0xF4240) & 0x1FFF;
-
-    // Get display clock speed
-    /*uint64_t v7 = frequency;
-    uint64_t v4 = frequency;
-    uint32_t v11 = v7 / 0xF4240;
-    uint32_t v10 = (0x431BDE83 * v7) >> 32;
-    if ((v4 - 100) <= 7 && v11 > 0x31F)
-        v11 = v10 >> 19;
-
-    uint32_t gddr3RamClock = v11 & 0x1FFF;
-    return gddr3RamClock;*/
+	return (clock.mul * 25);
 }
 
 uint32_t Overlay::GetCpuClockSpeed()
@@ -514,20 +509,15 @@ void Overlay::LoadExternalOffsets(uint64_t arg)
     vsh::strncpy(memory, rsxData + 4, 3);
 #else
     std::vector<uint32_t> foundOffsets;
-    foundOffsets.reserve(3); // reserve 3 offsets for our use case
+    foundOffsets.reserve(1); // reserve 1 offsets for our use case
 
     std::vector<Pattern> patterns = { 
-        { "be.0.ref_clk", "xxxxxxxxxxxx", false },
-        { "\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\x00\x00\x40\x28\x00\x00\x40\x2C", "???x???x???x??xx??xx", false },
-        { "\x00\x00\x00\x05\x00\x00\x00\x03\x00\x00\x00\x06\x00\x00\x40\x10\x00\x00\x40\x14", "???x???x???x??xx??xx", false }
+        { "be.0.ref_clk", "xxxxxxxxxxxx", false }
     };
 
     FindPatternsHypervisorInParallel(patterns, foundOffsets);
     
     g_Overlay.m_CpuClockSpeedOffsetInLv1 = foundOffsets[0] + 0x24;
-    g_Overlay.m_GpuClockSpeedOffsetInLv1 = foundOffsets[1] + 0x14;
-    g_Overlay.m_GpuGddr3RamClockSpeedOffsetInLv1 = foundOffsets[2] + 0x14;
-
 
 #ifdef OLD_CODE
     uint32_t addr = FindPatternHypervisor(
