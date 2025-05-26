@@ -316,6 +316,8 @@ uint32_t Overlay::GetGpuGddr3RamClockSpeed()
 
 uint32_t Overlay::GetCpuClockSpeed()
 {
+#if 0
+
     if (IsConsoleHen())
         return 0;
 
@@ -328,6 +330,10 @@ uint32_t Overlay::GetCpuClockSpeed()
         return 0;
 
     return ((static_cast<uint32_t>(frequency >> 32) / 0xF4240) & 0x1FFF) * 8;
+
+#endif
+
+	return 3200;
 }
 
 void Overlay::Lv2LabelUpdate()
@@ -508,16 +514,16 @@ void Overlay::LoadExternalOffsets(uint64_t arg)
     vsh::strncpy(core, rsxData, 3);
     vsh::strncpy(memory, rsxData + 4, 3);
 #else
-    std::vector<uint32_t> foundOffsets;
-    foundOffsets.reserve(1); // reserve 1 offsets for our use case
+    //std::vector<uint32_t> foundOffsets;
+    //foundOffsets.reserve(1); // reserve 1 offsets for our use case
 
-    std::vector<Pattern> patterns = { 
-        { "be.0.ref_clk", "xxxxxxxxxxxx", false }
-    };
+    //std::vector<Pattern> patterns = { 
+    //    { "be.0.ref_clk", "xxxxxxxxxxxx", false }
+    //};
 
-    FindPatternsHypervisorInParallel(patterns, foundOffsets);
+    //FindPatternsHypervisorInParallel(patterns, foundOffsets);
     
-    g_Overlay.m_CpuClockSpeedOffsetInLv1 = foundOffsets[0] + 0x24;
+    //g_Overlay.m_CpuClockSpeedOffsetInLv1 = foundOffsets[0] + 0x24;
 
 #ifdef OLD_CODE
     uint32_t addr = FindPatternHypervisor(
