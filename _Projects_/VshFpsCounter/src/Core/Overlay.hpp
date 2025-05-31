@@ -51,6 +51,14 @@ public:
    uint64_t m_KernelType{};
    float m_FirmwareVersion{};
    uint16_t m_PayloadVersion{};
+   std::wstring payloadText;
+   bool m_CheckedHenVersion = false;
+   //bool m_CachedPayloadText = false;
+   uint16_t m_CachedPayloadVersion = 0;
+   float m_CachedFirmwareVersion = 0;
+   uint64_t m_CachedKernelType = 0;
+   std::wstring m_CachedPayloadText;  // For the version line at the bottom
+   bool m_CachedPayloadTextBuilt = false;
    uint64_t m_TemperatureCycleTime{};
    bool m_CycleTemperatureType{};
    TempType m_TempType{};

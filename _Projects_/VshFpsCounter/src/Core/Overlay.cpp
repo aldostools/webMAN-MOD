@@ -114,31 +114,37 @@ void Overlay::DrawOverlay()
 
    if (g_Config.overlay.mode[(int)m_CooperationMode].showFirmware)
    {
+		// Only build once
+		if (!m_CachedPayloadTextBuilt && m_PayloadVersion != 0 && m_FirmwareVersion > 0)
+		{
+			m_CachedPayloadVersion = m_PayloadVersion;
+			m_CachedFirmwareVersion = m_FirmwareVersion;
+			m_CachedKernelType = m_KernelType;
+		
        std::wstring kernelName;
-       switch (m_KernelType)
+			switch (m_CachedKernelType)
        {
            case 1: kernelName = L"CEX"; break;
            case 2: kernelName = L"DEX"; break;
            case 3: kernelName = L"DEH"; break;
            default: kernelName = L"N/A";  break;
        }
-
+		
        std::wstring payloadName = IsConsoleHen() ? L"PS3HEN" : IsConsoleMamba() ? L"Mamba" : L"Cobra";
-       std::wstring payloadStr = m_PayloadVersion == 0 ? L"" : payloadName;
-       std::wstring payloadVerStr = m_PayloadVersion == 0 ? 
-           L"" : 
-           to_wstring(m_PayloadVersion >> 8) 
-           + L"."
-           + to_wstring((m_PayloadVersion & 0xF0) >> 4);
-
+		
+			std::wstring payloadVerStr = to_wstring(m_CachedPayloadVersion >> 8) + L"." +
+										to_wstring((m_CachedPayloadVersion & 0xF0) >> 4);
        if (IsConsoleHen())
-           payloadVerStr += L"." + to_wstring(m_PayloadVersion & 0xF);
-
-       overlayText += to_wstring(m_FirmwareVersion, 2) 
-           + L" " + kernelName 
-           + L" " + payloadStr 
-           + L" " + payloadVerStr
-           + L"\n";
+				payloadVerStr += L"." + to_wstring(m_CachedPayloadVersion & 0xF);
+		
+			m_CachedPayloadText = to_wstring(m_CachedFirmwareVersion, 2) + L" " + kernelName + L" " +
+								payloadName + L" " + payloadVerStr + L"\n";
+		
+			m_CachedPayloadTextBuilt = true;
+		}
+		
+		// ✅ Always append, every frame
+		overlayText += m_CachedPayloadText;
    }
 
    if (g_Config.overlay.mode[(int)m_CooperationMode].showAppName && gamePlugin)
@@ -393,6 +399,8 @@ void Overlay::WaitAndQueueTextInLV2()
 
 void Overlay::UpdateInfoThread(uint64_t arg)
 {
+	if (!g_Overlay.m_CachedPayloadTextBuilt)
+		g_Overlay.m_PayloadVersion = GetPayloadVersion();
    g_Overlay.m_StateRunning = true;
 
    while (g_Overlay.m_StateRunning)
@@ -470,7 +478,7 @@ void Overlay::UpdateInfoThread(uint64_t arg)
 
       g_Overlay.m_FirmwareVersion = GetFirmwareVersion();
 
-      g_Overlay.m_PayloadVersion = GetPayloadVersion();
+      //g_Overlay.m_PayloadVersion = GetPayloadVersion();
 
       if (g_Config.overlay.mode[(int)g_Overlay.m_CooperationMode].showClockSpeeds)
       {
