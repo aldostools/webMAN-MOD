@@ -56,22 +56,24 @@ if(is_ingame_first_15_seconds() == false)
 		{
 			if(delta)
 			{
+				// ORIGINAL CURVE
 				// 60°C=31%, 61°C=33%, 62°C=35%, 63°C=37%, 64°C=39%, 65°C=41%, 66°C=43%, 67°C=45%, 68°C=47%, 69°C=49%
 				// 70°C=50%, 71°C=53%, 72°C=56%, 73°C=59%, 74°C=62%, 75°C=65%, 76°C=68%, 77°C=71%, 78°C=74%, 79°C=77%,+80°C=80%
 
+				// NEW SETTINGS
+				// The fan curve will now follow the settings for Auto, with a target max temp, min fan speed, and max fan speed.
+				// This makes it more adjustable to a user's preference.
+
 				u8 fan_speed = 0;
 
-				if(t1 >= 80)
-					fan_speed = 0xCC; // 80%
-				else if(t1 >= 70)
-					fan_speed = (0x80 + 0x8 * (t1 - 70)); // 50% + 3% per degree
+				if(t1 >= max_temp)
+					fan_speed = max_fan_speed;
 				else if(t1 >= 60)
-					fan_speed = (0x50 + 0x5 * (t1 - 60)); // 30% + 2% per degree
+					fan_speed = (min_fan_speed + fan_step_size * (t1 - 60)); // Adjusted based on target temp and fan min / max.
 
 				if(fan_speed)
 				{
-					u8 min_speed = PERCENT_TO_8BIT(webman_config->minfan);
-					old_fan = MAX(min_speed, fan_speed);
+					old_fan = MAX(min_fan_speed, fan_speed);
 					set_fan_speed(old_fan);
 				}
 				else

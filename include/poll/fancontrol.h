@@ -27,7 +27,10 @@
 
 static u8 fan_speed = MIN_FANSPEED_8BIT; // 0x33
 static u8 old_fan   = MIN_FANSPEED_8BIT; // 0x33
+static u8 min_fan_speed = MIN_FANSPEED_8BIT; // 0x33
+static u8 max_fan_speed = MAX_FANSPEED_8BIT; // 0xF4
 static u8 max_temp  = 0; //target temperature (0 = FAN_MANUAL/syscon)
+static u8 fan_step_size = 0x05;
 
 #define SC_SET_FAN_POLICY		(389)
 #define SC_GET_FAN_POLICY		(409)
@@ -81,8 +84,9 @@ static void set_fan_speed(u8 new_fan_speed)
 	{
 		{ PS3MAPI_ENABLE_ACCESS_SYSCALL8 }
 
-		u8 min_fan_speed = PERCENT_TO_8BIT(webman_config->minfan); if(min_fan_speed < MIN_FANSPEED_8BIT) min_fan_speed = MIN_FANSPEED_8BIT; // 20%
-		u8 max_fan_speed = PERCENT_TO_8BIT(webman_config->maxfan); if(max_fan_speed < 0x66) max_fan_speed = 0xCC; // 80% (0xCC) if < 40% (0x66)
+		min_fan_speed = PERCENT_TO_8BIT(webman_config->minfan); if(min_fan_speed < MIN_FANSPEED_8BIT) min_fan_speed = MIN_FANSPEED_8BIT; // 20%
+		max_fan_speed = PERCENT_TO_8BIT(webman_config->maxfan); if(max_fan_speed < 0x66) max_fan_speed = 0xCC; // 80% (0xCC) if < 40% (0x66)
+		fan_step_size = (max_fan_speed - min_fan_speed) / MAX(webman_config->dyn_temp - 60, 1); // Anything under 60 is controlled by SYSCON
 
 		if(!max_temp && IS_INGAME) new_fan_speed += PERCENT_TO_8BIT(webman_config->man_ingame); // add in-game increment for manual fan speed
 
