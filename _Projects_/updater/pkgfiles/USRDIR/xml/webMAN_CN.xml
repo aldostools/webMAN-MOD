@@ -117,7 +117,7 @@
 				<P key="module_action"><>http://0/unmap.ps3/dev_hdd0/game;http://0/unmap.ps3/dev_hdd0/home;/unmap.ps3/dev_usb000</></P>
 			</T>
 			<T key="unmap_all" include="inc">
-				<P key="title"><>Unmap PS3</></P>
+				<P key="title"><>取消映射 PS3</></P>
 				<P key="module_action"><>http://0/unmap.ps3</></P>
 			</T>
 		</A>
@@ -486,8 +486,8 @@
 		<A>
 			<T key="webman_refresh_xmb">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>更新我的游戏和XMB</></P>
-				<P key="info"><>XMB将在刷新游戏列表后重新加载</></P>
+				<P key="title"><>更新 “我的游戏” 和 XMB</></P>
+				<P key="info"><>XMB 将在刷新游戏列表后重新加载</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/refresh_ps3?xmb</></P>
@@ -501,7 +501,7 @@
 		<A>
 			<T key="webman_refresh_xml">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>刷新我的游戏</></P>
+				<P key="title"><>刷新 “我的游戏”</></P>
 				<P key="info"><>游戏列表将在下次 XMB 被加载后显示</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
@@ -828,7 +828,7 @@
 		<A>
 			<T key="webman_help">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/icon_help.png</></P>
-				<P key="title"><>PS3 webMAN MOD [Help]</></P>
+				<P key="title"><>PS3 webMAN MOD [帮助]</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/help.html</></P>
 			</T>
@@ -836,7 +836,7 @@
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>更新webMAN MOD</></P>
-				<P key="info"><>下載並安裝最新版本。 安裝後手動重新啟動。</></P>
+				<P key="info"><>下载并安装最新版本。 安装后手动重新启动。</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -858,7 +858,7 @@
 		<A>
 			<T key="install_addons">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/pkgmanager.png</></P>
-				<P key="title"><>Addons</></P>
+				<P key="title"><>附加组件</></P>
 			</T>
 		</A>
 		<I>

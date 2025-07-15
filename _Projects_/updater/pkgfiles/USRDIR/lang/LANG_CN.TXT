@@ -1,4 +1,4 @@
-STR_TRADBY			[简体中文语言由 shinyoyo 翻译</a><br>]
+STR_TRADBY			[简体中文语言由 shinyoyo & Liqianyu 翻译</a><br>]
 
 STR_FILES			[文件]
 STR_GAMES			[游戏]
@@ -84,7 +84,7 @@ STR_ERROR			[错误!]
                 	
 STR_MYGAMES			[webMAN 游戏]
 STR_LOADGAMES		[使用 webMAN 加载游戏]
-STR_FIXING		[Fixing]
+STR_FIXING		[正在修复]
 
 STR_WMSETUP			[webMAN 设置]
 STR_WMSETUP2		[设置 webMAN 选项]
@@ -94,12 +94,12 @@ STR_UNMOUNTGAME		[卸载当前游戏]
                 	
 STR_WMSTART			[webMAN 已载入!]
 STR_WMUNL			[webMAN 已卸载!]
-STR_CFWSYSALRD		[CFW syscalls已禁用]
+STR_CFWSYSALRD		[CFW Syscalls 已禁用]
 
-STR_RSTCFWSYS	[CFW Syscalls restored!]
-STR_RSTCFWSYSF	[Failed to restore CFW Syscalls]
-STR_RMVCFWSYS		[历史文件与 CFW syscalls删除完毕！]
-STR_RMVCFWSYSF		[清除 CFW syscalls失败]
+STR_RSTCFWSYS	[CFW Syscalls 已恢复！]
+STR_RSTCFWSYSF	[恢复 CFW Syscalls 失败]
+STR_RMVCFWSYS		[历史文件与 CFW Syscalls 删除完毕！]
+STR_RMVCFWSYSF		[清除 CFW Syscalls 失败]
                 	
 STR_RMVWMCFG		[正在重置 webMAN 配置...]
 STR_RMVWMCFGOK		[完成! 将在 3 秒内重新启动]
