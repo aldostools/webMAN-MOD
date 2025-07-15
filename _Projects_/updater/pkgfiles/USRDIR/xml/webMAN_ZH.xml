@@ -65,7 +65,7 @@
 			<T key="redirect_usb_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/usbredirect.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Redirect USB000</></P>
+				<P key="title"><>重定向 USB000</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -87,37 +87,37 @@
 				<P key="module_name"><>webrender_plugin</></P>
 			</T>
 			<T key="remap_home" include="inc">
-				<P key="title"><>Remap home to USB000</></P>
-				<P key="info"><>Redirect /dev_hdd0/home to /dev_usb000/home</></P>
+				<P key="title"><>重映射 home 到 USB000</></P>
+				<P key="info"><>重定向 /dev_hdd0/home 到 /dev_usb000/home</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_hdd0/home&to=/dev_usb000/home</></P>
 			</T>
 			<T key="remap_gamei" include="inc">
-				<P key="title"><>Remap game to USB000/GAMEI (Full)</></P>
-				<P key="info"><>Redirect /dev_hdd0/game to USB/GAMEI</></P>
+				<P key="title"><>重映射 game 到 USB000/GAMEI (Full)</></P>
+				<P key="info"><>重定向 /dev_hdd0/game 到 USB/GAMEI</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_hdd0/game&to=/dev_usb000/GAMEI</></P>
 			</T>
 			<T key="remap_game" include="inc">
-				<P key="title"><>Remap game to USB000/GAMEI (Extend HDD)</></P>
-				<P key="info"><>Redirect /dev_hdd0/game to USB/GAMEI</></P>
+				<P key="title"><>重映射 game 到 USB000/GAMEI (Extend HDD)</></P>
+				<P key="info"><>重定向 /dev_hdd0/game 到 USB/GAMEI</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_hdd0/game&to=//dev_usb000/GAMEI</></P>
 			</T>
 			<T key="remap_usb0" include="inc">
-				<P key="title"><>Remap USB000 to HDD</></P>
-				<P key="info"><>Redirect /dev_usb000 to /dev_hdd0/packages</></P>
+				<P key="title"><>重映射 USB000 到 HDD</></P>
+				<P key="info"><>重定向 /dev_usb000 到 /dev_hdd0/packages</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_hdd0/packages</></P>
 			</T>
 			<T key="remap_bdvd" include="inc">
-				<P key="title"><>Remap USB000 to BDVD</></P>
-				<P key="info"><>Redirect /dev_usb000 to /dev_bdvd</></P>
+				<P key="title"><>重映射 USB000 到 BDVD</></P>
+				<P key="info"><>重定向 /dev_usb000 到 /dev_bdvd</></P>
 				<P key="module_action"><>http://0/remap.ps3/dev_usb000&to=/dev_bdvd</></P>
 			</T>
 			<T key="unmap_usb0" include="inc">
-				<P key="title"><>Unmap USB000</></P>
-				<P key="info"><>Restore redirection access to /dev_usb000</></P>
+				<P key="title"><>取消映射 USB000</></P>
+				<P key="info"><>还原重定向访问到 /dev_usb000</></P>
 				<P key="module_action"><>http://0/unmap.ps3/dev_hdd0/game;http://0/unmap.ps3/dev_hdd0/home;/unmap.ps3/dev_usb000</></P>
 			</T>
 			<T key="unmap_all" include="inc">
-				<P key="title"><>Unmap PS3</></P>
+				<P key="title"><>取消映射 PS3</></P>
 				<P key="module_action"><>http://0/unmap.ps3</></P>
 			</T>
 		</A>
@@ -139,7 +139,7 @@
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>網路資料夾</></P>
-				<P key="info"><>掛載 /網路主機資料夾 做為本地 /dev_bdvd</></P>
+				<P key="info"><>掛載 /nethost 做為本地 /dev_bdvd</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -164,7 +164,7 @@
 			<T key="webman_system_files">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/sysfiles.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>System Files</></P>
+				<P key="title"><>系统文件</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -221,8 +221,8 @@
 			<T key="nethost3_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net3 Folders</></P>
-				<P key="info"><>Mount /net3 folders as local /dev_bdvd</></P>
+				<P key="title"><>網路資料夾 /net3</></P>
+				<P key="info"><>掛載 /net3 做為 /dev_bdvd</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -236,8 +236,8 @@
 			<T key="nethost4_links">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/network.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
-				<P key="title"><>Net4 Folders</></P>
-				<P key="info"><>Mount /net4 folders as local /dev_bdvd</></P>
+				<P key="title"><>網路資料夾 /net4</></P>
+				<P key="info"><>掛載 /net4 做為 /dev_bdvd</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -486,8 +486,8 @@
 		<A>
 			<T key="webman_refresh_xmb">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>重新排列“我的游​​戏”和XMB</></P>
-				<P key="info"><>XMB將在刷新遊戲列表後重新加載</></P>
+				<P key="title"><>重新排列「我的遊戲」和 XMB</></P>
+				<P key="info"><>XMB 將在刷新遊戲列表後重新加載</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/refresh_ps3?xmb</></P>
@@ -501,7 +501,7 @@
 		<A>
 			<T key="webman_refresh_xml">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/refreshxml.png</></P>
-				<P key="title"><>重新整理 "我的遊戲"</></P>
+				<P key="title"><>重新整理「我的遊戲」</></P>
 				<P key="info"><>下次載入 XMB 時將顯示遊戲列表</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
@@ -620,8 +620,8 @@
 		<A>
 			<T key="webman_block_psn">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/blockpsn.png</></P>
-				<P key="title"><>Block PSN Servers</></P>
-				<P key="info"><>Block access to PSN servers in LV1 / LV2</></P>
+				<P key="title"><>屏蔽 PSN 服務器</></P>
+				<P key="info"><>在 LV1 / LV2 中屏蔽訪問 PSN 服務器</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/browser.ps3$block_servers</></P>
@@ -664,8 +664,8 @@
 		<A>
 			<T key="webman_gamefix">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/gamefix.png</></P>
-				<P key="title"><>Fix mounted game</></P>
-				<P key="info"><>Change minimum system requirement to 4.20 (JB games only & hdd0)</></P>
+				<P key="title"><>修復挂載的游戲</></P>
+				<P key="info"><>更改最小系統需求為 4.20 (僅文件夾游戲與 hdd0)</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/fixgame.ps3/dev_bdvd</></P>
 			</T>
@@ -801,7 +801,7 @@
 		<A>
 			<T key="webman_restart">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/restartps3.png</></P>
-				<P key="title"><>PS3 重開機</></P>
+				<P key="title"><>重啓 PS3</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/restart.ps3</></P>
@@ -815,7 +815,7 @@
 		<A>
 			<T key="webman_shutdown">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/shutdownps3.png</></P>
-				<P key="title"><>Shutdown PS3</></P>
+				<P key="title"><>關閉 PS3</></P>
 				<P key="module_name"><>idle_plugin</></P>
 				<P key="bar_action"><>none</></P>
 				<P key="module_action"><>/shutdown.ps3</></P>
@@ -829,7 +829,7 @@
 		<A>
 			<T key="webman_help">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/icon_help.png</></P>
-				<P key="title"><>PS3 webMAN MOD [Help]</></P>
+				<P key="title"><>PS3 webMAN MOD [幫助]</></P>
 				<P key="module_name"><>webrender_plugin</></P>
 				<P key="module_action"><>http://0/help.html</></P>
 			</T>
@@ -837,7 +837,7 @@
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>更新webMAN MOD</></P>
-				<P key="info"><>下载并安装最新版本。 安装后手动重新启动。</></P>
+				<P key="info"><>下載並安裝最新版本。 安裝後手動重新啟動。</></P>
 				<P key="child"><>segment</></P>
 			</T>
 		</A>
@@ -859,7 +859,7 @@
 		<A>
 			<T key="install_addons">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/pkgmanager.png</></P>
-				<P key="title"><>Addons</></P>
+				<P key="title"><>附加元件</></P>
 			</T>
 		</A>
 		<I>
