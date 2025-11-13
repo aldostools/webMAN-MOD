@@ -1,7 +1,7 @@
 	if(islike(param, "/stat.ps3") || islike(param, "/chmod.ps3"))
 	{
-		// /chdmod.ps3<path>                  - change file permissions to 0777
-		// /chdmod.ps3<path>&mode=<mode>      - change file permissions to specific mode
+		// /chmod.ps3<path>                   - change file permissions to 0777
+		// /chmod.ps3<path>&mode=<mode>       - change file permissions to specific mode
 		// /stat.ps3<path>                    - count files & folder size
 		// /stat.ps3<path>&id=<title_id>      - link identical files in /hdd0/game using MD5
 		// /stat.ps3<path>&id=<title_id>?fast - don't check MD5

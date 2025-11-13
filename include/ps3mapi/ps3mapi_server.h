@@ -298,6 +298,14 @@ static int ps3mapi_command(int conn_s_ps3mapi, int data_s, int pasv_s, char *buf
 				sprintf(param2, "%04i-%02i-%02i %02i:%02i:%02i", pTime.year, pTime.month, pTime.day, pTime.hour, pTime.minute, pTime.second);
 				split = ps3mapi_response_str(conn_s_ps3mapi, buffer, param2, true);
 			}
+			else if(_IS(cmd, "GETFANSPEED"))	// PS3 GETFANSPEED
+			{
+				u8 st, mode, unknown;
+				u8 fan_speed8 = 0;
+				sys_sm_get_fan_policy(0, &st, &mode, &fan_speed8, &unknown);
+				sprintf(param2, "%i|0x%x|%i", (int)((int)fan_speed8 * 100) / 255, fan_speed8, mode);
+				split = ps3mapi_response_values(conn_s_ps3mapi, buffer, param2);
+			}
 			else if(_IS(cmd, "NOTIFY"))	// PS3 NOTIFY <msg>&icon=<0-50>&snd=<0-9>
 			{
 				if(split)

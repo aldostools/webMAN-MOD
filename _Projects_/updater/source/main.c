@@ -653,6 +653,8 @@ int main()
 
 	if(not_exists(RES_DIR "/wm_online_ids.txt"))
 		file_copy(APP_USRDIR "/res/wm_online_ids.txt", RES_DIR "/wm_online_ids.txt");
+	if(not_exists(RES_DIR "/wm_offline_ids.txt"))
+		file_copy(APP_USRDIR "/res/wm_offline_ids.txt", RES_DIR "/wm_offline_ids.txt");
 	if(not_exists(RES_DIR "/wm_ignore.txt"))
 		file_copy(APP_USRDIR "/res/wm_ignore.txt",     RES_DIR "/wm_ignore.txt");
 	if(not_exists(RES_DIR "/roms_extensions.txt"))

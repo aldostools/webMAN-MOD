@@ -1746,17 +1746,6 @@ exit_mount:
 				getTitleID(filename, title_id, SHOW_WARNING);
 			#endif
 		}
-
-		#ifdef OVERCLOCKING
-		// Auto Overclock using [RSX<MHZ>-<MHZ>]
-		char *oc = strstr(_path, OVERCLOCK_TAG);
-		if(oc)
-		{
-			u16 mhz = (u16)(val(oc + 4)); overclock(mhz, true); // set gpu core clock speed
-			oc = strchr(oc, '-'); if(oc) {mhz = (u16)(val(oc + 1)); overclock(mhz, false);} // (optional) set gpu vram clock speed
-			show_rsxclock(filename); pergame_overclocking = true;
-		}
-		#endif
 	}
 
 	// -----------------------------------
@@ -1766,6 +1755,21 @@ exit_mount:
 	if(!ret && !isDir("/dev_bdvd")) show_error(_path);
 
 mounting_done:
+
+	#ifdef OVERCLOCKING
+	// Auto Overclock using `<MHZ>-<MHZ>]
+	if(_path)
+	{
+		char data[64], *oc = strstr(_path, OVERCLOCK_TAG);
+		if(!oc && isDir(_path) && (read_file(strfmt("%s/oc.txt", _path), data, 64, 0) > 4)) oc = strstr(data, OVERCLOCK_TAG);
+		if(oc)
+		{
+			u16 mhz = (u16)(val(oc + 4)); overclock(mhz, true); // set gpu core clock speed
+			oc = strchr(oc, '-'); if(oc) {mhz = (u16)(val(oc + 1)); overclock(mhz, false);} // (optional) set gpu vram clock speed
+			show_rsxclock(data); pergame_overclocking = true;
+		}
+	}
+	#endif
 
 	// -------------------------------------------------------------------------------------
 	// remove syscalls hodling R2 (or prevent remove syscall if path contains [online] tag)
