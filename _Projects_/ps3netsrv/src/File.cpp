@@ -8,6 +8,8 @@
 #include "common.h"
 #include "compat.h"
 
+extern size_t root_len;
+
 extern int make_iso;
 
 static const int FAILED		= -1;
@@ -94,17 +96,19 @@ int File::open(const char *path, int flags)
 	///// check path for encrypted-3k3yredump-isos by NvrBst ///////
 
 #ifndef NOSSL
+	const char *ppath = ((int)root_len < plen) ? (path + root_len) : path; // do not check the folder names in the root directory
+
 	// Gather some path information to check if encryption makes sense, and help us find the dkey if so.
-	char *path_ps3iso_loc = strstr((char *)path, (char *)"PS3ISO");
+	char *path_ps3iso_loc = strstr((char *)ppath, (char *)"PS3ISO");
 	if (path_ps3iso_loc == NULL)
-		path_ps3iso_loc = strstr((char *)path, (char *)"ps3iso");
+		path_ps3iso_loc = strstr((char *)ppath, (char *)"ps3iso");
 
 	char *path_ext_loc = NULL;
 	if (path_ps3iso_loc || make_iso)
 	{
-		path_ext_loc = strstr((char *)(path + flen), (char *)".iso");
+		path_ext_loc = strstr((char *)(ppath + flen), (char *)".iso");
 		if (path_ext_loc == NULL)
-			path_ext_loc = strstr((char *)(path + flen), (char *)".ISO");
+			path_ext_loc = strstr((char *)(ppath + flen), (char *)".ISO");
 	}
 
 	// Encryption only makes sense for .iso or .ISO files in the .../PS3ISO/ folder so exit quick if req is is not related.
@@ -251,15 +255,26 @@ int File::open(const char *path, int flags)
 			if (region_info_ != NULL)
 				delete[] region_info_;
 
-			region_count_ = char_arr_BE_to_uint(sec0sec1) * 2 - 1;
-			region_info_ = new PS3RegionInfo[region_count_];
+			size_t region_count = char_arr_BE_to_uint(sec0sec1);
 
-			for (size_t i = 0; i < region_count_; ++i)
+			// Ensure region count is a proper value
+			if (region_count > 0 && region_count < 32)
 			{
-				// Store the region information in address format.
-				region_info_[i].encrypted = (i % 2 == 1);
-				region_info_[i].regions_first_addr = (i == 0 ? 0LL : region_info_[i - 1].regions_last_addr + 1LL);
-				region_info_[i].regions_last_addr = static_cast<int64_t>(char_arr_BE_to_uint(sec0sec1 + 12 + (i * 4)) - (i % 2 == 1 ? 1LL : 0LL)) * kSectorSize + kSectorSize - 1LL;
+				region_count_ = region_count * 2 - 1;
+				region_info_ = new PS3RegionInfo[region_count_];
+
+				for (size_t i = 0; i < region_count_; ++i)
+				{
+					// Store the region information in address format.
+					region_info_[i].encrypted = (i % 2 == 1);
+					region_info_[i].regions_first_addr = (i == 0 ? 0LL : region_info_[i - 1].regions_last_addr + 1LL);
+					region_info_[i].regions_last_addr = static_cast<int64_t>(char_arr_BE_to_uint(sec0sec1 + 12 + (i * 4)) - (i % 2 == 1 ? 1LL : 0LL)) * kSectorSize + kSectorSize - 1LL;
+				}
+			}
+			else
+			{
+				init_region_info();
+				return SUCCEEDED; // is non-PS3ISO
 			}
 		}
 

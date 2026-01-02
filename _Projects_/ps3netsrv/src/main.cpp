@@ -66,7 +66,7 @@ int make_iso = VISO_NONE;
 static char root_directory[MAX_PATH_LEN];
 
 #ifndef MAKEISO
-static size_t root_len = 0;
+size_t root_len = 0;
 static client_t clients[MAX_CLIENTS];
 
 static int initialize_socket(uint16_t port)
@@ -1811,13 +1811,13 @@ int main(int argc, char *argv[])
 	// Show build number
 	set_white_text();
 #ifndef MAKEISO
-	printf("ps3netsrv build 20250803");
+	printf("ps3netsrv build 20260101");
 	#ifdef READ_ONLY
 	set_gray_text();
 	printf(" [READ-ONLY]");
 	#endif
 #else
-	printf("makeiso build 20250803");
+	printf("makeiso build 20260101");
 #endif
 
 	set_red_text();

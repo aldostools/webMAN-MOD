@@ -213,6 +213,11 @@ static void check_path_alias(char *param)
 
 			if(not_exists(param))
 			{
+				snprintf(param, HTML_RECV_LAST, "%s/%s/%s", TMP_DIR, "wm_alias", path);
+				if(file_exists(param)) {read_file(param, param, HTML_RECV_LAST, 0); return;}
+			}
+			if(not_exists(param))
+			{
 				const char *ext = get_ext(param);
 				const char *dir = IS(ext, ".pkg") ? DEFAULT_PKG_PATH : HDD0_GAME_DIR;
 				snprintf(param, HTML_RECV_LAST, "%s%s", dir, path); // try /dev_hdd0/game
@@ -223,10 +228,10 @@ static void check_path_alias(char *param)
 				for(u8 i = 0; i < (MAX_DRIVES + 1); i++)
 				{
 					if(i == NET) i = NTFS + 1;
-					snprintf(param, HTML_RECV_LAST, "%s/%s", drives[i], path);
+					snprintf(param, HTML_RECV_LAST, "%s/%s", drives[i], path); // try hdd0, usb0, usb1, etc.
 					if(file_exists(param)) break;
 				}
-			} // try hdd0, usb0, usb1, etc.
+			}
 			if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s/%s", "/dev_hdd0/tmp", path);} // try hdd0
 			if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s/%s", HDD0_HOME_DIR, path);} // try /dev_hdd0/home
 			if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s/%08i/%s", HDD0_HOME_DIR, xusers()->GetCurrentUserNumber(), path);} // try /dev_hdd0/home

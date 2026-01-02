@@ -51,13 +51,13 @@ OUTPUT := $(OUTPUT).exe
 endif
 
 ifeq ($(BUILD_TYPE), debug)
-CFLAGS += -DDEBUG
-CPPFLAGS += -DDEBUG
+CFLAGS += -DDEBUG -g -O0
+CPPFLAGS += -DDEBUG -g -O0
 endif
 
 ifeq ($(BUILD_TYPE), debug_static)
-CFLAGS += -DDEBUG -static
-CPPFLAGS += -DDEBUG
+CFLAGS += -DDEBUG -static -g -O0
+CPPFLAGS += -DDEBUG -g -O0
 endif
 
 ifeq ($(BUILD_TYPE), release)
