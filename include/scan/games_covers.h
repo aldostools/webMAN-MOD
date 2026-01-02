@@ -520,8 +520,10 @@ static void get_default_icon_for_iso(char *icon, const char *param, const char *
 		}
 		else
 		{
-			get_name(icon, file, NO_EXT);
-			int tlen = concat_path(remote_file, param, icon);
+			// preserve title id: Name [BLES-00000].iso -> /net0/PS3ISO/Name [BLES-00000].iso
+			concat_path(remote_file, param, file);
+			// remove extension: /net0/PS3ISO/Name [BLES-00000].iso -> /net0/PS3ISO/Name [BLES-00000]
+			int tlen = remove_ext(remote_file);
 
 			int icon_len = get_name(icon, file, GET_WMTMP); //wmtmp
 
