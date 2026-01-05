@@ -106,9 +106,9 @@ int File::open(const char *path, int flags)
 	char *path_ext_loc = NULL;
 	if (path_ps3iso_loc || make_iso)
 	{
-		path_ext_loc = strstr((char *)(ppath + flen), (char *)".iso");
+		path_ext_loc = strstr((char *)(path + flen), (char *)".iso");
 		if (path_ext_loc == NULL)
-			path_ext_loc = strstr((char *)(ppath + flen), (char *)".ISO");
+			path_ext_loc = strstr((char *)(path + flen), (char *)".ISO");
 	}
 
 	// Encryption only makes sense for .iso or .ISO files in the .../PS3ISO/ folder so exit quick if req is is not related.
