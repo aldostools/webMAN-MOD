@@ -75,7 +75,7 @@ void Overlay::DrawOverlay()
        overlayText += L"CPU: " + to_wstring(m_CPUTemp) + tempTypeStr;
 
        if (m_CpuClock != 0 && g_Config.overlay.mode[(int)m_CooperationMode].showClockSpeeds)
-           overlayText += L" / " + to_wstring(m_CpuClock / 1000.0f, 1) + L" GHz";
+           overlayText += L" / " + to_wstring(m_CpuClock / 1000.0f, 3) + L" GHz";
 
        if (!g_Config.overlay.mode[(int)m_CooperationMode].showGpuInfo || g_Config.overlay.mode[(int)m_CooperationMode].showClockSpeeds)
            overlayText += L"\n";
@@ -324,24 +324,13 @@ uint32_t Overlay::GetGpuGddr3RamClockSpeed()
 
 uint32_t Overlay::GetCpuClockSpeed()
 {
-#if 0
+	system_call_8(10, 1, 0x62650000, 0, 0x6e636c6b00000000, 0, 0, 0, 91);
+	uint64_t v = register_passing_1(uint64_t);
 
-    if (IsConsoleHen())
-        return 0;
+	if (p1 != 0)
+		return 0;
 
-    if (!m_CpuClockSpeedOffsetInLv1)
-        return 0;
-
-    uint64_t frequency = PeekLv1(m_CpuClockSpeedOffsetInLv1);
-
-    if (frequency == 0xFFFFFFFF80010003) // if cfw syscalls are disabled
-        return 0;
-
-    return ((static_cast<uint32_t>(frequency >> 32) / 0xF4240) & 0x1FFF) * 8;
-
-#endif
-
-    return 3200;
+    return (v / 1000000);
 }
 
 void Overlay::Lv2LabelUpdate()
@@ -497,65 +486,5 @@ void Overlay::UpdateInfoThread(uint64_t arg)
 
 void Overlay::LoadExternalOffsets(uint64_t arg)
 {
-#if 0
-    // Reference: https://github.com/Evilnat/xai_plugin/blob/fbfd74636f9f947bea097a1b6990d46115fd1c31/xai_plugin/cfw_settings.cpp#L575-L627
-    char rsxData[120];
-    char core[25], memory[25];
-    uint8_t hex[8];
-    uint64_t rsx_values = 0;
-
-    for (uint64_t offset = 0x600000; offset < 0x700000; offset++)
-    {
-        if (PeekUint32LV1(offset) == 0x7670653A &&
-            (PeekUint32LV1(offset + 7) == 0x7368643A || PeekUint32LV1(offset + 8) == 0x7368643A) &&
-            PeekUint8LV1(offset - 5) == 0x2F)
-        {
-            rsx_values = PeekLv1(offset - 8);
-            break;
-        }
-    }
-
-
-    vsh::memcpy(hex, &rsx_values, 8);
-
-    for (int i = 0; i < 8; i++)
-        vsh::snprintf(&rsxData[i], sizeof(rsxData), "%c", hex[i]);
-
-    vsh::strncpy(core, rsxData, 3);
-    vsh::strncpy(memory, rsxData + 4, 3);
-#else
-    //std::vector<uint32_t> foundOffsets;
-    //foundOffsets.reserve(1); // reserve 1 offsets for our use case
-
-    //std::vector<Pattern> patterns = {
-    //    { "be.0.ref_clk", "xxxxxxxxxxxx", false }
-    //};
-
-    //FindPatternsHypervisorInParallel(patterns, foundOffsets);
-
-    //g_Overlay.m_CpuClockSpeedOffsetInLv1 = foundOffsets[0] + 0x24;
-
-#ifdef OLD_CODE
-    uint32_t addr = FindPatternHypervisor(
-        "be.0.ref_clk",
-        vsh::strlen("be.0.ref_clk"),
-        "xxxxxxxxxxxx");
-    g_Overlay.m_CpuClockSpeedOffsetInLv1 = addr + 0x24;
-
-    addr = FindPatternHypervisor(
-        "\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x01\x00\x00\x40\x28\x00\x00\x40\x2C",
-        20,
-        "???x???x???x??xx??xx");
-    g_Overlay.m_GpuClockSpeedOffsetInLv1 = addr + 0x14;
-
-    addr = FindPatternHypervisor(
-        "\x00\x00\x00\x05\x00\x00\x00\x03\x00\x00\x00\x06\x00\x00\x40\x10\x00\x00\x40\x14",
-        20,
-        "???x???x???x??xx??xx");
-    g_Overlay.m_GpuGddr3RamClockSpeedOffsetInLv1 = addr + 0x14;
-#endif // OLD_CODE
-
-#endif
-
     sys_ppu_thread_exit(0);
 }
