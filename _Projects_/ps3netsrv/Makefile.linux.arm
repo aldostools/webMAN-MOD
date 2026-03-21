@@ -1,0 +1,42 @@
+OS = linux
+BUILD_TYPE = release_static
+
+OUTPUT := ps3netsrv
+OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/mem.o src/File.o src/VIsoFile.o
+
+HOST_ARCH := $(shell uname -m)
+ifeq ($(HOST_ARCH), x86_64)
+    CC  = arm-linux-gnueabihf-gcc
+    CXX = arm-linux-gnueabihf-g++
+else
+    CC  = gcc
+    CXX = g++
+endif
+
+CFLAGS = -Wall -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CPPFLAGS += -Wall -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+
+CFLAGS += -Doff64_t=off_t
+CPPFLAGS += -Doff64_t=off_t
+
+LDFLAGS = -L.
+LIBS = -lstdc++ -lpthread
+
+ifeq ($(BUILD_TYPE), release_static)
+CFLAGS += -static
+CPPFLAGS += -static
+endif
+
+ifeq ($(BUILD_TYPE), debug)
+CFLAGS += -DDEBUG -g -O0
+CPPFLAGS += -DDEBUG -g -O0
+endif
+
+all: $(OUTPUT)
+	rm -r -f src/*.o
+
+clean:
+	rm -r -f $(OUTPUT) src/*.o
+
+$(OUTPUT): $(OBJS)
+	$(LINK.c) $(LDFLAGS) -o $@ $^ $(LIBS)
