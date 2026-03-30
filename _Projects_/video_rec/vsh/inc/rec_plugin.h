@@ -1,20 +1,19 @@
-// Mysis game_plugin.h v0.1
-// 3141card (C style version)
 #ifndef __REC_PLUGIN_H__
 #define __REC_PLUGIN_H__
 
-typedef struct rec_plugin_interface_t
-{
-	uint32_t (*DoUnk0)(void); 
-	uint32_t (*start)(void); //RecStart
-	uint32_t (*stop)(void); //RecStop
-	uint32_t (*close)(int32_t isdiscard); 
-	uint32_t (*geti)(int32_t giprm);  // RecGetInfo
-	uint32_t (*md)(void * mdarg, int32_t); //RecSetInfo
-	uint32_t (*etis)(int32_t start_time_msec); //RecSetInfo
-	uint32_t (*etie)(int32_t end_time_msec); //RecSetInfo
-} rec_plugin_interface;
+#include <stdint.h>
 
-rec_plugin_interface *rec_interface;
+typedef struct {
+    uint32_t (*DoUnk0)(void);
+    uint32_t (*start)(void);              /* RecStart */
+    uint32_t (*stop)(void);               /* RecStop  */
+    uint32_t (*close)(int32_t discard);   /* discard=1 descarta o arquivo */
+    uint32_t (*getInfo)(int32_t param);   /* RecGetInfo */
+    uint32_t (*setInfo)(void *arg, int32_t param); /* RecSetInfo */
+    uint32_t (*setStartTime)(int32_t msec);
+    uint32_t (*setEndTime)(int32_t msec);                  } rec_plugin_interface;
 
-#endif // __REC_PLUGIN_H__
+/* declarado extern — definido em main.c */
+extern rec_plugin_interface *rec_interface;
+
+#endif /* __REC_PLUGIN_H__ */
