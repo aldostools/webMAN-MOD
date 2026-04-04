@@ -742,7 +742,7 @@ static void setup_form(char *buffer, char *html)
 #ifdef PS3NET_SERVER
 	strcopy(html, STR_FTPSVC); char *pos = strcasestr(html, "FTP"); if(pos) {pos[0] = 'N', pos[1] = 'E', pos[2] = 'T';}
 	add_checkbox("nd", html,   " : ", (webman_config->netsrvd) , buffer);
-	concat(buffer, strfmt(HTML_PORT("ndp", "%i") "<br>", webman_config->netsrvp));
+	concat(buffer, strfmt(HTML_PORT("netp", "%i") "<br>", webman_config->netsrvp));
 #endif
 
 	add_checkbox("bn", STR_ACCESS,  " : ", (webman_config->bind) , buffer);

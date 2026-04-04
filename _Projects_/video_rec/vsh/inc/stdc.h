@@ -3,7 +3,9 @@
 #define __STDC_H__
 
 
-extern float stdc_00FDE072(float x, float y);                                         // f_powf()                     #define f_powf stdc_00FDE072                               
+extern float stdc_00FDE072(float x, float y);                                         // f_powf()
+#define f_powf stdc_00FDE072
+
 extern char *stdc_04A183FC(char *dest, const char *src);                              // strcpy()
 #define strcpy stdc_04A183FC
 
@@ -23,7 +25,8 @@ extern size_t stdc_12A55FB7(wchar_t *restrict pwc, const char *restrict s, size_
 #define mbrtowc stdc_12A55FB7
 
 extern double stdc_1313A420(double x);                                                // acos()
-#define acos stdc_1313A420                                 
+#define acos stdc_1313A420
+
 extern int stdc_153B364A(const char *path, mode_t mode);                              // mkdir()
 #define mkdir stdc_153B364A
 
@@ -48,7 +51,8 @@ extern int stdc_24C9E021(int n);                                                
 #define abs stdc_24C9E021
 
 extern clock_t stdc_24F6CBDD(void);                                                   // clock()
-#define clock stdc_24F6CBDD                                
+#define clock stdc_24F6CBDD
+
 extern struct tm *stdc_266311A0(const time_t *timer);                                 // localtime()
 #define localtime stdc_266311A0
 
@@ -59,9 +63,12 @@ extern int stdc_26F023D5(FILE *stream);                                         
 #define ftell stdc_26F023D5
 
 extern int stdc_273B9711(char *str, const char *fmt, ...);                            // sprintf()
-#define sprintf stdc_273B9711                              
+#define sprintf stdc_273B9711
+
 extern struct dirent *stdc_2B81FB7F(DIR *dirp);                                       // readdir()
-#define readdir stdc_2B81FB7F                                                                                         // stdc_2D8BE7E8  // _ZNKSt9exception6_RaiseEv
+#define readdir stdc_2B81FB7F
+
+// stdc_2D8BE7E8  // _ZNKSt9exception6_RaiseEv
 
 extern size_t stdc_2F45D39C(const char *str);                                         // strlen()
 #define strlen stdc_2F45D39C
@@ -70,8 +77,10 @@ extern double stdc_31DB8C89(double y, double x);                                
 #define atan2 stdc_31DB8C89
 
 extern int stdc_33D6AE54(FILE *stream);                                               // ferror()
-#define ferror stdc_33D6AE54                               
-// stdc_36C067C1  // _Stoll                                
+#define ferror stdc_33D6AE54
+
+// stdc_36C067C1  // _Stoll
+
 extern double stdc_38E69F09(double x, double y);                                      // pow()
 #define pow stdc_38E69F09
 
@@ -89,7 +98,8 @@ extern int stdc_3AD203FA(double x);                                             
 extern int stdc_3BD9CE0A(int fd);                                                     // fsync()
 #define fsync stdc_3BD9CE0A
 
-extern float stdc_3C057FBD(float x);                                                  // atanf()                      #define atanf stdc_3C057FBD
+extern float stdc_3C057FBD(float x);                                                  // atanf()
+#define atanf stdc_3C057FBD
 
 // stdc_3CA81C76  // _Iswctype
 
@@ -104,7 +114,9 @@ extern DIR *stdc_3DBC3BEE(const char *name);                                    
 extern float stdc_411434BB(float x);                                                  // asinf()
 #define asinf stdc_411434BB
 
-// stdc_418BDFE1  // _get_fd()                                                                                        extern double stdc_4217B4CF(time_t time1, time_t time2);                              // difftime()
+// stdc_418BDFE1  // _get_fd()
+
+extern double stdc_4217B4CF(time_t time1, time_t time2);                              // difftime()
 #define difftime stdc_4217B4CF
 
 // stdc_44115DD0  // _Geterrno()
@@ -124,7 +136,8 @@ extern int stdc_4B6A4010(wchar_t * ws, size_t len, const wchar_t * fmt, va_list 
 extern int stdc_4D348427(const char *str, FILE *stream);                              // fputs()
 #define fputs stdc_4D348427
 
-extern float stdc_4DDB926B(float x, float y);                                         // powf()                       #define powf stdc_4DDB926B
+extern float stdc_4DDB926B(float x, float y);                                         // powf()
+#define powf stdc_4DDB926B
 
 extern wchar_t *stdc_4E72F810(const wchar_t *s, wchar_t c, size_t n);                 // wmemchr()
 #define wmemchr stdc_4E72F810;
@@ -152,7 +165,8 @@ extern double stdc_58EB9E57(double x);                                          
 
 #define memset stdc_5909E3C4
 extern void *stdc_5909E3C4(void *str, int c, size_t n);                               // memset()
-                                                           extern void *stdc_5B162B7F(void *str1, const void *str2, size_t n);                   // memmove()
+
+extern void *stdc_5B162B7F(void *str1, const void *str2, size_t n);                   // memmove()
 #define memmove stdc_5B162B7F
 
 extern void *stdc_5E7888F0(const void *key, const void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));  // bsearch()
@@ -177,7 +191,8 @@ extern FILE *stdc_69C27C12(const char *filename, const char *mode);             
 
 extern int stdc_69FF1B9B(FILE *stream, long int offset, int whence);                  // fseek()
 #define fseek stdc_69FF1B9B
-                                                           extern int stdc_6D5115B0(const wchar_t *ws1, const wchar_t *ws2, size_t n);           // wcsncmp()
+
+extern int stdc_6D5115B0(const wchar_t *ws1, const wchar_t *ws2, size_t n);           // wcsncmp()
 #define wcsncmp stdc_6D5115B0
 
 extern int stdc_703EC767(FILE *restrict stream, char *restrict buf, int type, size_t size);  // setvbuf()
@@ -217,8 +232,12 @@ extern int stdc_7E7017B1(const char *path);                                     
 #define rmdir stdc_7E7017B1
 
 extern double stdc_7F381837(double x, int *exp);                                      // frexp()
-#define frexp stdc_7F381837                                
-extern double stdc_7F579E03(double x);                                                // atan()                       #define atan stdc_7F579E03                                                                                            extern wchar_t *stdc_7FDCF73E(wchar_t *dest, const wchar_t *src);                     // wcscat()
+#define frexp stdc_7F381837
+
+extern double stdc_7F579E03(double x);                                                // atan()
+#define atan stdc_7F579E03
+
+extern wchar_t *stdc_7FDCF73E(wchar_t *dest, const wchar_t *src);                     // wcscat()
 #define wcscat stdc_7FDCF73E
 
 extern int stdc_814D8CB0(FILE * stream);                                              // fflush()
@@ -236,7 +255,8 @@ extern wchar_t *stdc_84378DDC(wchar_t *dest, const wchar_t *src, size_t num);   
 #define wcsncpy stdc_84378DDC
 
 extern double stdc_8451EDF0(double x);                                                // sqrtf()
-#define sqrtf stdc_8451EDF0                                
+#define sqrtf stdc_8451EDF0
+
 // stdc_867275D7  // _Stoul()
 // stdc_88214E8A  // ?
 
@@ -247,8 +267,8 @@ extern time_t stdc_89F6F026(time_t *timer);                                     
 #define time stdc_89F6F026
 
 extern void stdc_8A6830E7(void);                                                      // abort()
-#define abort stdc_8A6830E7
-
+#define abort stdc_8A6830E7     
+           
 extern char *stdc_8AB0ABC6(char *dest, const char *src, size_t num);                  // strncpy()
 #define strncpy stdc_8AB0ABC6
 
@@ -272,7 +292,8 @@ extern wchar_t *stdc_9439E4CD(wchar_t* dest, const wchar_t* source, size_t num);
 extern long int stdc_9558ED08(float x);                                               // lrintf()
 #define lrintf stdc_9558ED08
 
-extern int stdc_99A72146(char *s, size_t n, const char *fmt, va_list arg);            // vsnprintf()                  #define vsnprintf stdc_99A72146
+extern int stdc_99A72146(char *s, size_t n, const char *fmt, va_list arg);            // vsnprintf()
+#define vsnprintf stdc_99A72146
 
 extern wchar_t *stdc_99B38CE7(wchar_t *dest, const wchar_t *src, size_t num);         // wmemmove()
 #define wmemmove stdc_99B38CE7
@@ -291,7 +312,8 @@ extern int stdc_A3440924(DIR *dirp);                                            
 extern int stdc_A5BC0E19(void);                                                       // getchar()
 #define getchar stdc_A5BC0E19
 
-extern double stdc_A713F8CF(double x, double* intpart);                               // modf()                       #define modf stdc_A713F8CF
+extern double stdc_A713F8CF(double x, double* intpart);                               // modf()
+#define modf stdc_A713F8CF
 
 extern wchar_t *stdc_A797790F(wchar_t* wcs1, const wchar_t* wcs2);                    // wcsstr()
 #define wcsstr stdc_A797790F
@@ -331,7 +353,9 @@ extern int stdc_B120F6CA(int fd);                                               
 // stdc_B1F4779D  // spu_thread_printf()
 
 extern size_t stdc_B2702E15(char *pmb, wchar_t wc, mbstate_t *ps);                    // wcrtomb()
-#define wcrtomb stdc_B2702E15                                                                                         // stdc_B54CC9A1  // f_sinf()
+#define wcrtomb stdc_B2702E15
+
+// stdc_B54CC9A1  // f_sinf()
 // stdc_B5E28191  // _FSin()
 
 extern int stdc_B6257E3D(const char *s1, const char *s2, size_t n);                   // strncasecmp()
@@ -360,11 +384,15 @@ extern float stdc_BAF11866(float x);                                            
 extern char *stdc_BC7B4B8E(const time_t *timer);                                      // ctime()
 #define ctime stdc_BC7B4B8E
 
-extern int stdc_C01D9F97(const char *fmt, ...);                                       // printf()                     #define printf stdc_C01D9F97                                                                                          extern void stdc_C291E698(int status);                                                // exit()
+extern int stdc_C01D9F97(const char *fmt, ...);                                       // printf()
+#define printf stdc_C01D9F97
+
+extern void stdc_C291E698(int status);                                                // exit()
 #define exit stdc_C291E698
 
 extern int stdc_C3E14CBE(const void *ptr1, const void *ptr2, size_t num);             // memcmp()
-#define memcmp stdc_C3E14CBE                               
+#define memcmp stdc_C3E14CBE
+
 extern char *stdc_C5C09834(char *str1, const char *str2);                             // strstr()
 #define strstr stdc_C5C09834
 
@@ -384,7 +412,8 @@ extern void *stdc_CBAC7AD7(void *ptr, int value, size_t num);                   
 extern long int stdc_D14ECE90(const char *str, char **endptr, int base);              // strtol()
 #define strtol stdc_D14ECE90
 
-// stdc_D1D69CB8  // _Stod()                               
+// stdc_D1D69CB8  // _Stod()
+
 extern int stdc_D360DCB4(FILE *stream);                                               // fileno()
 #define fileno stdc_D360DCB4
 
@@ -414,14 +443,16 @@ extern FILE *stdc_E3812672(int fd, const char *mode);                           
 #define fdopen stdc_E3812672
 
 extern int stdc_E3CC73F3(const char *str);                                            // puts()
-#define puts stdc_E3CC73F3                                 
+#define puts stdc_E3CC73F3
+
 extern char *stdc_E40BA755(char *str, const char *delimiters);                        // strtok()
 #define strtok stdc_E40BA755
 
 extern int stdc_E48348E9(const char *format, va_list arg);                            // vprintf()
 #define vprintf stdc_E48348E9
 
-extern double stdc_E769E5CF(double numer, double denom);                              // fmod()                       #define fmod stdc_E769E5CF
+extern double stdc_E769E5CF(double numer, double denom);                              // fmod()
+#define fmod stdc_E769E5CF
 
 extern int stdc_E9137453(FILE *stream, const wchar_t *fmt, ...);                     // fwprintf()
 #define fwprintf stdc_E9137453
@@ -433,7 +464,8 @@ extern struct tm *stdc_EB26298C(const time_t *timer);                           
 #define gmtime stdc_EB26298C
 
 // stdc_EE303936  // _Dsign()
-                                                           extern int stdc_EF110B6B(const char *path);                                           // unlink()
+
+extern int stdc_EF110B6B(const char *path);                                           // unlink()
 #define unlink stdc_EF110B6B
 
 extern wchar_t *stdc_F06EED36(wchar_t *ptr, wchar_t wc, size_t num);                  // wmemset()
@@ -445,4 +477,48 @@ extern int stdc_F0776A44(const wchar_t *wcs1, const wchar_t *wcs2);             
 extern int stdc_F0E022C6(FILE *stream);                                               // getc()
 #define getc stdc_F0E022C6
 
-// stdc_
+// stdc_F356418C  // open()
+
+extern double stdc_F3EC0258(double x);                                                // round()
+#define round stdc_F3EC0258
+
+extern size_t stdc_F3EF3678(const wchar_t *wcs1, const wchar_t *wcs2);                // wcscspn()
+#define wcscspn stdc_F3EF3678
+
+extern wchar_t *stdc_F41355F9(wchar_t *dest, const wchar_t *src);                     // wcscpy()
+#define wcscpy stdc_F41355F9
+
+extern size_t stdc_F88F26C4(const void *ptr, size_t size, size_t count, FILE *stream);  // fwrite()
+#define fwrite stdc_F88F26C4
+
+extern char *stdc_F89DC648(const char *str1, const char *str2);                       // strpbrk()
+#define strpbrk stdc_F89DC648
+
+extern size_t stdc_FA00D211(int fd, void *buf, size_t nbytes);                        // read()
+#define read stdc_FA00D211
+
+extern int stdc_FAEC8C60(FILE *stream, const char *fmt, ...);                         // fprintf()
+#define fprintf stdc_FAEC8C60
+
+extern int stdc_FB2081FD(FILE *stream, const char *fmt, va_list arg);                 // vfprintf()
+#define vfprintf stdc_FB2081FD
+
+extern float stdc_FB932A56(float y, float x);                                         // atan2f()
+#define atan2f stdc_FB932A56
+
+extern long int stdc_FBB4047A(float x);                                               // lroundf()
+#define lroundf stdc_FBB4047A
+
+extern char *stdc_FC0428A6(const char *s);                                            // strdup()
+#define strdup stdc_FC0428A6
+
+extern size_t stdc_FCAC2E8E(wchar_t *dest, const char *src, size_t max);              // mbstowcs()
+#define mbstowcs stdc_FCAC2E8E
+
+extern float stdc_FCF08193(float x);                                                  // expf()
+#define expf stdc_FCF08193
+
+extern int stdc_FE88E97E(FILE *stream, const char *fmt, ...);                         // fscanf()
+#define fscanf stdc_FE88E97E
+
+#endif // __STDC_H__ 

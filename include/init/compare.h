@@ -52,6 +52,6 @@ static u64 faster_find(const char *find, int len, char *mask)
 static bool bcompare(const char *a, const char *b, u8 len, const char *mask)
 {
 	while(len && ((*a++ == *b++) || (*mask == '?'))) {mask++,len--;}
-	return len;
+	return len; // false = match, true = no match
 }
 #endif
