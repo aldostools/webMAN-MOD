@@ -337,7 +337,6 @@ static void block_online_servers(bool notify)
 				//	{if(!block_url(addr,   0x0000000000000000ULL)) break;}
 			}
 
-			led(YELLOW, OFF);
 			led(GREEN, ON);
 		}
 

@@ -11,5 +11,14 @@
 
 static void led(u64 color, u64 mode)
 {
-	system_call_2(SC_SYS_CONTROL_LED, (u64)color, (u64)mode);
+	if(color == GREEN && mode == ON)
+	{
+		{ system_call_2(SC_SYS_CONTROL_LED, GREEN, ON); }
+		if(is_qcfw)
+			{ system_call_2(SC_SYS_CONTROL_LED, RED, ON); } // Turn ON red (RED+GREEN = YELLOW)
+		else		
+			{ system_call_2(SC_SYS_CONTROL_LED, RED, OFF); } // Turn OFF red (GREEN only)
+	}
+	else
+		{system_call_2(SC_SYS_CONTROL_LED, color, mode);}
 }

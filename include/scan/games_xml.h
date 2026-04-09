@@ -1293,7 +1293,6 @@ scan_roms:
 		#endif
 	}
 
-	led(YELLOW, OFF);
 	led(GREEN, ON);
 
 	// --- sort scanned content

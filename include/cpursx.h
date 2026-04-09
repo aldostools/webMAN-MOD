@@ -49,13 +49,13 @@ static void get_cobra_version(char *cfw_info)
 	if(payload_ps3hen) {sprintf(cfw_info, "%s %s %.3s.%X", dex_mode ? "DEX" : "CEX", "PS3HEN", cobra_ver, cobra_version & 0xF); return;}
 
 	#if defined(DECR_SUPPORT)
-		sprintf(cfw_info, "%s %s %s", IS_DEH ? "DECR" : dex_mode ? "DEX" : "CEX", is_mamba ? "Mamba" : "Cobra", cobra_ver);
+		sprintf(cfw_info, "%s %s %s", IS_DEH ? "DECR" : dex_mode ? "DEX" : "CEX", is_qcfw ? "qCFW" : is_mamba ? "Mamba" : "Cobra", cobra_ver);
 		if(pex_mode) *cfw_info = 'P';
 	#elif defined(DEX_SUPPORT)
-		sprintf(cfw_info, "%s %s %s", dex_mode ? "DEX" : "CEX", is_mamba ? "Mamba" : "Cobra", cobra_ver);
+		sprintf(cfw_info, "%s %s %s", dex_mode ? "DEX" : "CEX", is_qcfw ? "qCFW" : is_mamba ? "Mamba" : "Cobra", cobra_ver);
 		if(pex_mode) *cfw_info = 'P';
 	#else
-		sprintf(cfw_info, "%s %s %s", "CEX", is_mamba ? "Mamba" : "Cobra", cobra_ver);
+		sprintf(cfw_info, "%s %s %s", "CEX", is_qcfw ? "qCFW" : is_mamba ? "Mamba" : "Cobra", cobra_ver);
 	#endif
 
 	if(!cobra_version) {char *cfw = strchr(cfw_info, ' '); *cfw = NULL;}

@@ -291,6 +291,7 @@ int npklic_struct_offset = 0; u8 klic_polling = 0;
 #ifdef COBRA_ONLY
 static bool is_mamba = false;
 #endif
+static bool is_qcfw = false;
 static u16 cobra_version = 0;
 
 static u64 copied_size  = 0;
@@ -367,11 +368,12 @@ static void unlink_file(const char *drive, const char *path, const char *file);
 #include "include/init/html.h"
 #include "include/init/language.h"
 #include "include/poll/fancontrol.h"
-#include "include/init/firmware.h"
 
 #include "include/notify/led.h"
 #include "include/notify/vsh_notify.h"
 #include "include/notify/show_msg2.h"
+
+#include "include/init/firmware.h"
 
 #ifdef USE_NTFS
 

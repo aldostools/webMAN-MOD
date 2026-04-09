@@ -1865,6 +1865,7 @@ finish:
 	#endif
 
 	led(GREEN, ON);
+	
 	max_mapped = 0;
 	mount_ret = ret;
 	mount_unk = EMU_OFF;

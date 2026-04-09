@@ -238,6 +238,7 @@ static void parse_script(const char *script_file, bool check_running)
 						if(_islike(line, "singleUser"))   {ret = has_one_user_dir();} else
 						#endif
 						#ifdef COBRA_ONLY
+						if(_islike(line, "qCFW"))    {ret = is_qcfw;} else
 						if(_islike(line, "Cobra"))   {ret = cobra_version;} else
 						if(_islike(line, "Debug"))   {ret = isCobraDebug;} else
 						if(_islike(line, "Mamba"))   {ret = is_mamba;} else
