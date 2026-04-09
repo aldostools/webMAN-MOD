@@ -592,7 +592,10 @@ again_debug:
 
 	// sys_ppu_thread_sleep(2);
 
-	led(YELLOW, OFF);
+	if(is_qcfw)
+		led(GREEN, ON); // set led to YELLOW for qCFW
+	else
+		led(YELLOW, OFF);
 
 	#ifdef WM_REQUEST
 	start_event(EVENT_AUTOEXEC);

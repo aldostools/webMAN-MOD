@@ -110,7 +110,6 @@ static void detect_firmware(void)
 
 	// detect qcfw payload
 	is_qcfw = (lv1_peek_cfw(0x240) == 0x11223344aabbccddULL);
-	if(is_qcfw) led(GREEN, ON); // set led to YELLOW for qCFW
 #endif
 
 	// get payload type & cobra_version
