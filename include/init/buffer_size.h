@@ -110,7 +110,8 @@ static void set_buffer_sizes(u8 footprint)
 
 	if(footprint >= USE_2MB)
 	{
-		//BUFFER_SIZE_FTP = (_128KB_);
+		BUFFER_SIZE_FTP = (footprint == 2) ? _256KB_ : _128KB_; // MAX = 256KB / default = 128KB
+
 		u32 MEM = (footprint == USE_2MB) ? _128KB_ : 0; // 200 games
 		//BUFFER_SIZE	= (896*KB to 1408*KB); // 1200-2200 games
 		BUFFER_SIZE_PSX = (webman_config->foot == 5) ? _768KB_ : _512KB_ - MEM; // 800-1200 games (formerly 384KB: +128KB)

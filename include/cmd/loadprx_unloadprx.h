@@ -9,10 +9,12 @@
 	}
 #endif
 #ifdef LOAD_PRX
-	if(islike(param, "/loadprx.ps3") || islike(param, "/unloadprx.ps3"))
+	if(islike(param, "/loadprx.ps3") || islike(param, "/unloadprx.ps3") || islike(param, "/loadprx_ps3"))
 	{
 		// /loadprx.ps3<path-sprx>
 		// /loadprx.ps3?prx=<path-sprx>
+		// /loadprx_ps3<path-sprx>
+		// /loadprx_ps3?prx=<path-sprx>
 		// /loadprx.ps3?prx=<path-sprx>&slot=<slot>
 		// /unloadprx.ps3<path-sprx>
 		// /unloadprx.ps3?prx=<path-sprx>
@@ -21,7 +23,7 @@
 
 		if(!cobra_version || syscalls_removed) goto exit_nocobra_error;
 
-		unsigned int slot = 7; bool prx_found;
+		unsigned int slot = 7; bool prx_found, load_once = false;
 
 		#ifdef PKG_HANDLER
 		int id = get_valuen32(param, "id=");
@@ -49,7 +51,11 @@
 			if(*sprx_path)
 			{
 				slot = ps3mapi_get_vsh_plugin_slot_by_name(sprx_path, 0);
-				if(islike(param, "/unloadprx.ps3") || (slot < 7)) prx_found = false;
+				if(islike(param, "/unloadprx.ps3") || (slot < 7))
+				{
+					prx_found = false; 
+					load_once = islike(param, "/loadprx_ps3"); // the plugin is already loaded
+				}
 			}
 			if((slot < 1) || (slot > 6))
 			{
@@ -57,7 +63,7 @@
 				if(!slot) slot = get_free_slot(); // find first free slot if slot == 0
 			}
 
-			if(prx_found)
+			if(prx_found || load_once)
 			{
 				sprintf(param, "slot: %i<br>load prx: ", slot);
 				add_breadcrumb_trail(param, sprx_path);
@@ -67,7 +73,9 @@
 
 			_concat2(&sbuffer, param, HTML_BODY_END);
 
-			if(slot < 7)
+			if (load_once) ; // don't unload the plugin if it is already loaded
+
+			else if(slot < 7)
 			{
 				char *tmp_name = templn + 512;
 				char *tmp_filename = templn + 550;
