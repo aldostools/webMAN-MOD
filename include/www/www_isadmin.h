@@ -62,6 +62,7 @@
  #endif
  #ifdef LOAD_PRX
 		||  islike(param, "/loadprx.ps3")
+		||  islike(param, "/loadprx_ps3")
 		||  islike(param, "/unloadprx.ps3")
  #endif
  #ifdef COBRA_ONLY

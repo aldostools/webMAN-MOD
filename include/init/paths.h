@@ -172,7 +172,7 @@
 #endif
 
 #define MAX_ISO_PARTS				(16)
-#define ISO_EXTENSIONS				".cue.ccd.iso.0.bin.img.mdf.enc"
+#define ISO_EXTENSIONS				".cue.ccd.chd.iso.0.bin.img.mdf.enc"
 #define ARCHIVE_EXTENSIONS			".zip.rar.bz2.tgz.tar.7z.gz"
 #define SKIP_CUE					8
 
@@ -181,8 +181,11 @@ static char drives[17][13] = {"/dev_hdd0", "/dev_usb000", "/dev_usb001", "/dev_u
 static char paths [13][10] = {"GAMES", "GAMEZ", "PS3ISO", "BDISO", "DVDISO", "PS2ISO", "PSXISO", "PSXGAMES", "PSPISO", "ISO", "video", "GAMEI", "ROMS"};
 
 #ifdef COBRA_ONLY
-static const char *iso_ext[11] = {".bin", ".iso", ".iso.0", ".BIN", ".ISO", ".ISO.0", ".img", ".mdf", ".IMG", ".MDF", ".bin"};
-static const char *cue_ext[4]  = {".cue", ".ccd", ".CUE", ".CCD"};
+#define NUM_ISO_EXTS   13
+#define NUM_ISO_EXTS_  12
+#define NUM_CUE_EXTS    4
+static const char *iso_ext[NUM_ISO_EXTS] = {".bin", ".iso", ".iso.0", ".BIN", ".ISO", ".ISO.0", ".img", ".mdf", ".IMG", ".MDF", ".chd", ".CHD", ".bin"};
+static const char *cue_ext[NUM_CUE_EXTS]  = {".cue", ".ccd", ".CUE", ".CCD"};
 #endif
 
 #ifdef VISUALIZERS

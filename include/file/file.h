@@ -146,7 +146,7 @@ static void change_cue2iso(char *cue_file)
 
 	if(is_ext(cue_file, ".cue") || is_ext(cue_file, ".ccd"))
 	{
-		change_ext(cue_file, 11, iso_ext);
+		change_ext(cue_file, NUM_ISO_EXTS, iso_ext);
 	}
 }
 

@@ -119,7 +119,7 @@ static int add_net_game(int ns, netiso_read_dir_result_data *data, int v3_entry,
 		#endif
 		if(IS_PSPISO && strstr(data[v3_entry].name, ".EBOOT.")) return FAILED;
 		else
-			if(!strcasestr(ISO_EXTENSIONS + 8, ext)) return FAILED;
+			if(!strcasestr(ISO_EXTENSIONS + SKIP_CUE, ext)) return FAILED;
 	}
 
 	*icon = *title_id = NULL;
@@ -175,24 +175,24 @@ static int add_net_game(int ns, netiso_read_dir_result_data *data, int v3_entry,
 	// check for /title/title.iso
 	if(data[v3_entry].is_directory && BETWEEN(id_PS3ISO, f1, id_PSPISO))
 	{
-		for(u8 e = 0; e < 11; e++)
+		for(u8 e = 0; e < NUM_ISO_EXTS; e++)
 		{
-			if(e >= 10) return FAILED;
+			if(e >= NUM_ISO_EXTS_) return FAILED;
 
 			sprintf(tempstr, "%s/%s/%s%s", param, data[v3_entry].name, data[v3_entry].name, iso_ext[e]);
 			if(remote_file_exists(ns, tempstr)) break;
 		}
 
-		u8 index = 4;
+		u8 index = NUM_COV_EXTS;
 
 		// cover: folder/filename.jpg
-		for(u8 e = 0; e < 4; e++)
+		for(u8 e = 0; e < NUM_COV_EXTS; e++)
 		{
 			sprintf(remote_path, "%s/%s/%s%s", param, data[v3_entry].name, data[v3_entry].name, ext[ex[e]]);
 			if(remote_file_exists(ns, remote_path)) {index = ex[e]; swap_ex(e); break;}
 		}
 
-		if(index < 4)
+		if(index < NUM_COV_EXTS)
 		{
 			get_name(icon, data[v3_entry].name, GET_WMTMP); strcat(icon, ext[index]);
 			copy_net_file(icon, remote_path, ns);
@@ -373,7 +373,7 @@ static bool is_dupe(u8 f0, u8 f1, const char *d_name, char *hdd_path)
 	if(IS_NTFS)
 	{
 		char *ext = strstr(hdd_path, ".ntfs["); if(!ext) return true;
-		for(u8 e = 0; e < 10; e++)
+		for(u8 e = 0; e < NUM_ISO_EXTS_; e++)
 			{strcpy(ext, iso_ext[e]); if(file_exists(hdd_path)) return true;}
 		*ext = NULL;
 	}
@@ -401,9 +401,11 @@ static bool is_iso_file(char *entry_name, int flen, u8 f1, u8 f0)
 	{
 		if(IS_ISO_FOLDER && (_IS(ext, ".zip") || _IS(ext, ".7z"))) return true;
 
+		if(IS_NET && (IS_PSXISO || IS_DVDISO) && _IS(ext, ".chd")) return true; // supported only by ps3netsrv_go
+
 		return ((IS_ISO_FOLDER || IS_VIDEO_FOLDER)  && (
 				(_IS(ext, ".iso") || _IS(entry_name + MAX(flen - 6, 0), ".iso.0"))  ||
-				((IS_PS2ISO || IS_PSXISO || IS_DVDISO || IS_BDISO) && strcasestr(ISO_EXTENSIONS + 14, ext))
+				((IS_PS2ISO || IS_PSXISO || IS_DVDISO || IS_BDISO) && strcasestr(ISO_EXTENSIONS + 18, ext))
 				));
 	}
 #else

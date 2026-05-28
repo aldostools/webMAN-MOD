@@ -104,7 +104,7 @@ static void create_ntfs_file(char *iso_path, char *filename, size_t plen)
 			else if(cd_sector_size != 2352) cd_sector_size_param = cd_sector_size<<4;
 
 			// read LBA for tracks from cue file
-			if(change_ext(iso_path, 4, cue_ext))
+			if(change_ext(iso_path, NUM_CUE_EXTS, cue_ext))
 			{
 				char *cue_file = iso_path;
 				char *cue_buf = (char*)sysmem_p;
@@ -294,8 +294,9 @@ static int prepNTFS(u8 clear)
 	char path[STD_PATH_LEN];
 
 	// remove ntfs files from WMTMP
-	const char *cache_ext[4] = { ".ntfs[PS3ISO]", ".ntfs[PSXISO]", ".ntfs[DVDISO]", ".ntfs[BDISO]" };
-	for(u8 n = 0; n < 4; n++)
+	#define NUM_CACHE_EXTS    4
+	const char *cache_ext[NUM_CACHE_EXTS] = { ".ntfs[PS3ISO]", ".ntfs[PSXISO]", ".ntfs[DVDISO]", ".ntfs[BDISO]" };
+	for(u8 n = 0; n < NUM_CACHE_EXTS; n++)
 		scan(WMTMP, false, cache_ext[n], SCAN_DELETE, NULL);
 
 	sys_addr_t sysmem = NULL;

@@ -1270,7 +1270,7 @@ static bool mount_ps_disc_image(char *_path, char *cobra_iso_list[], u8 iso_part
 	#endif
 	else if(*ext == '.')
 	{
-		change_ext(_path, 4, cue_ext);
+		change_ext(_path, NUM_CUE_EXTS, cue_ext);
 		if(not_exists(_path)) strcpy(_path, cobra_iso_list[0]);
 	}
 

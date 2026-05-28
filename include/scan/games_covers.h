@@ -49,7 +49,8 @@ enum icon_type
 #define SHOW_COVERS_OR_ICON0  (webman_config->nocov != SHOW_DISC)
 #define SHOW_COVERS          ((webman_config->nocov == SHOW_MMCOVERS) || (webman_config->nocov == ONLINE_COVERS))
 
-static const char *ext[4] = {".JPG", ".PNG", ".jpg", ".png"};
+#define NUM_COV_EXTS   4
+static const char *ext[NUM_COV_EXTS] = {".JPG", ".PNG", ".jpg", ".png"};
 
 static const char *cpath[6] = {MM_ROOT_STD, MM_ROOT_STL, MM_ROOT_SSTL, MANAGUNZ, "/dev_hdd0/GAMES", "/dev_hdd0/GAMEZ"};
 
@@ -137,7 +138,7 @@ static bool _get_image_file(char *icon, int flen, bool ucase)
 {
 	if(!icon || (flen <= 0) || (*icon != '/')) return false; // sanity check
 
-	int max = ucase ? 2 : 4;
+	int max = ucase ? 2 : NUM_COV_EXTS;
 
 	for(u8 e = 0; e < max; e++)
 	{
@@ -527,7 +528,7 @@ static void get_default_icon_for_iso(char *icon, const char *param, const char *
 
 			int icon_len = get_name(icon, file, GET_WMTMP); //wmtmp
 
-			for(u8 e = 0; e < 4; e++)
+			for(u8 e = 0; e < NUM_COV_EXTS; e++)
 			{
 				strcpy(icon + icon_len, ext[ex[e]]);
 				if(file_exists(icon)) return;
