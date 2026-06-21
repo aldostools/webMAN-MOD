@@ -950,9 +950,9 @@ static int ps3mapi_command(int conn_s_ps3mapi, int data_s, int pasv_s, char *buf
 											u32 thread_stack_size = (u32)val(cmd);
 											char* thread_name = param2;
 
-											u64 threadOpd[2];
-											threadOpd[0] = page_table_0; // assuming main() is the first function in page_table_0
-											threadOpd[1] = toc_memory_address;
+											u32 threadOpd[2];
+											threadOpd[0] = (u32)page_table_0; // assuming main() is the first function in page_table_0
+											threadOpd[1] = (u32)toc_memory_address;
 
 											typedef struct
 											{
