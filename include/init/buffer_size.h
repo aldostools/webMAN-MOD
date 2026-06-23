@@ -102,7 +102,7 @@ static u32 get_buffer_size(u8 footprint)
 static void set_buffer_sizes(u8 footprint)
 {
 	BUFFER_SIZE_ALL = get_buffer_size(footprint);
-	BUFFER_SIZE_FTP = ( _128KB_);
+	BUFFER_SIZE_FTP = ( _256KB_);   // was 128 KB; 256 is the sweet spot, 512 plateaus at warm disk rate
 
 	BUFFER_SIZE_PSP = ( _32KB_); //  50 games
 	BUFFER_SIZE_PS2 = ( _64KB_); // 100 games
