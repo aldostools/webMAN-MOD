@@ -178,7 +178,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net0 文件夹</></P>
 				<P key="info"><>挂载 /net0 文件夹为本地 /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -193,7 +192,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net1 文件夹</></P>
 				<P key="info"><>挂载 /net1 文件夹为本地 /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -208,7 +206,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net2 文件夹</></P>
 				<P key="info"><>挂载 /net2 文件夹为本地 /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -223,7 +220,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net3 文件夹</></P>
 				<P key="info"><>挂载 /net3 文件夹为本地 /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>
@@ -238,7 +234,6 @@
 				<P key="icon_notation"><>WNT_XmbItemBrowser</></P>
 				<P key="title"><>Net4 文件夹</></P>
 				<P key="info"><>挂载 /net4 文件夹为本地 /dev_bdvd</></P>
-				<P key="child"><>segment</></P>
 			</T>
 		</A>
 		<I>

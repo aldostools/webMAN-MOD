@@ -1,5 +1,5 @@
 ## License
-### 2014-2025 webMAN MOD / ps3netsrv
+### 2014-2026 webMAN MOD / ps3netsrv
 
 webMAN MOD is a FREE software and all its components (ps3netsrv included) are
 distributed and protected under GNU General Public License version 3 (GPL v3)
@@ -48,7 +48,7 @@ the software.
 
 
 
-(C) 2010-2025 multiMAN / webMAN / sMAN / sLaunch / prepNTFS by DeanK
+(C) 2010-2026 multiMAN / webMAN / sMAN / sLaunch / prepNTFS by DeanK
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation files

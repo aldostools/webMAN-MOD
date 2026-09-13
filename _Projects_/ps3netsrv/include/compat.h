@@ -22,8 +22,8 @@ typedef struct _file_stat_t
 
 #ifdef WIN32
 
+#include <winsock2.h>
 #include <windows.h>
-#include <winsock.h>
 
 // Threads
 typedef HANDLE thread_t;
@@ -57,7 +57,7 @@ typedef int socklen_t;
 
 #else
 
-#include <sys/errno.h>
+#include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>

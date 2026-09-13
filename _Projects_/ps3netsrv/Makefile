@@ -1,11 +1,13 @@
 OS = windows
 BUILD_TYPE = release_static
 
+BUILD_DATE ?= $(shell date +%Y%m%d 2>/dev/null || echo unknown)
+
 OUTPUT := ps3netsrv
 OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/mem.o src/File.o src/VIsoFile2.o
 
-CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
-CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL
+CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
+CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
 
 #CFLAGS += -Doff64_t=off_t
 #CPPFLAGS += -Doff64_t=off_t
@@ -47,7 +49,7 @@ OUTPUT := $(OUTPUT).exe
 endif
 
 ifeq ($(OS), cross)
-OBJS += scandir.o dirent.o
+OBJS += src/scandir.o src/dirent.o
 CC = i586-pc-mingw32-gcc
 CXX = i586-pc-mingw32-g++
 LIBS += -lws2_32

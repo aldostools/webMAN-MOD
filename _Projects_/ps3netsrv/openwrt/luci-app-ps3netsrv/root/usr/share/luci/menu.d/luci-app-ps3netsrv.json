@@ -1,0 +1,12 @@
+{
+	"admin/services/ps3netsrv": {
+		"title": "PS3 Net Server",
+		"action": {
+			"type": "view",
+			"path": "ps3netsrv"
+		},
+		"depends": {
+			"acl": [ "luci-app-ps3netsrv" ]
+		}
+	}
+}

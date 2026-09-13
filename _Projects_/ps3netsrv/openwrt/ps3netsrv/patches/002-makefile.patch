@@ -1,0 +1,30 @@
+diff -Naur a/Makefile b/Makefile
+--- a/Makefile	2025-02-10 00:00:00.000000000 -0300
++++ b/Makefile	2025-02-10 00:00:00.000000000 -0300
+@@ -1,13 +1,13 @@
+-OS = windows
++OS = linux
+ BUILD_TYPE = release_static
+ 
+-BUILD_DATE ?= $(shell date +%Y%m%d 2>/dev/null || echo unknown)
++BUILD_DATE ?= $(shell date +%Y%m%d)
+ 
+ OUTPUT := ps3netsrv
+ OBJS = src/main.o src/padlock.o src/aes.o src/compat.o src/mem.o src/File.o src/VIsoFile2.o
+ 
+-CFLAGS = -Wall -Wno-format -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
+-CPPFLAGS += -Wall -Wno-format -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
++CFLAGS = -Wall -I./include -std=gnu99 -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
++CPPFLAGS += -Wall -I./include -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DPOLARSSL -DBUILD_DATE=\"$(BUILD_DATE)\"
+ 
+ #CFLAGS += -Doff64_t=off_t
+ #CPPFLAGS += -Doff64_t=off_t
+@@ -38,7 +38,7 @@ LDFLAGS = -L.
+ LIBS = -lstdc++
+ 
+ ifeq ($(OS), linux)
+-LIBS += -lpthread
++LIBS += -lpthread -lgcc_eh
+ endif
+ 
+ ifeq ($(OS), windows)

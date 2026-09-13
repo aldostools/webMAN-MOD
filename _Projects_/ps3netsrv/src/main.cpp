@@ -63,10 +63,10 @@ typedef struct _client_t
 
 int make_iso = VISO_NONE;
 
+size_t root_len = 0;
 static char root_directory[MAX_PATH_LEN];
 
 #ifndef MAKEISO
-size_t root_len = 0;
 static client_t clients[MAX_CLIENTS];
 
 static int initialize_socket(uint16_t port)
@@ -617,12 +617,14 @@ static int process_open_cmd(client_t *client, netiso_open_cmd *cmd)
 		client->ro_file = NULL;
 	}
 
+	// handle close file
 	if((fp_len == 10) && (!strcmp(filepath, "/CLOSEFILE")))
 	{
 		ret = SUCCEEDED;
 		goto send_result; // return SUCCEEDED;
 	}
 
+	// translate path to local path & get viso mode
 	filepath = translate_path(filepath, &viso);
 	if(!filepath)
 	{
@@ -630,6 +632,10 @@ static int process_open_cmd(client_t *client, netiso_open_cmd *cmd)
 		goto send_result; // return FAILED;
 	}
 
+	// handle mounting of ps3netsrv root directory
+	if(strlen(filepath) == (root_len + 2) && strstr(filepath + rlen, "/.") != NULL) viso = VISO_ISO;
+
+	// open file or build virtual ISO if the file path is a folder
 	if(viso == VISO_NONE)
 	{
 		client->ro_file = new File();
@@ -1799,6 +1805,10 @@ void *client_thread(void *arg)
 
 int main(int argc, char *argv[])
 {
+#ifndef BUILD_DATE
+#define BUILD_DATE "unknown"
+#endif
+
 #ifndef MAKEISO
 	int s;
 	uint16_t port = NETISO_PORT;
@@ -1811,13 +1821,13 @@ int main(int argc, char *argv[])
 	// Show build number
 	set_white_text();
 #ifndef MAKEISO
-	printf("ps3netsrv build 20260101");
+	printf("ps3netsrv build " BUILD_DATE);
 	#ifdef READ_ONLY
 	set_gray_text();
 	printf(" [READ-ONLY]");
 	#endif
 #else
-	printf("makeiso build 20260101");
+	printf("makeiso build " BUILD_DATE);
 #endif
 
 	set_red_text();
@@ -2076,7 +2086,7 @@ int main(int argc, char *argv[])
 		{
 			printf("Current Host Name: %s\n", host);
 			host_entry = gethostbyname(host); //find host information
-			if(host_entry);
+			if(host_entry)
 			{
 				set_gray_text();
 				for(int i = 0; host_entry->h_addr_list[i]; i++)
