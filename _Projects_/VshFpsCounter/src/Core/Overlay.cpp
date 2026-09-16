@@ -94,6 +94,7 @@ void Overlay::DrawOverlay()
        {
            overlayText += L" / " + to_wstring(m_GpuClock) + L" MHz";
            overlayText += L" / " + to_wstring(m_GpuGddr3RamClock) + L" MHz";
+           overlayText += L" / " + to_wstring(m_GpuGddr3RamClock_2) + L" MHz";
        }
        overlayText += L"\n";
    }
@@ -322,6 +323,19 @@ uint32_t Overlay::GetGpuGddr3RamClockSpeed()
     return (clock.mul * 25);
 }
 
+uint32_t Overlay::GetGpuGddr3RamClockSpeed_2()
+{
+	uint64_t mul = PeekLv1(0x28000004020);
+
+	if (mul == 0xFFFFFFFF80010003) // if cfw syscalls are disabled
+		return 0;
+
+	mul &= 0x0000FF0000000000ull;
+	mul >>= 40;
+
+	return (mul * 25);
+}
+
 uint32_t Overlay::GetCpuClockSpeed()
 {
 	system_call_8(10, 1, 0x62650000, 0, 0x6e636c6b00000000, 0, 0, 0, 91);
@@ -476,6 +490,7 @@ void Overlay::UpdateInfoThread(uint64_t arg)
           g_Overlay.m_CpuClock = g_Overlay.GetCpuClockSpeed();
           g_Overlay.m_GpuClock = g_Overlay.GetGpuClockSpeed();
           g_Overlay.m_GpuGddr3RamClock = g_Overlay.GetGpuGddr3RamClockSpeed();
+          g_Overlay.m_GpuGddr3RamClock_2 = g_Overlay.GetGpuGddr3RamClockSpeed_2();
       }
 
       g_Overlay.WaitAndQueueTextInLV2();
