@@ -36,6 +36,7 @@ private:
    void GetGameName(char outTitleId[16], char outTitleName[64]);
    uint32_t GetGpuClockSpeed();
    uint32_t GetGpuGddr3RamClockSpeed();
+   uint32_t GetGpuGddr3RamClockSpeed_2();
    uint32_t GetCpuClockSpeed();
    static void UpdateInfoThread(uint64_t arg);
    static void LoadExternalOffsets(uint64_t arg);
@@ -65,6 +66,7 @@ public:
    uint32_t m_CpuClock{};
    uint32_t m_GpuClock{};
    uint32_t m_GpuGddr3RamClock{};
+   uint32_t m_GpuGddr3RamClock_2{};
    uint64_t m_CpuClockSpeedOffsetInLv1{};
 
 private:
