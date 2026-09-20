@@ -168,8 +168,7 @@ static char STR_HOME[8] = "Home";
 
 #define STR_NOTFOUND	"Not found!"
 
-#define COVERS_PATH		"http://raw.githubusercontent.com/aldostools/resources/master/COV/%s.JPG"
-
+#define COVERS_PATH		"http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main/COV/%s.JPG"
 #define CUSTOM_PATH1	"DVD"
 #define CUSTOM_PATH2	"CD"
 
@@ -249,7 +248,7 @@ static char STR_FANCH3[72];//		= "MIN FAN SPEED: ";
 
 static char STR_NOTFOUND[40];//		= "Not found!";
 
-static char COVERS_PATH[100];//		= "";
+static char COVERS_PATH[120];//		= "";
 
 static char CUSTOM_PATH1[16];//		= "";
 static char CUSTOM_PATH2[16];//		= "";

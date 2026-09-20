@@ -1,4 +1,4 @@
- &bull; VRAM: <select name="g2" id="g2">
+ &bull; VRAM1/2: <select name="g2" id="g2">
 <option value="0000">Default</option>
 <script>
 for(mhz=650;mhz<=1200;mhz+=25)

@@ -8,11 +8,15 @@ typedef union
 {
 	struct
 	{
-		uint32_t junk0;
+		uint8_t  junk0;
 		uint8_t  junk1;
+		uint8_t  mul2; // vram clock2
 		uint8_t  junk2;
-		uint8_t  mul;
+		
 		uint8_t  junk3;
+		uint8_t  junk4;
+		uint8_t  mul; // vram/core clock
+		uint8_t  junk5;
 	};
 
 	uint64_t value;
@@ -20,6 +24,7 @@ typedef union
 
 #define GPU_CORE_CLOCK		0x28000004028
 #define GPU_VRAM_CLOCK		0x28000004010
+#define GPU_VRAM_CLOCK2		0x28000004020
 
 // Enforce In-order Execution of I/O
 #define eieio()                \
@@ -28,15 +33,19 @@ typedef union
 		asm volatile("sync");  \
 	}
 
-static void overclock(u16 mhz, bool gpu)
+static void overclock(u16 mhz, u8 gpu)
 {
 	if(BETWEEN(300, mhz, 1200))
 	{
-		u64 clock_address = (gpu ? GPU_CORE_CLOCK : GPU_VRAM_CLOCK);
+		u64 clock_address = (gpu == 1) ? GPU_VRAM_CLOCK : (gpu == 2) ? GPU_VRAM_CLOCK2 : GPU_CORE_CLOCK;
 
 		clock_s clock;
 		clock.value = lv1_peek_cobra(clock_address);
-		if(gpu)
+
+		if (clock.value == 0xFFFFFFFF80010003) // if cfw syscalls are disabled
+			return;
+
+		if(gpu == 0)
 		{
 			clock.mul = (u8)(mhz / 50); // GPU Core Clock speed
 			lv1_poke_cfw(GPU_CORE_CLOCK, clock.value);
@@ -45,14 +54,35 @@ static void overclock(u16 mhz, bool gpu)
 		else // apply vram frequency must be applied slowly in 25mhz step, wait, repeat until reach target
  		{
 			u8 target_mul = (u8)(mhz / 25);
-			bool up = (target_mul > clock.mul);
 
-			while (clock.mul != target_mul)
+			if(gpu == 1)
 			{
-				sys_timer_usleep(125000); // 1/8 sec = 125ms
-				clock.mul += up ? 1 : -1;
-				lv1_poke_cfw(GPU_VRAM_CLOCK, clock.value);
-				eieio();
+				bool up = (target_mul > clock.mul);
+				while (clock.mul != target_mul)
+				{
+					sys_timer_usleep(125000); // 1/8 sec = 125ms
+
+					// overclock VRAM Clock Speed (original)
+					clock.mul += up ? 1 : -1;
+					lv1_poke_cfw(GPU_VRAM_CLOCK, clock.value);
+
+					eieio();
+				}
+			}
+			if(gpu == 2)
+			{
+				bool up = (target_mul > clock.mul2);
+				while (clock.mul2 != target_mul)
+				{
+					sys_timer_usleep(125000); // 1/8 sec = 125ms
+
+					// overclock VRAM Clock 2 Speed (new address found by aomsin2526)
+					clock.mul2 += up ? 1 : -1;
+
+					lv1_poke_cfw(GPU_VRAM_CLOCK2, clock.value);
+
+					eieio();
+				}
 			}
 		}
 	}
@@ -61,8 +91,9 @@ static void overclock(u16 mhz, bool gpu)
 
 static void set_rsxclocks(u8 gpu_core, u8 gpu_vram)
 {
-	overclock(50 * (int)(gpu_core), true);
-	overclock(25 * (int)(gpu_vram), false);
+	overclock(50 * (int)(gpu_core), 0);
+	overclock(25 * (int)(gpu_vram), 1);
+	overclock(25 * (int)(gpu_vram), 2);
 
 	pergame_overclocking = false;
 }
@@ -73,15 +104,18 @@ static int get_rsxclock(u64 clock_address) // clock_address = GPU_CORE_CLOCK or 
 	clock.value = lv1_peek_cobra(clock_address);
 	if(clock_address == GPU_CORE_CLOCK)
 		return 50 * (int)clock.mul;
-	else
+	if(clock_address == GPU_VRAM_CLOCK)
 		return 25 * (int)clock.mul;
+	if(clock_address == GPU_VRAM_CLOCK2)
+		return 25 * (int)clock.mul2;
+	return 0;
 }
 
 static void show_rsxclock(char *msg)
 {
 	if(get_rsxclock(GPU_CORE_CLOCK))
 	{
-		sprintf(msg, "GPU: %i Mhz | VRAM: %i Mhz", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK)); show_msg(msg);
+		sprintf(msg, "GPU: %i Mhz | VRAM: %i/%i Mhz", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK), get_rsxclock(GPU_VRAM_CLOCK2)); show_msg(msg);
 	}
 }
 #endif //#ifdef OVERCLOCKING

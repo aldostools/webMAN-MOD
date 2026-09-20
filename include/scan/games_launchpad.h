@@ -1,5 +1,5 @@
 #define LAUNCHPAD_MODE			2
-#define LAUNCHPAD_COVER_SVR		"http://raw.githubusercontent.com/aldostools/resources/master/COV"
+#define LAUNCHPAD_COVER_SVR		"http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main/COV"
 
 #ifdef LAUNCHPAD
 

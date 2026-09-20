@@ -248,6 +248,10 @@ static void get_sys_info(char *msg, u8 op, bool nolabel)
 		{
 			sprintf(msg, "VRAM: %i Mhz", get_rsxclock(GPU_VRAM_CLOCK));
 		}
+		else if(op == 38) // GPU VRAM Clock speed (@info28)
+		{
+			sprintf(msg, "VRAM2: %i Mhz", get_rsxclock(GPU_VRAM_CLOCK2));
+		}
 		#endif
 
 		if(op >= 18)
@@ -599,7 +603,7 @@ static void cpu_rsx_stats(char *buffer, char *html, char *param, u8 is_ps3_http)
 
 	#ifdef OVERCLOCKING
 	if(get_rsxclock(GPU_CORE_CLOCK))
-		sprintf(hdd_free, "<br>GPU: %i Mhz &bull; VRAM: %i Mhz", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK));
+		sprintf(hdd_free, "<br>GPU: %i Mhz &bull; VRAM: %i/%i Mhz", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK), get_rsxclock(GPU_VRAM_CLOCK2));
 	else
 		*hdd_free = NULL;
 

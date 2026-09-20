@@ -398,7 +398,7 @@ int main()
 
 	if(button & (BUTTON_L1)) full = true; else
 	if(button & (BUTTON_CROSS | BUTTON_CIRCLE)) lite = true; else
-	if(	(!(button & BUTTON_R1) && ((sysLv2FsStat(PLUGINS_DIR "/webftp_server.sprx", &stat) == SUCCESS) && (stat.st_size > 330000))) ||
+	if(	(!(button & BUTTON_R1) && ((sysLv2FsStat(PLUGINS_DIR "/webftp_server.sprx", &stat) == SUCCESS) && (stat.st_size > 335000))) ||
 		(is_ps3hen() == 0x1337) ||
 		(file_exists("/dev_flash/hen/PS3HEN.BIN")) ||
 		(file_exists(HDDROOT_DIR "/hen/PS3HEN.BIN")) ||

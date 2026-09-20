@@ -149,3 +149,8 @@ STR_OVERHEAT	[Alerta de Superaquecimento!]
 STR_OVERHEAT2	[Perigo de Superaquecimento! Velocidade do Cooler Aumentada]
 
 STR_NOTFOUND	[Não encontrado!]
+
+COVERS_PATH		[http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main/COV/%s.JPG]
+IP_ADDRESS		[127.0.0.1]
+SEARCH_URL		[http://google.com/search?q=]
+STR_CUSTOMXML	[XML]

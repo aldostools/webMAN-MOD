@@ -304,9 +304,9 @@ static bool get_cover_by_titleid(char *icon, const char *title_id)
 		if(webman_config->nocov == ONLINE_COVERS)
 		{
 			if(IS_PSX_TITLE_ID) // PS1/PS2
-				sprintf(icon, "%s/PSX/%.4s_%.3s.%.2s_COV.JPG", "http://raw.githubusercontent.com/aldostools/resources/master", title_id, title_id + 4, title_id + 7);
+				sprintf(icon, "%s/PSX/%.4s_%.3s.%.2s_COV.JPG", "http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main", title_id, title_id + 4, title_id + 7);
 			else if(IS_PSP_TITLE_ID) // PSP
-				sprintf(icon, "%s/PSP/%s.PNG", "http://raw.githubusercontent.com/aldostools/resources/master", title_id);
+				sprintf(icon, "%s/PSP/%s.PNG", "http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main", title_id);
 			else
 				sprintf(icon, COVERS_PATH, title_id); // PS3
 			return true;
@@ -317,9 +317,9 @@ static bool get_cover_by_titleid(char *icon, const char *title_id)
 			if(is_online_server && (*title_id != 'B' && *title_id != 'N' && *title_id != 'S')) {*icon = NULL; return false;} // PS3
 
 			if(IS_PSX_TITLE_ID) // PS1/PS2
-				sprintf(icon, "%s/PSX/%.4s_%.3s.%.2s_COV.JPG", "http://raw.githubusercontent.com/aldostools/resources/master", title_id, title_id + 4, title_id + 7);
+				sprintf(icon, "%s/PSX/%.4s_%.3s.%.2s_COV.JPG", "http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main", title_id, title_id + 4, title_id + 7);
 			else if(IS_PSP_TITLE_ID) // PSP
-				sprintf(icon, "%s/PSP/%s.PNG", "http://raw.githubusercontent.com/aldostools/resources/master", title_id);
+				sprintf(icon, "%s/PSP/%s.PNG", "http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main", title_id);
 			else if(use_icon_region) sprintf(icon, COVERS_PATH, (title_id[2] == 'U') ? "US" :
 																(title_id[2] == 'J') ? "JA" : "EN", title_id);
 			else

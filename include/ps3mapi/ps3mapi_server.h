@@ -397,23 +397,32 @@ static int ps3mapi_command(int conn_s_ps3mapi, int data_s, int pasv_s, char *buf
 			#ifdef OVERCLOCKING
 			else if(_IS(cmd, "GETRSXCLOCK"))	// PS3 GETRSXCLOCK
 			{
-				sprintf(param2, "%i|%i", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK));
+				sprintf(param2, "%i|%i|%i", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK), get_rsxclock(GPU_VRAM_CLOCK2));
 				split = ps3mapi_response_values(conn_s_ps3mapi, buffer, param2);
 			}
 			else if(_IS(cmd, "SETGPUCLOCK"))	// PS3 SETGPUCLOCK <mhz>
 			{
 				if(split)
 				{
-					u16 mhz = (u16)val(param2); overclock(mhz, true);
+					u16 mhz = (u16)val(param2); overclock(mhz, 0);
 
 					split = ps3mapi_response_int(conn_s_ps3mapi, buffer, get_rsxclock(GPU_CORE_CLOCK), true);
+				}
+			}
+			else if(_IS(cmd, "SETVRAMCLOCK2"))	// PS3 SETVRAMCLOCK2 <mhz>
+			{
+				if(split)
+				{
+					u16 mhz = (u16)val(param2); overclock(mhz, 2);
+
+					split = ps3mapi_response_int(conn_s_ps3mapi, buffer, get_rsxclock(GPU_VRAM_CLOCK2), true);
 				}
 			}
 			else if(_IS(cmd, "SETVRAMCLOCK"))	// PS3 SETVRAMCLOCK <mhz>
 			{
 				if(split)
 				{
-					u16 mhz = (u16)val(param2); overclock(mhz, false);
+					u16 mhz = (u16)val(param2); overclock(mhz, 1);
 
 					split = ps3mapi_response_int(conn_s_ps3mapi, buffer, get_rsxclock(GPU_VRAM_CLOCK), true);
 				}

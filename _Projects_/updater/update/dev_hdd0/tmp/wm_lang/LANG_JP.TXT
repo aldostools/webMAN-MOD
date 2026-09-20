@@ -151,7 +151,7 @@ STR_OVERHEAT2		[オーバーヒートは危険です！ファン速度を上げ�
 
 STR_NOTFOUND		[見つかりませんでした！]
 
-COVERS_PATH			[http://raw.githubusercontent.com/aldostools/resources/master/COV/%s.JPG]
+COVERS_PATH			[http://gh-proxy.com/raw.githubusercontent.com/aldostools/resources/main/COV/%s.JPG]
 IP_ADDRESS			[127.0.0.1]
 SEARCH_URL			[http://google.com/search?q=]
 STR_CUSTOMXML		[XML]

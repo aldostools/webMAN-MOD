@@ -1764,8 +1764,8 @@ mounting_done:
 		if(!oc && isDir(_path) && (read_file(strfmt("%s/oc.txt", _path), data, 64, 0) > 4)) oc = strstr(data, OVERCLOCK_TAG);
 		if(oc)
 		{
-			u16 mhz = (u16)(val(oc + 4)); overclock(mhz, true); // set gpu core clock speed
-			oc = strchr(oc, '-'); if(oc) {mhz = (u16)(val(oc + 1)); overclock(mhz, false);} // (optional) set gpu vram clock speed
+			u16 mhz = (u16)(val(oc + 4)); overclock(mhz, 0); // set gpu core clock speed
+			oc = strchr(oc, '-'); if(oc) {mhz = (u16)(val(oc + 1)); overclock(mhz, 1);} // (optional) set gpu vram clock speed
 			show_rsxclock(data); pergame_overclocking = true;
 		}
 	}

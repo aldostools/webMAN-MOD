@@ -175,8 +175,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-BLES80616_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -190,8 +190,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-PS2CONFIG_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -205,8 +205,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>2P0001-PS2U10000_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
@@ -220,8 +220,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-PSPM66820_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -235,8 +235,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-PSPC66820_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -250,8 +250,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000000.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000000.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000000.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000000.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-BLES80608_00-COVERS0000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -265,8 +265,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS00000RETRO.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS00000RETRO.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS00000RETRO.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS00000RETRO.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-BLES80608_00-COVERS00000RETRO</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -280,8 +280,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-BLES80608_00-COVERS000000003D</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -295,8 +295,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>RETROA-RETROARCH_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -310,8 +310,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/multiMAN.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/multiMAN.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/multiMAN.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/multiMAN.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>MM4PS3-BLES80608_00-MULTIMANAGER0470</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -325,8 +325,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/IRISMAN/releases/download/4.91/IRISMAN_4.91.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/IRISMAN/releases/download/4.91/IRISMAN_4.91.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/IRISMAN/releases/download/4.91/IRISMAN_4.91.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/IRISMAN/releases/download/4.91/IRISMAN_4.91.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-IRISMAN00_00-VER4910000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -340,8 +340,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/Simple_File_Manager_MOD.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/Simple_File_Manager_MOD.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/Simple_File_Manager_MOD.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/Simple_File_Manager_MOD.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-PS3SFM001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -355,8 +355,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/movianM7-deank-playstation3.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/movianM7-deank-playstation3.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/movianM7-deank-playstation3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/movianM7-deank-playstation3.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-HTSS00003_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -370,8 +370,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/apollo-ps3.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/apollo-ps3.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/apollo-ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/apollo-ps3.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-NP0APOLLO_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -385,8 +385,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/ArtemisPS3-GUI.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/ArtemisPS3-GUI.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ArtemisPS3-GUI.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ArtemisPS3-GUI.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-ARTPS3001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -400,8 +400,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/pkgi-ps3.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/pkgi-ps3.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/pkgi-ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/pkgi-ps3.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-NP00PKGI3_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -415,8 +415,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/ps3-ezremote-client.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/ps3-ezremote-client.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ps3-ezremote-client.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ps3-ezremote-client.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-RMTC00001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -430,8 +430,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-file-manager.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-file-manager.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-file-manager.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-file-manager.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-FILEMGR01_00-FILEMANAGERHB001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -444,8 +444,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-yo-player.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-yo-player.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-yo-player.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-yo-player.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-YOPLAYER1_00-YOPLAYERHB000001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -458,8 +458,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-renpy-player.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-renpy-player.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-renpy-player.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-renpy-player.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0002-RENPLAY01_00-RENPYPLAYERHB001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -472,8 +472,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-cell-stream.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-cell-stream.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-cell-stream.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-cell-stream.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-CELSTRM01_00-CELLSTREAMHB0001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -486,8 +486,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-thermal-bench.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-thermal-bench.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-thermal-bench.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-thermal-bench.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-THERMAL01_00-THERMALBENCH0001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -500,8 +500,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-swarm.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/mohasi-swarm.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-swarm.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-swarm.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-SWARM0001_00-SWARMVPNCLIENT01</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -515,8 +515,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_v2.03_FULL_version.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_v2.03_FULL_version.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_v2.03_FULL_version.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_v2.03_FULL_version.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-ULTOOLBOX_00-DEVIL30300000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -530,8 +530,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_for_4.89-4.91_BETA.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_for_4.89-4.91_BETA.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_for_4.89-4.91_BETA.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_for_4.89-4.91_BETA.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-ULTOOLBOX_00-DEVIL30300000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -545,8 +545,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/homeologylab_pshome.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/homeologylab_pshome.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/homeologylab_pshome.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/homeologylab_pshome.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP9000-NPIA00005_00-H0ME000000000001</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -560,8 +560,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Launchers/load_wmm.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Launchers/load_wmm.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Launchers/load_wmm.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Launchers/load_wmm.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-LOADWMMOD_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -575,8 +575,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-UPDWEBMOD_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
@@ -874,8 +874,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/install_custom_npsignin_plugin.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/install_custom_npsignin_plugin.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/install_custom_npsignin_plugin.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/install_custom_npsignin_plugin.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-UPDWEBMOD_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -888,8 +888,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/Addons/install_ps3-updatelist.txt.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/Addons/install_ps3-updatelist.txt.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/install_ps3-updatelist.txt.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/install_ps3-updatelist.txt.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -902,8 +902,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/webMAN_LaunchPad_491_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/webMAN_LaunchPad_491_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/webMAN_LaunchPad_491_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/webMAN_LaunchPad_491_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -916,8 +916,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_FREE_4MB_in_dev_flash.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_FREE_4MB_in_dev_flash.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_FREE_4MB_in_dev_flash.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_FREE_4MB_in_dev_flash.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -930,8 +930,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Custom_Firmware_Tools_MOD_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Custom_Firmware_Tools_MOD_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Custom_Firmware_Tools_MOD_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Custom_Firmware_Tools_MOD_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -944,8 +944,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -958,8 +958,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_stores_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_stores_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_stores_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Package_Manager_MOD_with_stores_external_bubbles_99download_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -972,8 +972,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Extended_Download_MOD_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Extended_Download_MOD_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Extended_Download_MOD_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_Extended_Download_MOD_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -986,8 +986,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_user_power_options_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_user_power_options_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_user_power_options_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/4.91.2_Evilnat_user_power_options_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1001,8 +1001,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_default_ps1_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_default_ps1_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_default_ps1_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_default_ps1_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1015,8 +1015,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_default_ps2_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_default_ps2_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_default_ps2_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_default_ps2_emus_cfw_evilnat-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1029,8 +1029,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_automatic_GTE_widescreen_patches-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_automatic_GTE_widescreen_patches-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_automatic_GTE_widescreen_patches-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_automatic_GTE_widescreen_patches-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1043,8 +1043,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearest-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearest-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearest-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearest-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1057,8 +1057,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_no_dither-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_no_dither-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_no_dither-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_no_dither-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1071,8 +1071,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearset_no_dither-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearset_no_dither-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearset_no_dither-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps1_netemu_nearset_no_dither-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1085,8 +1085,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1099,8 +1099,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fps_counter+menu_combo+EE_overclocking+partial_antiblur+x_modules-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fps_counter+menu_combo+EE_overclocking+partial_antiblur+x_modules-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fps_counter+menu_combo+EE_overclocking+partial_antiblur+x_modules-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fps_counter+menu_combo+EE_overclocking+partial_antiblur+x_modules-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1113,8 +1113,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1127,8 +1127,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default_dbg-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_default_dbg-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1141,8 +1141,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1155,8 +1155,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd_dbg-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_hdd_dbg-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1169,8 +1169,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1183,8 +1183,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory_dbg-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_memory_dbg-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1197,8 +1197,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1211,8 +1211,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp_dbg-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp_dbg-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_temp_dbg-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1225,8 +1225,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_configs_only.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_configs_only.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_configs_only.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_configs_only.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1239,8 +1239,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v3-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v3-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v3-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v3-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1253,8 +1253,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v2_fps_counter+temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v2_fps_counter+temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v2_fps_counter+temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v2_fps_counter+temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1267,8 +1267,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_temperature_display+x_modules+custom_configs+extended_config_table-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1281,8 +1281,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_fps_counter+combo_square_select-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_fps_counter+combo_square_select-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_fps_counter+combo_square_select-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_fps_counter+combo_square_select-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1295,8 +1295,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_custom_configs-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_custom_configs-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_custom_configs-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_v1_custom_configs-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1309,8 +1309,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_fan_control-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_fan_control-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_fan_control-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_gxemu_fan_control-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1323,8 +1323,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1337,8 +1337,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v1_temperature_display-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v1_temperature_display-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v1_temperature_display-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v1_temperature_display-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1351,8 +1351,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_z_all_strings-req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_z_all_strings-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_z_all_strings-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_z_all_strings-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1427,8 +1427,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_coldboot_sounds.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_coldboot_sounds.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_coldboot_sounds.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_coldboot_sounds.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1441,8 +1441,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_lines.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_lines.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_lines.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_lines.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1455,8 +1455,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled_for_4.89-4.91.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled_for_4.89-4.91.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled_for_4.89-4.91.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled_for_4.89-4.91.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1469,8 +1469,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_multi_gameboot_req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1483,8 +1483,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose_for_4.89-4.91.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose_for_4.89-4.91.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose_for_4.89-4.91.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose_for_4.89-4.91.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1497,8 +1497,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_impose.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1511,8 +1511,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_psn_icons.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_psn_icons.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_psn_icons.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_xmb_psn_icons.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1525,8 +1525,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_earths.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_earths.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_earths.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_earths.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1539,8 +1539,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_canyons.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_canyons.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_canyons.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/install_media_player_canyons.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1640,8 +1640,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01003_Auto_Fix_Clock.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01003_Auto_Fix_Clock.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01003_Auto_Fix_Clock.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01003_Auto_Fix_Clock.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01003_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1654,8 +1654,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01005_RSX_Overclock</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01005_RSX_Overclock</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01005_RSX_Overclock.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01005_RSX_Overclock.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01005_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1668,8 +1668,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01004_RSX_Default_Clock.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01004_RSX_Default_Clock.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01004_RSX_Default_Clock.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01004_RSX_Default_Clock.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01004_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1682,8 +1682,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02025_Reload_XMB.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02025_Reload_XMB.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02025_Reload_XMB.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02025_Reload_XMB.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02025_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1696,8 +1696,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02000_PS3Toolset.com.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02000_PS3Toolset.com.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02000_PS3Toolset.com.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02000_PS3Toolset.com.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02000_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1710,8 +1710,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02001_PS3Xploit.me.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02001_PS3Xploit.me.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02001_PS3Xploit.me.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02001_PS3Xploit.me.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1724,8 +1724,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02005_Flashwriter.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02005_Flashwriter.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02005_Flashwriter.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02005_Flashwriter.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02005_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1738,8 +1738,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02010_Brewology.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02010_Brewology.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02010_Brewology.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02010_Brewology.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02010_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1752,8 +1752,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01001_webMAN_Coverflow.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01001_webMAN_Coverflow.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01001_webMAN_Coverflow.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01001_webMAN_Coverflow.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1766,8 +1766,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01000_webMAN_Setup.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01000_webMAN_Setup.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01000_webMAN_Setup.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01000_webMAN_Setup.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01000_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1780,8 +1780,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01002_webMAN_File_Manager.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK01002_webMAN_File_Manager.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01002_webMAN_File_Manager.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK01002_webMAN_File_Manager.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK01002_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1794,8 +1794,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK0SWAP_Swap_Buttons.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK0SWAP_Swap_Buttons.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK0SWAP_Swap_Buttons.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK0SWAP_Swap_Buttons.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>NP0001-LINK0SWAP_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1808,8 +1808,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02020_Move_Downloaded_Package.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02020_Move_Downloaded_Package.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02020_Move_Downloaded_Package.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02020_Move_Downloaded_Package.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02020_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1822,8 +1822,8 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02012_multiMAN.Themes.pkg</></P>
-				<P key="pkg_src_qa"><>https://github.com/aldostools/Resources/releases/download/WebApps/LINK02012_multiMAN.Themes.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02012_multiMAN.Themes.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02012_multiMAN.Themes.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02012_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>

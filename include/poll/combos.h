@@ -406,7 +406,7 @@
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_L2)
 						{
 							u16 mhz = get_rsxclock(GPU_CORE_CLOCK);
-							overclock(mhz + 50, true); show_rsxclock(msg);
+							overclock(mhz + 50, 0); show_rsxclock(msg);
 						}
 						else
 						#endif
@@ -449,7 +449,7 @@
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_L2)
 						{
 							u16 mhz = get_rsxclock(GPU_CORE_CLOCK);
-							overclock(mhz - 50, true); show_rsxclock(msg);
+							overclock(mhz - 50, 0); show_rsxclock(msg);
 						}
 						else
 						#endif
@@ -489,7 +489,7 @@
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_L2)
 						{
 							u16 mhz = get_rsxclock(GPU_VRAM_CLOCK);
-							overclock(mhz - 25, false); show_rsxclock(msg);
+							overclock(mhz - 25, 1); show_rsxclock(msg);
 						}
 						else
 						#endif
@@ -517,7 +517,7 @@
 						if(pad_data.button[CELL_PAD_BTN_OFFSET_DIGITAL2] & CELL_PAD_CTRL_L2)
 						{
 							u16 mhz = get_rsxclock(GPU_VRAM_CLOCK);
-							overclock(mhz + 25, false); show_rsxclock(msg);
+							overclock(mhz + 25, 1); show_rsxclock(msg);
 						}
 						else
 						#endif
