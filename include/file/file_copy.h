@@ -632,8 +632,8 @@ static void copy_rom_media(const char *src_path)
 
 			strcpy(path, src_path); char *path_ = get_filename(path) + 1;
 
-			const char *media[5] = {"PIC0.PNG", "PIC1.PNG", "PIC2.PNG", "SND0.AT3", "ICON1.PAM"};
-			for(u8 i = 0; i < 5; i++)
+			const char *media[6] = {"ICON0.PNG", "PIC0.PNG", "PIC1.PNG", "PIC2.PNG", "SND0.AT3", "ICON1.PAM"};
+			for(u8 i = 0; i < 6; i++)
 			{
 				concat3(dst_path, PKGLAUNCH_DIR, PS3_GAME[p], media[i]); cellFsUnlink(dst_path);
 				strcpy(ext + 1, media[i]);

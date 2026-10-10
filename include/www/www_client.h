@@ -571,6 +571,7 @@ parse_request:
 				if(islike(param, "/setup.ps3")) goto html_response;
 			}
 
+			#include "../cmd/toggle_fps.h"
 			#include "../cmd/pad_combo_play.h"
 			#include "../cmd/gpuclock_memclock.h"
 			#include "../cmd/cpursx_tempc.h"

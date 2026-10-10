@@ -599,11 +599,11 @@ static void cpu_rsx_stats(char *buffer, char *html, char *param, u8 is_ps3_http)
 	else
 		sprintf(max_temp1, "<small>[FAN: %i%% %s]</small>", webman_config->man_rate, STR_MANUAL);
 
-	char hdd_free[40];
+	char hdd_free[96];
 
 	#ifdef OVERCLOCKING
 	if(get_rsxclock(GPU_CORE_CLOCK))
-		sprintf(hdd_free, "<br>GPU: %i Mhz &bull; VRAM: %i/%i Mhz", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK), get_rsxclock(GPU_VRAM_CLOCK2));
+		sprintf(hdd_free, "<br><a href=\"/fps.ps3\">GPU: %i Mhz</a> &bull; <a href=\"/oc.html\">VRAM: %i/%i Mhz</a>", get_rsxclock(GPU_CORE_CLOCK), get_rsxclock(GPU_VRAM_CLOCK), get_rsxclock(GPU_VRAM_CLOCK2));
 	else
 		*hdd_free = NULL;
 
@@ -696,7 +696,7 @@ static void cpu_rsx_stats(char *buffer, char *html, char *param, u8 is_ps3_http)
 	///////////////////////
 
 	char *runtime_info = param; get_sys_info(runtime_info, 23, true);
-	sprintf(html, "</font><H1><img src='%s/power.png' style='position:relative;top:8px;'> %s</H1>", WM_ICONS_PATH, runtime_info); concat(buffer, html);
+	sprintf(html, "</font><H1><a href=\"/pad.html\"><img src='%s/power.png' style='position:relative;top:8px;'> %s</a></H1>", WM_ICONS_PATH, runtime_info); concat(buffer, html);
 
 	if(isDir("/dev_bdvd"))
 	{
@@ -770,7 +770,7 @@ static void cpu_rsx_stats(char *buffer, char *html, char *param, u8 is_ps3_http)
 	/////////////////////////////
 
 	concat(buffer, HTML_BLU_SEPARATOR
-							 WM_APP_VERSION " - Simple Web Server" EDITION " ");
+					WM_APP_VERSION " - Simple Web Server" EDITION " ");
 
 	if(webman_config->combo & SYS_ADMIN) strcat(buffer, sys_admin ? "[ADMIN]":"[USER]");
 

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<head>
+<title>wMAN MOD 1.47.50</title>
+<link rel="stylesheet" type="text/css" href="sman.css"/>
+<script src="jquery.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="sman.js"></script>
+<script>$(function(){$("#mg").sortable();});</script>
+</head>
+<body bgcolor="#303030" onresize="resizeEvent()">
+<div class="top_line">&nbsp;</div>
+<div id="smv" class="smv"><a style="cursor:pointer" onclick="home();return false;">wMAN MOD</a></div>
+
+<font face="Helvetica">
+<div id="rxml"><H1 id="msg1">Refreshing XML <script>dot();</script></H1></div>
+<div id="rhtm"><H1 id="msg2">Loading Games <script>dot();</script></H1></div>
+<div id="wmsg"><H1><script>dot();</script></H1></div>
+
+<style>
+	div h2{line-height: 0.5;}
+	div li{line-height: 1.6;}
+</style>
+
+<script>
+function find()
+{
+	var s=prompt('Search:','');
+	if(s){
+		document.getElementById('rhtm').style.display='block';
+		document.getElementById('rhtm').innerHTML='<h1>Searching...</h1>';
+		var url=self.location.href;
+		if(url.indexOf('etmem.ps3mapi')>0||url.indexOf('/hexview.ps3')>0){
+			var pos=url.indexOf('&find=');
+			if(pos>0)
+				self.location=url.substring(0,pos)+'&find='+escape(s);
+			else
+				self.location+='&find='+escape(s);
+		}
+		else if(url.indexOf('/peek')>0||url.indexOf('/poke')>0||url.indexOf('/find')>0){
+			var pos=url.indexOf('=');
+			if(pos>0)
+				self.location=url.substring(0,pos).replace('/peek','/find').replace('/poke','/find')+'='+escape(s);
+			else
+				self.location=url.replace('/peek','/find').replace('/poke','/find')+'='+escape(s);
+		}
+		else
+			self.location+='?'+escape(s);
+	}
+}
+</script>
+<base href="http://0/">
+<div id="top_action">
+	<div id="top_buttons">
+	<a onclick="document.getElementById('rxml').style.display='block';self.location=(event.ctrlKey)?'/refresh.ps3;/sman.ps3':'/refresh.ps3?xmb;/sman.ps3';" class="t_menu"><span id="refresh">Refresh</span></a>
+	<a onclick="self.location=(event.ctrlKey)?'/mount_ps3/unmount?/sman.ps3':'/mount.ps3/unmount?/sman.ps3';" class="t_menu"><span id="eject">Eject</span></a>
+	<a onclick="self.location='/insert.ps3';" class="t_menu"><span id="insert">Insert</span></a>
+	<a onclick="self.location='/restart.ps3';" class="t_menu"><span id="restart">Restart</span></a>
+	<a onclick="self.location='/shutdown.ps3';" class="t_menu"><span id="shutdown">Shutdown</span></a>
+	</div>
+
+	<div id="cpursx" style="position:absolute;top:5px;right:150px;max-width:220px;overflow:hidden;">
+	<iframe id="temp" src="/cpursx_ps3" frameborder="0" scrolling="no" seamless="seamless" style="border:none;height:35px;top:5px;overflow:hidden;"></iframe>
+	</div>
+
+	<span id="srch" style="position:absolute;float:right;right:-5px;top:10px;">
+	<a onclick="if(self.location.href.indexOf('/cpursx.ps3')>0){self.location='/cpursx.html';}else{find();}"><span id="ngames"></span> &nbsp; <img src="/dev_hdd0/tmp/wm_icons/find.png" style="position:relative;top:6px;"></a></font>
+	</span>
+</div>
+
+<div id="left_action">
+	<a onclick="document.getElementById('rhtm').style.display='block';self.location=(event.ctrlKey)?'/index.ps3':'/sman.ps3?';" class="b_games"><span id="games">Games</span></a>
+	<a onclick="self.location='/';" class="b_files"><span id="files">Files</span></a>
+	<a onclick="self.location='/games.ps3';" class="b_cflow">Coverflow</a>
+	<a onclick="self.location='/home.ps3mapi/sman.ps3';" class="b_ps3mapi">PS3MAPI</a>
+	<a onclick="self.location='/setup.ps3/sman.ps3';" class="b_setup" style="color:#0FF;"><span id="setup">Setup</span></a>
+	<a onclick="self.location=(self.location.href.indexOf('/cpursx.ps3')>0)?'/tempc.html':'/cpursx.ps3?/sman.ps3';" class="b_cpursx">CPU/RSX</a>
+</div>
+</font>
+
+<script>
+
+resizeEvent();
+
+if(navigator.userAgent.indexOf("PLAYSTATION")==-1) {
+	document.getElementById('top_buttons').style.pointerEvents = "none";
+	document.getElementById('top_buttons').style.opacity=0.5;
+	document.getElementById('left_action').style.pointerEvents = "none";
+	document.getElementById('left_action').style.opacity=0.5;
+	document.getElementById('smv').style.pointerEvents = "none";
+}
+
+</script>
+<style>h2{color:#aff}h2 a:hover,h3 a:hover{color:yellow;background:#003366;padding:5px;border-radius:8px}</style>
+<div id="content" class="propfont">
+<table>
+  <colgroup>
+    <col width="650">
+    <col >
+  </colgroup>
+<td valign=top>
+<H2><ul><li><a href="http://ps3.aldostools.org/webMAN_MOD_latest.pkg">webMAN_MOD_latest.pkg</a> (<a href="http://ps3.aldostools.org/webMAN_MOD_latest.pkg">Update only</a>)<br></H2>
+<ul>
+<H3>
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/webMAN_MOD_1.47.50_Installer.pkg">webMAN_MOD_1.47.50_Installer.pkg</a> (<a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/webMAN_MOD_1.47.50_Installer.pkg">full installer</a>)
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/prepISO_1.33.pkg">prepISO_1.33.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2CONFIG.pkg">PS2CONFIG.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2_Classics_Launcher.pkg">PS2_Classics_Launcher.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Minis_Launcher.pkg">PSP_Minis_Launcher.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Remasters_Launcher.pkg">PSP_Remasters_Launcher.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Launchers/load_wmm.pkg">Load_wMM.pkg</a> - Load webMAN_MOD from XMB<br>
+
+<H2>Covers</H2>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000000.pkg">Covers Pack for PS3 Games</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS00000RETRO.pkg">Covers Pack for PSX/PS2 Games</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg">Covers Pack for PSX/PS2 Games in 3D</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS0000000PSP.pkg">Covers Pack for PSP Games</a><br>
+
+<H2>Resources</H2>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/tag/WebApps">Web Apps</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/resources/releases/multiMAN">multiMAN Resources</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/tag/MODS">Custom Firmware MODs</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/tag/Payloads">Mamba + PS3HEN Payloads</a><br>
+
+<td valign=top>
+<H2>Apps</H2>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg">RetroArch_CE.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/movianM7-deank-playstation3.pkg">movianM7.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/multiMAN.pkg">multiMAN.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/IRISMAN/releases/download/4.91/IRISMAN_4.91.pkg">IRISMAN_4.91.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/apollo-ps3.pkg">Apollo-PS3.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ArtemisPS3-GUI.pkg">ArtemisPS3-GUI.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/pkgi-ps3.pkg">pkgi-ps3.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ps3-ezremote-client.pkg">PS3 ezRemote Client</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/Simple_File_Manager_MOD.pkg">Simple File Manager MOD</a><br>
+
+<H2>wMM Themes</H2>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_colorful.pkg">wm_theme_colorful.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_OtakuBoy.pkg">wm_theme_OtakuBoy.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_flowerification.pkg">wm_theme_flowerification.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_metalification.pkg">wm_theme_metalification.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_rebugification.pkg">wm_theme_rebugification.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Themes/wm_theme_standard.pkg">wm_theme_standard.pkg</a><br>
+
+<H2>XMB Mods</H2>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_for_4.89-4.91_BETA.pkg">Ultimate_Toolbox_for_4.89-4.91_BETA.pkg</a><br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/download/XMB_Randomizers/Ultimate_Toolbox_v2.03_FULL_version.pkg">Ultimate_Toolbox_v2.03_FULL_version.pkg</a> for 4.84-4.88<br>
+<li><a href="https://gh-proxy.com/github.com/aldostools/Resources/releases/tag/XMB_Randomizers">XMB Randomizers</a><br>
+</H3>
+</ul>
+<p><p><p>
+</tr>
+</table>
+</div>
+</body>

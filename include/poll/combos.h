@@ -684,22 +684,7 @@
 						if(do_custom_combo("l3_r3")) break;
 						#endif
 						if(syscalls_removed || is_mounting || refreshing_xml) {BEEP3; continue;}
-						#ifdef FPS_OVERLAY
-						if(overlay_enabled)
-							disable_progress();
-						else
-						{
-							unload_vsh_plugin("VshFpsCounter"); // unload any loaded VshFpsCounter
-							show_msg2("FPS", STR_ENABLED);
-							if(!webman_config->nobeep) play_sound_id(5); // trophy sound
-						}
-						#else
-						if(!webman_config->nobeep) BEEP1;
-						#endif
-						if(isCobraDebug)
-							toggle_vsh_plugin("/dev_hdd0/tmp/wm_res/VshFpsCounterM.sprx");
-						else
-							toggle_vsh_plugin("/dev_hdd0/tmp/wm_res/VshFpsCounter.sprx");
+						toggle_fps();
 						sys_ppu_thread_sleep(3);
 						break_and_wait;
 					}

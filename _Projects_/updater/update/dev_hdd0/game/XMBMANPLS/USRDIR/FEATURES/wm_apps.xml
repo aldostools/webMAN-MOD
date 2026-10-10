@@ -51,9 +51,17 @@
 				<P key="title"><>PSX & PS2 Covers Pack 3D</></P>
 				<P key="info"><>496 MB</></P>
 			</T>
-			<T key="app008" include="inc">
+			<T key="emu000" include="inc">
 				<P key="title"><>RetroArch Community Edition</></P>
 				<P key="info"><>601 MB</></P>
+			</T>
+			<T key="emu001" include="inc">
+				<P key="title"><>Cell64 by ZeBobbel</></P>
+				<P key="info"><>28.8 MB</></P>
+			</T>
+			<T key="emu002" include="inc">
+				<P key="title"><>ScummVM</></P>
+				<P key="info"><>45.8 MB</></P>
 			</T>
 			<T key="app009" include="inc">
 				<P key="title"><>multiMAN MOD</></P>
@@ -62,10 +70,6 @@
 			<T key="app010" include="inc">
 				<P key="title"><>IRISMAN</></P>
 				<P key="info"><>24 MB</></P>
-			</T>
-			<T key="app011" include="inc">
-				<P key="title"><>Simple File Manager MOD</></P>
-				<P key="info"><>1.1 MB</></P>
 			</T>
 			<T key="app012" include="inc">
 				<P key="title"><>Movian M7</></P>
@@ -87,6 +91,7 @@
 				<P key="title"><>PS3 ezRemote Client</></P>
 				<P key="info"><>25.0 MB</></P>
 			</T>
+
 			<T key="app017" include="inc">
 				<P key="title"><>Ultimate Toolbox v2.03 FULL 4.84-4.88</></P>
 				<P key="info"><>482 MB</></P>
@@ -94,6 +99,11 @@
 			<T key="app018" include="inc">
 				<P key="title"><>Ultimate Toolbox v2.03 FULL 4.89-4.92</></P>
 				<P key="info"><>484 MB</></P>
+			</T>
+
+			<T key="app011" include="inc">
+				<P key="title"><>Simple File Manager MOD</></P>
+				<P key="info"><>1.1 MB</></P>
 			</T>
 			<T key="app030" include="inc">
 				<P key="title"><>File Manager by mohasi</></P>
@@ -119,9 +129,21 @@
 				<P key="title"><>Swarm [Torrent client] by mohasi</></P>
 				<P key="info"><>392 KB</></P>
 			</T>
+			<T key="appLIC" include="inc">
+				<P key="title"><>License Pack BIN</></P>
+				<P key="info"><>2.38 MB</></P>
+			</T>
 			<T key="appPSH" include="inc">
 				<P key="title"><>PlayStation Home Online</></P>
 				<P key="info"><>42.9 MB | Use DNS: 104.37.190.154 | Domain: pshomeologylab.net</></P>
+			</T>
+			<T key="appPSL" include="inc">
+				<P key="title"><>Life with PlayStation Revival 1.30</></P>
+				<P key="info"><>218 MB | By Revived with PlayStation. No DNS Change required</></P>
+			</T>
+			<T key="appPSU" include="inc">
+				<P key="title"><>Life with PlayStation Revival 1.30 (Update)</></P>
+				<P key="info"><>218 MB | By Revived with PlayStation. No DNS Change required. For version 1.26 from Revival</></P>
 			</T>
 			<T key="app019" include="inc">
 				<P key="title"><>webMAN MOD Loader from XMB</></P>
@@ -136,6 +158,7 @@
 			<Q class="type:x-xmb/folder-pixmap" key="menu01" attr="menu01" src="#seg_mod_xmb"/><!-- XMD MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu02" attr="menu02" src="#seg_mod_cfw"/><!-- CFW MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu03" attr="menu03" src="#seg_webapps"/><!-- WebApps Links -->
+
 			<Q class="type:x-xmb/folder-pixmap" key="app001" attr="app001" src="#app001_link"/><!-- prepISO -->
 			<Q class="type:x-xmb/folder-pixmap" key="app002" attr="app002" src="#app002_link"/><!-- PS2 CONFIG Database -->
 			<Q class="type:x-xmb/folder-pixmap" key="app003" attr="app003" src="#app003_link"/><!-- PS2 Classics Launcher -->
@@ -144,16 +167,21 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app006" attr="app006" src="#app006_link"/><!-- PS3 Covers Pack -->
 			<Q class="type:x-xmb/folder-pixmap" key="app007" attr="app007" src="#app007_link"/><!-- PSX & PS2 Covers Pack -->
 			<Q class="type:x-xmb/folder-pixmap" key="app03D" attr="app03D" src="#app03D_link"/><!-- PSX & PS2 Covers Pack 3D -->
-			<Q class="type:x-xmb/folder-pixmap" key="app008" attr="app008" src="#app008_link"/><!-- RetroArch CE -->
+
+			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- Cell64 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- ScummVM -->
+
 			<Q class="type:x-xmb/folder-pixmap" key="app009" attr="app009" src="#app009_link"/><!-- multiMAN -->
 			<Q class="type:x-xmb/folder-pixmap" key="app010" attr="app010" src="#app010_link"/><!-- IRISMAN -->
-			<Q class="type:x-xmb/folder-pixmap" key="app011" attr="app011" src="#app011_link"/><!-- Simple File Manager MOD -->
+			
 			<Q class="type:x-xmb/folder-pixmap" key="app012" attr="app012" src="#app012_link"/><!-- Movian -->
 			<Q class="type:x-xmb/folder-pixmap" key="app013" attr="app013" src="#app013_link"/><!-- Apollo Save Tool -->
 			<Q class="type:x-xmb/folder-pixmap" key="app014" attr="app014" src="#app014_link"/><!-- Artemis GUI [Cheats] -->
 			<Q class="type:x-xmb/folder-pixmap" key="app015" attr="app015" src="#app015_link"/><!-- PKGi -->
 			<Q class="type:x-xmb/folder-pixmap" key="app016" attr="app016" src="#app016_link"/><!-- PS3 ezRemote Client -->
 
+			<Q class="type:x-xmb/folder-pixmap" key="app011" attr="app011" src="#app011_link"/><!-- Simple File Manager MOD -->
 			<Q class="type:x-xmb/folder-pixmap" key="app030" attr="app030" src="#app030_link"/><!-- File Manager by mohasi -->
 			<Q class="type:x-xmb/folder-pixmap" key="app031" attr="app031" src="#app031_link"/><!-- Yo! Player by mohasi -->
 			<Q class="type:x-xmb/folder-pixmap" key="app032" attr="app032" src="#app032_link"/><!-- RenPy Player by mohasi -->
@@ -164,7 +192,11 @@
 			<!-- <Q class="type:x-xmb/folder-pixmap" key="app017" attr="app017" src="#app017_link"/>Ultimate Toolbox v2.03 FULL 4.84-4.88-->
 			<!-- <Q class="type:x-xmb/folder-pixmap" key="app018" attr="app018" src="#app018_link"/>Ultimate Toolbox v2.03 FULL 4.89-4.92-->
 
+			<Q class="type:x-xmb/folder-pixmap" key="appLIC" attr="appLIC" src="#appLIC_link"/><!-- License Pack BIN -->
 			<Q class="type:x-xmb/folder-pixmap" key="appPSH" attr="appPSH" src="#appPSH_link"/><!-- PS Home Online -->
+			<Q class="type:x-xmb/folder-pixmap" key="appPSL" attr="appPSL" src="#appPSL_link"/><!-- Life with PlayStation -->
+			<Q class="type:x-xmb/folder-pixmap" key="appPSU" attr="appPSU" src="#appPSU_link"/><!-- Life with PlayStation (update) -->
+
 			<Q class="type:x-xmb/folder-pixmap" key="app019" attr="app019" src="#app019_link"/><!-- Load webMAN MOD -->
 			<Q class="type:x-xmb/folder-pixmap" key="app020" attr="app020" src="#app020_link"/><!-- webMAN MOD Installer -->
 		</I>
@@ -175,8 +207,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/prepISO_1.33.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/prepISO_1.33.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/prepISO_1.33.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-BLES80616_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -190,8 +222,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2CONFIG.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2CONFIG.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2CONFIG.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-PS2CONFIG_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -205,8 +237,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PS2_Classics_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2_Classics_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PS2_Classics_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>2P0001-PS2U10000_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
@@ -220,8 +252,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Minis_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Minis_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Minis_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-PSPM66820_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -235,8 +267,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/PSP_Remasters_Launcher.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Remasters_Launcher.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/PSP_Remasters_Launcher.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0001-PSPC66820_00-0000111122223333</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -291,7 +323,7 @@
 	</V>
 
 	<!-- RetroArch CE -->
-	<V id="app008_link">
+	<V id="emu000_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -299,6 +331,36 @@
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>RETROA-RETROARCH_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Cell64 -->
+	<V id="emu001_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-CLFI00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- ScummVM -->
+	<V id="emu002_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-SCUM12000_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>
@@ -555,6 +617,51 @@
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- Life with PlayStation -->
+	<V id="appPSL_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://download.prologica.org/packages/ps3/lifewithplaystation-latest.pkg</></P>
+				<P key="pkg_src_qa"><>https://download.prologica.org/packages/ps3/lifewithplaystation-latest.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>IP9100-NPIA00002_00-0000111122223333</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Life with PlayStation (Update) -->
+	<V id="appPSU_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://download.prologica.org/packages/ps3/lifewithplaystation-update.pkg</></P>
+				<P key="pkg_src_qa"><>https://download.prologica.org/packages/ps3/lifewithplaystation-update.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>IP9100-NPIA00002_00-0000111122223333</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- License Pack BIN -->
+	<V id="appLIC_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/raw/refs/heads/main/License_Pack_Bin.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/raw/refs/heads/main/License_Pack_Bin.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>PS3HFW-LICENSES0_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
 	<!-- Load webMAN MOD -->
 	<V id="app019_link">
 		<A>
@@ -575,8 +682,8 @@
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.48/webMAN_MOD_1.47.48_Installer.pkg</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/webMAN_MOD_1.47.50_Installer.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/webMAN-MOD/releases/download/1.47.50/webMAN_MOD_1.47.50_Installer.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-UPDWEBMOD_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/webman.png</></P>
@@ -751,6 +858,10 @@
 		<A>
 			<T key="inc">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+				<P key="info"><>CFW Only. Requires /dev_blind enabled</></P>
+			</T>
+			<T key="mod12B" include="inc">
+				<P key="title"><>[PS2 NETEMU] Install ps2_netemu with automatic Fan Control on boot</></P>
 			</T>
 			<T key="mod12A" include="inc">
 				<P key="title"><>[PS2 NETEMU] Install ps2_netemu with Fan Control + FPS + EE overclocking</></P>
@@ -786,6 +897,7 @@
 			</T>
 		</A>
 		<I>
+			<Q class="type:x-xmb/folder-pixmap" key="mod12B" attr="mod12B" src="#mod12B_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod12A" attr="mod12A" src="#mod12A_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod120" attr="mod120" src="#mod120_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod121" attr="mod121" src="#mod121_link"/>
@@ -826,17 +938,22 @@
 			</T>
 			<T key="mod135" include="inc">
 				<P key="title"><>[PS2 GXEMU] Install ps2_gxemu v1 with custom configs</></P>
-				<P key="info"><>CFW Only. Requires /dev_blind enabled</></P>
+				<P key="info"><>CFW Only. Requires /dev_blind enabled.</></P>
 			</T>
 			<T key="mod136" include="inc">
 				<P key="title"><>[PS2 GXEMU] Install ps2_gxemu v4 with Fan Control + fps_counter + temperature display + x modules + custom configs + extended config table</></P>
 				<P key="info"><>CFW Only. Requires /dev_blind enabled. Press SQUARE + SELECT for current fan mode.
 SQUARE + START toggle fan mode</></P>
 			</T>
+			<T key="mod137" include="inc">
+				<P key="title"><>[PS2 GXEMU] Install ps2_gxemu with automatic Fan Control on boot</></P>
+				<P key="info"><>CFW Only. Requires /dev_blind enabled.</></P>
+			</T>
 		</A>
 		<I>
-			<Q class="type:x-xmb/folder-pixmap" key="mod136" attr="mod136" src="#mod136_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod130" attr="mod130" src="#mod130_link"/>
+			<Q class="type:x-xmb/folder-pixmap" key="mod137" attr="mod137" src="#mod137_link"/>
+			<Q class="type:x-xmb/folder-pixmap" key="mod136" attr="mod136" src="#mod136_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod131" attr="mod131" src="#mod131_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod132" attr="mod132" src="#mod132_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod133" attr="mod133" src="#mod133_link"/>
@@ -849,6 +966,10 @@ SQUARE + START toggle fan mode</></P>
 		<A>
 			<T key="inc">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+			<T key="mod14A" include="inc">
+				<P key="title"><>[PS2 EMU] Install ps2_emu v2 with Fan Control & hidden Config Parameter menu</></P>
+				<P key="info"><>CFW Only. Requires /dev_blind enabled</></P>
 			</T>
 			<T key="mod140" include="inc">
 				<P key="title"><>[PS2 EMU] Install ps2_emu v2 with temperature display</></P>
@@ -864,6 +985,7 @@ SQUARE + START toggle fan mode</></P>
 			</T>
 		</A>
 		<I>
+			<Q class="type:x-xmb/folder-pixmap" key="mod14A" attr="mod14A" src="#mod14A_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod140" attr="mod140" src="#mod140_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod141" attr="mod141" src="#mod141_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="mod142" attr="mod142" src="#mod142_link"/>
@@ -1087,6 +1209,20 @@ SQUARE + START toggle fan mode</></P>
 				<P key="info"><>net_package_install</></P>
 				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_netemu_fan_control-req_dev_blind_enabled.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<V id="mod12B_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260327-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260327-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
@@ -1319,12 +1455,40 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<V id="mod137_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260327-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260327-req_dev_blind_enabled.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
 	<V id="mod140_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
 				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emu_v2_temperature_display-req_dev_blind_enabled.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<V id="mod14A_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260412-req_dev_blind_enabled.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/MODS/install_ps2_emulators_20260412-req_dev_blind_enabled.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>

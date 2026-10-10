@@ -1,3 +1,84 @@
+#ifndef _FTP_H_HEADERS_
+#define _FTP_H_HEADERS_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <cell/cell_fs.h>
+
+/* Network Constants Fallback Definitions */
+#ifndef sys_net_IPPROTO_TCP
+  #ifdef IPPROTO_TCP
+    #define sys_net_IPPROTO_TCP IPPROTO_TCP
+  #else
+    #define sys_net_IPPROTO_TCP 6
+  #endif
+#endif
+
+#ifndef sys_net_TCP_NODELAY
+  #ifdef TCP_NODELAY
+    #define sys_net_TCP_NODELAY TCP_NODELAY
+  #else
+    #define sys_net_TCP_NODELAY 1
+  #endif
+#endif
+
+#ifndef sys_net_SOL_SOCKET
+  #ifdef SOL_SOCKET
+    #define sys_net_SOL_SOCKET SOL_SOCKET
+  #else
+    #define sys_net_SOL_SOCKET 0xffff
+  #endif
+#endif
+
+#ifndef sys_net_SO_SNDBUF
+  #ifdef SO_SNDBUF
+    #define sys_net_SO_SNDBUF SO_SNDBUF
+  #else
+    #define sys_net_SO_SNDBUF 0x1001
+  #endif
+#endif
+
+#ifndef sys_net_SO_RCVBUF
+  #ifdef SO_RCVBUF
+    #define sys_net_SO_RCVBUF SO_RCVBUF
+  #else
+    #define sys_net_SO_RCVBUF 0x1002
+  #endif
+#endif
+
+/* Socket Function Aliases */
+#ifndef sys_net_setsockopt
+  #define sys_net_setsockopt setsockopt
+#endif
+
+#ifndef sys_net_send
+  #define sys_net_send send
+#endif
+
+#ifndef sys_net_recv
+  #define sys_net_recv recv
+#endif
+
+#endif /* _FTP_H_HEADERS_ */
+
+#ifndef __FTP_H__
+#define __FTP_H__
+
+#include <sdk_version.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <cell/cell_fs.h>
+#include <netex/net.h>
+#include <netex/errno.h>
+#include <string.h>
+
 #define FTP_OK_150			"150 OK\r\n"						// File status okay; about to open data connection.
 #define FTP_OK_200			"200 OK\r\n"						// The requested action has been successfully completed.
 #define FTP_OK_202			"202 OK\r\n"						// Command not implemented, superfluous at this site.
@@ -17,13 +98,135 @@
 #define FTP_ERROR_430		"430 Invalid login\r\n"				// Invalid username or password.
 #define FTP_ERROR_450		"450 Can't access file\r\n"			// Can't access file.
 #define FTP_ERROR_451		"451 Action aborted\r\n"			// Requested action aborted. Local error in processing.
-#define FTP_ERROR_500		"500 Syntax error\r\n"				// Syntax error, command unrecognized and the requested	action did not take place.
+#define FTP_ERROR_500		"500 Syntax error\r\n"				// Syntax error, command unrecognized and the requested action did not take place.
 #define FTP_ERROR_501		"501 Error in arguments\r\n"		// Syntax error in parameters or arguments.
 #define FTP_ERROR_REST_501	"501 No restart point\r\n"			// Syntax error in parameters or arguments.
 #define FTP_ERROR_502		"502 Not implemented\r\n"			// Command not implemented.
 #define FTP_ERROR_530		"530 Not logged in\r\n"				// Not logged in.
 #define FTP_ERROR_550		"550 File unavailable\r\n"			// Requested action not taken. File unavailable (e.g., file not found, no access).
 #define FTP_ERROR_RNFR_550	"550 RNFR Error\r\n"				// Requested action not taken. File unavailable.
+
+#define FTP_BUFFER_SIZE       (64 * 1024) // 64KB optimal VSH buffer footprint
+#define FTP_ALIGNMENT         128         // Cell SPU / DMA cache-line boundary
+
+typedef struct {
+	char buf_a[FTP_BUFFER_SIZE] __attribute__((aligned(FTP_ALIGNMENT)));
+	char buf_b[FTP_BUFFER_SIZE] __attribute__((aligned(FTP_ALIGNMENT)));
+} ftp_transfer_buffer_t;
+
+/*
+ * Configures optimal TCP socket parameters for PS3 Gigabit networking
+ */
+static void optimize_ftp_socket(int s) {
+	if (s < 0) return;
+
+	int optval = 1;
+	sys_net_setsockopt(s, sys_net_IPPROTO_TCP, sys_net_TCP_NODELAY, &optval, sizeof(optval));
+
+	int bufsize = FTP_BUFFER_SIZE;
+	sys_net_setsockopt(s, sys_net_SOL_SOCKET, sys_net_SO_SNDBUF, &bufsize, sizeof(bufsize));
+	sys_net_setsockopt(s, sys_net_SOL_SOCKET, sys_net_SO_RCVBUF, &bufsize, sizeof(bufsize));
+}
+
+/*
+ * File Size Helpers for SIZE command and boundary verification
+ */
+static int get_file_size_fd(int fd, uint64_t *file_size) {
+	if (fd < 0 || !file_size) return FAILED;
+
+	CellFsStat stat;
+	if (cellFsFstat(fd, &stat) == CELL_FS_SUCCEEDED) {
+		*file_size = stat.st_size;
+		return CELL_FS_SUCCEEDED;
+	}
+	return FAILED;
+}
+
+static inline int get_file_size_path(const char *path, uint64_t *file_size) {
+	if (!path || !file_size) return FAILED;
+
+	CellFsStat stat;
+	if (cellFsStat(path, &stat) == CELL_FS_SUCCEEDED) {
+		*file_size = stat.st_size;
+		return CELL_FS_SUCCEEDED;
+	}
+	return FAILED;
+}
+
+/*
+ * RETR Command Handler (Download: PS3 HDD -> PC Client)
+ * Uses cellFsReadWithOffset from cell_fs_file_api.h
+ */
+static int handle_ftp_retr_aio(int data_s, int fd, ftp_transfer_buffer_t *trans_buf, uint64_t rest_offset) {
+	if (data_s < 0 || fd < 0 || !trans_buf) return FAILED;
+
+	uint64_t total_size = 0;
+	if (get_file_size_fd(fd, &total_size) != CELL_FS_SUCCEEDED) return FAILED;
+
+	// Validate REST offset boundary
+	if (rest_offset > total_size) return FAILED;
+
+	optimize_ftp_socket(data_s);
+
+	char *send_buf = trans_buf->buf_a;
+	uint64_t offset = rest_offset;
+	uint64_t bytes_remaining = total_size - rest_offset;
+
+	if (bytes_remaining == 0) return CELL_FS_OK; // Resume point at EOF
+
+	while (bytes_remaining > 0 && working) {
+		uint32_t chunk_size = (bytes_remaining < FTP_BUFFER_SIZE) ? (uint32_t)bytes_remaining : FTP_BUFFER_SIZE;
+		uint64_t bytes_read = 0;
+
+		if (cellFsReadWithOffset(fd, offset, send_buf, chunk_size, &bytes_read) != CELL_FS_SUCCEEDED || bytes_read == 0) {
+			return FAILED;
+		}
+
+		uint64_t sent_total = 0;
+		while (sent_total < bytes_read) {
+			int ret = sys_net_send(data_s, send_buf + sent_total, (size_t)(bytes_read - sent_total), 0);
+			if (ret <= 0) {
+				return FAILED;
+			}
+			sent_total += (uint64_t)ret;
+		}
+
+		offset += bytes_read;
+		bytes_remaining -= bytes_read;
+	}
+
+	return CELL_FS_OK;
+}
+
+/*
+ * STOR Command Handler (Upload: PC Client -> PS3 HDD)
+ * Uses cellFsWriteWithOffset from cell_fs_file_api.h
+ */
+static int handle_ftp_stor_aio(int data_s, int fd, ftp_transfer_buffer_t *trans_buf, uint64_t rest_offset) {
+	if (data_s < 0 || fd < 0 || !trans_buf) return FAILED;
+
+	optimize_ftp_socket(data_s);
+
+	char *write_buf = trans_buf->buf_a;
+	uint64_t offset = rest_offset;
+
+	int recv_bytes = sys_net_recv(data_s, write_buf, FTP_BUFFER_SIZE, 0);
+
+	while (recv_bytes > 0 && working) {
+		uint64_t bytes_written = 0;
+
+		if (cellFsWriteWithOffset(fd, offset, write_buf, (uint64_t)recv_bytes, &bytes_written) != CELL_FS_SUCCEEDED ||
+		    bytes_written != (uint64_t)recv_bytes) {
+			return FAILED;
+		}
+
+		offset += bytes_written;
+
+		recv_bytes = sys_net_recv(data_s, write_buf, FTP_BUFFER_SIZE, 0);
+	}
+
+	return (recv_bytes < 0) ? FAILED : CELL_FS_OK;
+}
 
 static u8 ftp_active = 0;
 static u8 ftp_working = 0;
@@ -156,7 +359,6 @@ static long str_extract_long(char *ptr, int max_digits)
 	return strtol(tmp, &end, 10);
 }
 
-
 static void send_reply(int conn_s_ftp, int err, const char *filename, char *buffer)
 {
 	if(err == CELL_FS_OK)
@@ -184,7 +386,7 @@ static void send_reply(int conn_s_ftp, int err, const char *filename, char *buff
 
 static sys_addr_t allocate_ftp_buffer(sys_addr_t sysmem)
 {
-	if(!sysmem) {sysmem = sys_mem_allocate(BUFFER_SIZE_FTP);}
+	if(!sysmem) {sysmem = sys_mem_allocate(sizeof(ftp_transfer_buffer_t));}
 	if(!sysmem) {BUFFER_SIZE_FTP = _64KB_; sysmem = sys_mem_allocate(BUFFER_SIZE_FTP);}
 
 	return sysmem;
@@ -312,7 +514,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 								#ifdef COPY_PS3
 								if(!copy_in_progress) {ftp_state = 1; strcpy(current_file, filename);}
 								#endif
-								char *buffer2 = (char*)sysmem;
+								ftp_transfer_buffer_t *trans_buf = (ftp_transfer_buffer_t*)sysmem;
 								#ifdef USE_NTFS
 
 								if(is_ntfs_path(filename))
@@ -331,10 +533,10 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										int read_e = 0;
 										while(working)
 										{
-											read_e = ps3ntfs_read(fd, (void *)buffer2, BUFFER_SIZE_FTP);
+											read_e = ps3ntfs_read(fd, (void *)trans_buf->buf_a, FTP_BUFFER_SIZE);
 											if(read_e > 0)
 											{
-												if(send(data_s, buffer2, (size_t)read_e, 0) < 0) break; // FAILED
+												if(send(data_s, trans_buf->buf_a, (size_t)read_e, 0) < 0) break; // FAILED
 											}
 											else if(read_e < 0)
 												break; // FAILED
@@ -349,33 +551,14 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							#endif
 								if(cellFsOpen(filename, CELL_FS_O_RDONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 								{
-									u64 read_e, pos;
-									if(rest) cellFsLseek(fd, rest, CELL_FS_SEEK_SET, &pos);
-
-									//int optval = BUFFER_SIZE_FTP;
-									//setsockopt(data_s, SOL_SOCKET, SO_SNDBUF, &optval, sizeof(optval));
-
-									rest = 0, err = FAILED;
-
 									ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
 
-									while(working)
-									{
-										if(cellFsRead(fd, (void *)buffer2, BUFFER_SIZE_FTP, &read_e) == CELL_FS_SUCCEEDED)
-										{
-											if(read_e)
-											{
-												#ifdef UNLOCK_SAVEDATA
-												if(webman_config->unlock_savedata && (read_e < _4KB_)) unlock_param_sfo(filename, (unsigned char*)buffer2, (u16)read_e);
-												#endif
-												if(send(data_s, buffer2, (size_t)read_e, 0) < 0) break; // FAILED
-											}
-											else
-												{err = CELL_FS_OK; break;}
-										}
-										else
-											break; // FAILED
-									}
+									if(handle_ftp_retr_aio(data_s, fd, trans_buf, rest) == CELL_FS_OK)
+										err = CELL_FS_OK;
+									else
+										err = FAILED;
+
+									rest = 0;
 									cellFsClose(fd);
 								}
 								ftp_state = 0;
@@ -420,7 +603,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 							if(sysmem)
 							{
-								char *buffer2 = (char*)sysmem; int read_e = 0;
+								ftp_transfer_buffer_t *trans_buf = (ftp_transfer_buffer_t*)sysmem; int read_e = 0;
 
 								setsockopt(data_s, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 								#ifdef COPY_PS3
@@ -442,10 +625,10 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 										while(working)
 										{
-											read_e = (int)recv(data_s, buffer2, BUFFER_SIZE_FTP, MSG_WAITALL);
+											read_e = (int)recv(data_s, trans_buf->buf_a, FTP_BUFFER_SIZE, MSG_WAITALL);
 											if(read_e > 0)
 											{
-												if(ps3ntfs_write(fd, buffer2, read_e) != (int)read_e) break; // FAILED
+												if(ps3ntfs_write(fd, trans_buf->buf_a, read_e) != (int)read_e) break; // FAILED
 											}
 											else if(read_e < 0)
 												break; // FAILED
@@ -471,39 +654,21 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 									if(cellFsOpen(filename, CELL_FS_O_CREAT | CELL_FS_O_WRONLY | ((rest | is_append) ? CELL_FS_O_APPEND : CELL_FS_O_TRUNC), &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 									{
-										u64 pos = 0;
-
-										if(rest) cellFsLseek(fd, rest, CELL_FS_SEEK_SET, &pos);
-
-										rest = 0;
-
 										ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
 
-										//int optval = BUFFER_SIZE_FTP;
-										//setsockopt(data_s, SOL_SOCKET, SO_RCVBUF, &optval, sizeof(optval));
+										if(handle_ftp_stor_aio(data_s, fd, trans_buf, rest) == CELL_FS_OK)
+											err = CELL_FS_OK;
+										else
+											err = FAILED;
 
-										while(working)
-										{
-											read_e = (int)recv(data_s, buffer2, BUFFER_SIZE_FTP, MSG_WAITALL);
-											if(read_e > 0)
-											{
-												if(cellFsWrite(fd, buffer2, read_e, NULL)) break; // FAILED
-												#ifdef UNLOCK_SAVEDATA
-												if(webman_config->unlock_savedata && (read_e < 4096)) unlock_param_sfo(filename, (unsigned char*)buffer2, (u16)read_e);
-												#endif
-											}
-											else if(read_e < 0)
-												break; // FAILED
-											else
-												{err = CELL_FS_OK; break;}
-										}
-
+										rest = 0;
 										cellFsClose(fd);
+
 										if(!working || (err != CELL_FS_OK))
 										{
 											for(u8 n = 0; n < (MAX_DRIVES + 1); n++)
 											{
-												if(islike(filename, drives[n]) && (get_free_space(drives[n]) < BUFFER_SIZE_FTP))
+												if(islike(filename, drives[n]) && (get_free_space(drives[n]) < FTP_BUFFER_SIZE))
 													{ err = FTP_DEVICE_IS_FULL; break; }
 											}
 
@@ -571,7 +736,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							if(ps3ntfs_stat(ntfs_path(filename), &bufn) >= 0) {is_ntfs = true; buf.st_size = bufn.st_size;}
 						}
 						#endif
-						if(is_ntfs || cellFsStat(filename, &buf) == CELL_FS_SUCCEEDED)
+						if(is_ntfs || get_file_size_path(filename, (uint64_t*)&buf.st_size) == CELL_FS_SUCCEEDED)
 						{
 							sprintf(buffer, "213 %llu\r\n", (unsigned long long)buf.st_size);
 							ssend(conn_s_ftp, buffer);
@@ -579,7 +744,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -607,7 +771,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -658,7 +821,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -689,7 +851,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550);	// Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -1026,7 +1187,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550);	// Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, d_path, buffer);
 						}
 					}
@@ -1059,7 +1219,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 						send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, tempcwd, buffer);
 					}
 				}
@@ -1113,7 +1272,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -1139,7 +1297,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							//ssend(conn_s_ftp, FTP_ERROR_550); // Requested action not taken. File unavailable (e.g., file not found, no access).
 							send_reply(conn_s_ftp, FTP_FILE_UNAVAILABLE, filename, buffer);
 						}
 					}
@@ -1413,7 +1570,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 #endif //#ifndef LITE_EDITION
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_500); // Syntax error, command unrecognized and the requested	action did not take place.
+							ssend(conn_s_ftp, FTP_ERROR_500); // Syntax error, command unrecognized and the requested action did not take place.
 						}
 					}
 					else
@@ -1447,27 +1604,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					ssend(conn_s_ftp, FTP_OK_202);	// OK, not implemented, superfluous at this site.
 				}
 				else
-				/*if(  _IS(cmd, "AUTH") || _IS(cmd, "ADAT")
-					|| _IS(cmd, "CCC")  || _IS(cmd, "CLNT")
-					|| _IS(cmd, "CONF") || _IS(cmd, "ENC" )
-					|| _IS(cmd, "EPRT") || _IS(cmd, "EPSV")
-					|| _IS(cmd, "LANG") || _IS(cmd, "LPRT")
-					|| _IS(cmd, "LPSV") || _IS(cmd, "MIC" )
-					|| _IS(cmd, "OPTS") || _IS(cmd, "HELP")
-					|| _IS(cmd, "PBSZ") || _IS(cmd, "PROT")
-					|| _IS(cmd, "SMNT") || _IS(cmd, "STOU")
-					|| _IS(cmd, "XRCP") || _IS(cmd, "XSEN")
-					|| _IS(cmd, "XSEM") || _IS(cmd, "XRSQ")
-					// RFC 5797 mandatory
-					|| _IS(cmd, "ACCT") || _IS(cmd, "ALLO")
-					|| _IS(cmd, "MODE") || _IS(cmd, "REIN")
-					|| _IS(cmd, "STAT") || _IS(cmd, "STRU") )
 				{
-					ssend(conn_s_ftp, FTP_ERROR_502);	// Command not implemented.
-				}
-				else*/
-				{
-					ssend(conn_s_ftp, FTP_ERROR_500);	// Syntax error, command unrecognized and the requested	action did not take place.
+					ssend(conn_s_ftp, FTP_ERROR_500);	// Syntax error, command unrecognized and the requested action did not take place.
 				}
 
 				if(dataactive) dataactive = 0;
@@ -1509,8 +1647,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 			connactive = 0;
 			break;
 		}
-
-		//sys_ppu_thread_usleep(2000);
 	}
 
 	if(sysmem) sys_memory_free(sysmem);
@@ -1561,7 +1697,6 @@ relisten:
 
 	active_socket[0] = list_s;
 
-	//if(list_s >= 0)
 	{
 		while(ftp_working)
 		{
@@ -1600,6 +1735,7 @@ end:
 		g_sem_transfer_limit = SYS_SEMAPHORE_ID_INVALID;
 	}
 
-	//thread_id_ftpd = SYS_PPU_THREAD_NONE;
 	sys_ppu_thread_exit(0);
 }
+
+#endif // __FTP_H__

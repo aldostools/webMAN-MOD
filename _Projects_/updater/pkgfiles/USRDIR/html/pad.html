@@ -1807,7 +1807,7 @@ var isCtrlKey=0;
 var isShiftKey=0;
 var isAltKey=0;
 
-var defaultip=getCookie("ip", "127.0.0.1");
+var defaultip=getCookie("ip", window.location.hostname);
 var ip=get("ip", defaultip);
 
 if(ip.length==0 || ip==null) ip="127.0.0.1";

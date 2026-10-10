@@ -6,7 +6,7 @@ function t2lnks(){
 	var dev2 =/(\/\b(dev_+.*))/ig;
 	var htab = txt.innerHTML.indexOf("\t") > 0;
 	var count = txt.innerHTML.split("\n").length - 1;
-	txt.innerHTML = "<a href='/'><b>webMAN MOD</b> 1.47.48</a><HR>"+
+	txt.innerHTML = "<a href='/'><b>webMAN MOD</b> 1.47.50</a><HR>"+
 					"<style>td+td{width:100px;}</style><table>" +
 				  txt.innerHTML
 				 .replace(url, "<tr><td><a href='$1'>$1</td></tr>")
