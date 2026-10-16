@@ -56,12 +56,16 @@
 				<P key="info"><>601 MB</></P>
 			</T>
 			<T key="emu001" include="inc">
-				<P key="title"><>Cell64 by ZeBobbel</></P>
-				<P key="info"><>28.8 MB</></P>
+				<P key="title"><>salsa64 by ricowp81</></P>
+				<P key="info"><>2.7 MB</></P>
 			</T>
 			<T key="emu002" include="inc">
+				<P key="title"><>Cell64 by ZeBobbel</></P>
+				<P key="info"><>0.5 MB</></P>
+			</T>
+			<T key="emu003" include="inc">
 				<P key="title"><>ScummVM</></P>
-				<P key="info"><>45.8 MB</></P>
+				<P key="info"><>86.4 MB</></P>
 			</T>
 			<T key="app009" include="inc">
 				<P key="title"><>multiMAN MOD</></P>
@@ -169,8 +173,9 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app03D" attr="app03D" src="#app03D_link"/><!-- PSX & PS2 Covers Pack 3D -->
 
 			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- Cell64 -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- ScummVM -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- salsa64 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- Cell64 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- ScummVM -->
 
 			<Q class="type:x-xmb/folder-pixmap" key="app009" attr="app009" src="#app009_link"/><!-- multiMAN -->
 			<Q class="type:x-xmb/folder-pixmap" key="app010" attr="app010" src="#app010_link"/><!-- IRISMAN -->
@@ -337,8 +342,23 @@
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- Cell64 -->
+	<!-- salsa64 -->
 	<V id="emu001_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-SLSA00064_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Cell64 -->
+	<V id="emu002_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -353,7 +373,7 @@
 	</V>
 
 	<!-- ScummVM -->
-	<V id="emu002_link">
+	<V id="emu003_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
