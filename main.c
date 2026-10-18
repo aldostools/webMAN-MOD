@@ -111,7 +111,7 @@ SYS_MODULE_STOP(wwwd_stop);
 SYS_MODULE_EXIT(wwwd_stop);
 
 #define WM_APPNAME			"webMAN"
-#define WM_VERSION			"1.47.50b MOD"
+#define WM_VERSION			"1.47.50c2 MOD"
 #define WM_APP_VERSION		WM_APPNAME " " WM_VERSION
 #define WEBMAN_MOD			WM_APPNAME " MOD"
 
@@ -561,7 +561,12 @@ static void wwwd_thread(u64 arg)
 	restoreAutoPowerOff();
 	#endif
 
-	if(cobra_version >= 0x0800) sys_ppu_thread_sleep(3); // wait 3 seconds on cobra 8.x for network
+	if(cobra_version >= 0x0800)
+	{
+		sys_ppu_thread_sleep(3); // wait 3 seconds on cobra 8.x for network
+		if(webman_config->noBD)
+			sys_ppu_thread_sleep(10); // wait additional 10 seconds if noBD flag is enabled
+	}
 
 	if(!webman_config->ftpd)
 		sys_ppu_thread_create(&thread_id_ftpd, ftpd_thread, NULL, THREAD_PRIO, THREAD_STACK_SIZE_FTP_SERVER, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_FTP); // start ftp daemon immediately

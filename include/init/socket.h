@@ -66,6 +66,16 @@ static int connect_to_server(const char *server_ip, u16 port)
 	return connect_to_server_ex(server_ip, port, false);
 }
 
+static void sclose(int *socket_e)
+{
+	if(*socket_e != NONE)
+	{
+		shutdown(*socket_e, SHUT_RDWR);
+		socketclose(*socket_e);
+		*socket_e = NONE;
+	}
+}
+
 static int slisten(int port, int backlog)
 {
 	int s = socket(AF_INET, SOCK_STREAM, 0);
@@ -87,20 +97,15 @@ static int slisten(int port, int backlog)
 	sa.sin_port = htons(port);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	bind(s, (struct sockaddr *)&sa, sin_len);
+	if(bind(s, (struct sockaddr *)&sa, sin_len) < 0)
+	{
+		sclose(&s);
+		return FAILED;
+	}
+
 	listen(s, backlog);
 
 	return s;
-}
-
-static void sclose(int *socket_e)
-{
-	if(*socket_e != NONE)
-	{
-		shutdown(*socket_e, SHUT_RDWR);
-		socketclose(*socket_e);
-		*socket_e = NONE;
-	}
 }
 
 #define MIN_KERNEL_FREE_SPACE 256*1024 // 256KiB

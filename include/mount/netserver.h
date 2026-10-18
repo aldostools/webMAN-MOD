@@ -671,7 +671,7 @@ static void netsvrd_thread(__attribute__((unused)) u64 arg)
 	net_working = 1;
 
 relisten:
-	if(!working) goto end;
+	if(!working || !net_working) goto end;
 
 	if(net_working) list_s = slisten(webman_config->netsrvp, NET_BACKLOG);
 

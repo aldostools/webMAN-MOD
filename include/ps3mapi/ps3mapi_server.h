@@ -1277,7 +1277,7 @@ static void ps3mapi_thread(__attribute__((unused)) u64 arg)
 		ps3mapi_working = 1;
 
 	relisten:
-		if(!working) goto end;
+		if(!working || !ps3mapi_working) goto end;
 
 		list_s = slisten(PS3MAPIPORT, PS3MAPI_BACKLOG);
 
