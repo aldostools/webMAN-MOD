@@ -712,7 +712,8 @@ static void cpu_rsx_stats(char *buffer, char *html, char *param, u8 is_ps3_http)
 	#ifdef BDINFO
 	else
 	{
-		concat(buffer, "<hr><font size=\"3\">"); get_bdvd_info("", param); concat(buffer, param);
+		get_bdvd_info("", param);
+		sprintf(html, "%s<a href=\"/install.ps3\"><img src='%s/pkg.png' border=0 style='position:relative;top:4px;'> %s</a> &bull; <a href=\"/dev_bdvd\">%s<a>", "<hr><font size=\"3\">", WM_ICONS_PATH, "Install PKG", param); concat(buffer, html);
 	}
 	#endif
 
