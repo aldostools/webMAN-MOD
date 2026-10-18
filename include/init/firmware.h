@@ -19,7 +19,7 @@ static u64 sc_142 = 0;
 
 #define isCobraDebug	((file_size("/dev_flash/sys/stage2.bin") > 124000) || (file_size("/dev_flash/sys/stage2.cex") > 124000))
 #define ALLOW_NOBD		!(payload_ps3hen || dex_mode || (c_firmware < 4.75f))
-#define isNOBD			(peek_lv1(0x714BE0ULL) == 0x7863002060000000ULL)
+#define isNOBD			(peek_lv1(0x714BE0ULL) == 0x7863002060000000ULL || peek_lv1(0x717BE0ULL) == 0x7863002060000000ULL)
 
 // ofw build date
 #define FW466	0x323031342F31312FULL // 2014/11/
