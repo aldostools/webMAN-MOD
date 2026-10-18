@@ -1158,12 +1158,12 @@ static void handleclient_ps3mapi(u64 conn_s_ps3mapi_p)
 
 	sprintf(buffer, PS3MAPI_CONNECT_NOTIF, inet_ntoa(conn_info.remote_adr)); show_msg_with_icon(ICON_NETWORK, buffer);
 
-	while(connactive == 1 && working)
+	while(connactive == 1 && working && ps3mapi_working)
 	{
 		_memset(buffer, sizeof(buffer));
 		if(working && (recv(conn_s_ps3mapi, buffer, PS3MAPI_RECV_SIZE, 0) > 0))
 		{
-			if(!get_flag(buffer, "\r\n")) break;
+			if(!working || !ps3mapi_working || !get_flag(buffer, "\r\n")) break;
 
 			#ifdef WM_REQUEST
 			if(islike(buffer, "GET")) // e.g.  GET /install.ps3<pkg-path>
@@ -1291,7 +1291,7 @@ static void ps3mapi_thread(__attribute__((unused)) u64 arg)
 
 		//if(list_s >= 0)
 		{
-			while(ps3mapi_working)
+			while(working && ps3mapi_working)
 			{
 				sys_ppu_thread_usleep(100000);
 				if (!working || !ps3mapi_working) goto end;
@@ -1299,7 +1299,7 @@ static void ps3mapi_thread(__attribute__((unused)) u64 arg)
 				int conn_s_ps3mapi;
 				if(sys_admin && ((conn_s_ps3mapi = accept(list_s, NULL, NULL)) >= 0))
 				{
-					if(!working) {sclose(&conn_s_ps3mapi); break;}
+					if(!working || !ps3mapi_working) {sclose(&conn_s_ps3mapi); break;}
 
 					sys_ppu_thread_t t_id;
 					sys_ppu_thread_create(&t_id, handleclient_ps3mapi, (u64)conn_s_ps3mapi, THREAD_PRIO, THREAD_STACK_SIZE_PS3MAPI_CLI, SYS_PPU_THREAD_CREATE_NORMAL, THREAD02_NAME_PS3MAPI);

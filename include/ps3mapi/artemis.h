@@ -657,7 +657,7 @@ static void release_art(bool init)
 // Processes an entire codelist once
 static void art_process(int forceWrite)
 {
-	if (attachedPID)
+	if (attachedPID && working & artemis_working)
 	{
 		doForceWrite = forceWrite;
 
@@ -755,6 +755,17 @@ static void init_codelist(char *last_path)
 	}
 }
 
+static bool art_wait(int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if(!working || !artemis_working) return true;
+		sys_timer_usleep(100000); // 1/10 second
+		sys_ppu_thread_yield();
+	}
+	return false;
+}
+
 // Read user input and calls art_process()
 static void art_thread(u64 arg)
 {
@@ -764,8 +775,7 @@ static void art_thread(u64 arg)
 
 	int GameProcessID = 0, lastGameProcessID = 0;
 
-	sys_ppu_thread_sleep(10);
-	sys_ppu_thread_yield();
+	art_wait(100); // 10.0 secs
 
 	CellPadData data;
 	CellPadInfo2 info;
@@ -778,11 +788,7 @@ static void art_thread(u64 arg)
 		{
 			if (GameProcessID != lastGameProcessID)
 			{
-				for (int i = 0; i < 1000; i++) //5 seconds delay
-				{
-					sys_timer_usleep(5000);
-					sys_ppu_thread_yield();
-				}
+				if(art_wait(50)) break; //5.0 seconds delay
 				if(!art_cmd) show_msg("Artemis PS3\nStart To Attach");
 			}
 
@@ -824,7 +830,7 @@ static void art_thread(u64 arg)
 						if (!((data.button[2] | (data.button[3] << 8)) & PAD_START))
 							break;
 
-						sys_ppu_thread_sleep(1);
+						if(art_wait(10)) break; // 1.0 second
 					}
 				}
 				else if ((pad & PAD_SELECT) || (art_cmd == 2))
@@ -834,17 +840,17 @@ static void art_thread(u64 arg)
 
 					add_log("Detached PID");
 					release_art(1);
-					sys_ppu_thread_sleep(1);
+					if(art_wait(10)) break; // 1.0 second
 				}
 			}
 
-			sys_timer_usleep(100000); //0.1 second delay
+			if(!working || !artemis_working || art_wait(1)) break; //0.1 second delay
 		}
 		else break; // exit thread on XMB
 
 		lastGameProcessID = GameProcessID;
-		sys_timer_usleep(1668);
-		sys_ppu_thread_yield();
+
+		if(art_wait(2)) break; //0.2 second delay
 	}
 
 

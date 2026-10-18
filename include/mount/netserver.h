@@ -611,7 +611,7 @@ static void handleclient_net(u64 arg)
 	}
 */
 
-	while(working)
+	while(working && net_working)
 	{
 		if(recv(clients[index].s, (void *)&cmd, sizeof(cmd), 0) > 0)
 		{
@@ -685,7 +685,7 @@ relisten:
 
 	//if(list_s >= 0)
 	{
-		while(net_working)
+		while(working && net_working)
 		{
 			sys_ppu_thread_usleep(1668);
 			if(!working || !net_working) break;

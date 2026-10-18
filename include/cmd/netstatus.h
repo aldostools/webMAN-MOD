@@ -27,6 +27,12 @@
 		// /netstatus.ps3?reset-ps3mapi  restart ps3mapi server
 		// /netstatus.ps3?reset-artemis  restart artemis engine
 
+		// /netstatus.ps3?ip=<address>
+		// /netstatus.ps3?mask=<ip-mask>
+		// /netstatus.ps3?route=<address>
+		// /netstatus.ps3?dns1=<address>
+		// /netstatus.ps3?dns2=<address>
+
 		s32 status = 0; const char *label = NULL, *params = param + 15; xnet()->GetSettingNet_enable(&status);
 
 		if(*params == 'f') {label = params, status = ftp_working;} else //ftp
@@ -39,7 +45,7 @@
 		#ifdef ARTEMIS_PRX
 		if(*params == 'a') {label = params, status = artemis_working;} else //artemis
 		#endif
-		if(*params == 's' || *params == 'r') // start / stop / reset / restart
+		if(*params == 's' || (params[0] == 'r' && params[1] == 'e')) // start / stop / reset / restart
 		{
 			if(params[2] == 'o' || *params == 'r') // stop || reset || restart
 			{
