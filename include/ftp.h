@@ -17,7 +17,7 @@
 #define FTP_ERROR_430		"430 Invalid login\r\n"				// Invalid username or password.
 #define FTP_ERROR_450		"450 Can't access file\r\n"			// Can't access file.
 #define FTP_ERROR_451		"451 Action aborted\r\n"			// Requested action aborted. Local error in processing.
-#define FTP_ERROR_500		"500 Syntax error\r\n"				// Syntax error, command unrecognized and the requested	action did not take place.
+#define FTP_ERROR_500		"500 Syntax error\r\n"				// Syntax error, command unrecognized and the requested action did not take place.
 #define FTP_ERROR_501		"501 Error in arguments\r\n"		// Syntax error in parameters or arguments.
 #define FTP_ERROR_REST_501	"501 No restart point\r\n"			// Syntax error in parameters or arguments.
 #define FTP_ERROR_502		"502 Not implemented\r\n"			// Command not implemented.
@@ -76,9 +76,9 @@ static u8 parsePath(char *absPath_s, const char *path, const char *cwd, bool sca
 
 			normalize_path((char*)cwd, false);
 			
-			if(absPath_s[0] != '/'){
+			if(absPath_s[0] != '/') {
 				// Path is relative, need to concat it after cwd
-				if(cwd[strlen(cwd) - 1] != '/'){
+				if(cwd[strlen(cwd) - 1] != '/') {
 					// cwd doesn't end with a slash
 					snprintf(absPath_s, STD_PATH_LEN, "%s/%s", cwd, path);
 				} else {
@@ -148,37 +148,49 @@ static long str_extract_long(char *ptr, int max_digits)
 {
 	if(ptr == NULL) return 0;
 
-	char tmp[max_digits + 1];
-	memcpy(tmp, ptr, max_digits);
-	tmp[max_digits] = 0; // null termination
+	char tmp[8]; snprintf(tmp, max_digits + 1, "%s", ptr);
 
 	char *end;
 	return strtol(tmp, &end, 10);
 }
 
+static void send_ftp_ok_150(int conn_s_ftp)
+{
+	send(conn_s_ftp, FTP_OK_150, 8, 0); // File status okay; about to open data connection.
+}
+
+static void send_ftp_ok_250(int conn_s_ftp)
+{
+	send(conn_s_ftp, FTP_OK_250, 8, 0); // Requested file action okay, completed.
+}
+
+static void send_ftp_error_501(int conn_s_ftp)
+{
+	send(conn_s_ftp, FTP_ERROR_501, 24, 0); // Syntax error in parameters or arguments.
+}
 
 static void send_reply(int conn_s_ftp, int err, const char *filename, char *buffer)
 {
 	if(err == CELL_FS_OK)
 	{
-		ssend(conn_s_ftp, FTP_OK_226);		// Closing data connection. Requested file action successful (for example, file transfer or file abort).
+		send(conn_s_ftp, FTP_OK_226, 8, 0);		// Closing data connection. Requested file action successful (for example, file transfer or file abort).
 	}
 	else if(err == FTP_FILE_UNAVAILABLE)
 	{
-		sprintf(buffer, "550 File Error \"%s\"\r\n", filename);
-		ssend(conn_s_ftp, buffer);	// Requested action not taken. File unavailable (e.g., file not found, no access).
+		u16 len = sprintf(buffer, "550 File Error \"%s\"\r\n", filename);
+		send(conn_s_ftp, buffer, len, 0);	// Requested action not taken. File unavailable (e.g., file not found, no access).
 	}
 	else if(err == FTP_DEVICE_IS_FULL)
 	{
-		ssend(conn_s_ftp, "451 ERR, Device is full\r\n");	// Closing data connection. Requested file action successful (for example, file transfer or file abort).
+		send(conn_s_ftp, "451 ERR, Device is full\r\n", 25, 0);	// Closing data connection. Requested file action successful (for example, file transfer or file abort).
 	}
 	else if(err == FTP_OUT_OF_MEMORY)
 	{
-		ssend(conn_s_ftp, "451 ERR, Out of memory\r\n");	// Requested action aborted. Local error in processing.
+		send(conn_s_ftp, "451 ERR, Out of memory\r\n", 24, 0);	// Requested action aborted. Local error in processing.
 	}
 	else
 	{
-		ssend(conn_s_ftp, FTP_ERROR_451);	// Requested action aborted. Local error in processing.
+		send(conn_s_ftp, FTP_ERROR_451, 20, 0);	// Requested action aborted. Local error in processing.
 	}
 }
 
@@ -264,7 +276,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 	ftp_active++;
 
-	while(connactive && working && ftp_session)
+	while(connactive && working && ftp_working && ftp_session)
 	{
 		_memset(buffer, FTP_RECV_SIZE);
 		rlen = (int)recv(conn_s_ftp, buffer, FTP_RECV_SIZE, 0);
@@ -279,7 +291,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 			int split = ssplit(buffer, cmd, 15, param, STD_PATH_LEN);
 
-			if(!working || _IS(cmd, "QUIT") || _IS(cmd, "BYE"))
+			if(!working || !ftp_working || _IS(cmd, "QUIT") || _IS(cmd, "BYE"))
 			{
 				if(working) ssend(conn_s_ftp, FTP_OK_221); // Service closing control connection.
 				connactive = 0;
@@ -326,10 +338,10 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										rest = 0, err = FAILED;
 										ftp_ntfs_transfer_in_progress++;
 
-										ssend(conn_s_ftp, FTP_OK_150);
+										send_ftp_ok_150(conn_s_ftp);
 
 										int read_e = 0;
-										while(working)
+										while(working && ftp_working)
 										{
 											read_e = ps3ntfs_read(fd, (void *)buffer2, BUFFER_SIZE_FTP);
 											if(read_e > 0)
@@ -357,9 +369,9 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 									rest = 0, err = FAILED;
 
-									ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
+									send_ftp_ok_150(conn_s_ftp); // File status okay; about to open data connection.
 
-									while(working)
+									while(working && ftp_working)
 									{
 										if(cellFsRead(fd, (void *)buffer2, BUFFER_SIZE_FTP, &read_e) == CELL_FS_SUCCEEDED)
 										{
@@ -387,7 +399,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_501);			// Syntax error in parameters or arguments.
+							send_ftp_error_501(conn_s_ftp);			// Syntax error in parameters or arguments.
 						}
 
 						sys_semaphore_post(g_sem_transfer_limit, 1);
@@ -398,7 +410,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_425);				// Can't open data connection.
+						ssend(conn_s_ftp, FTP_ERROR_425);			// Can't open data connection.
 					}
 				}
 				else
@@ -438,9 +450,9 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										rest = 0;
 										ftp_ntfs_transfer_in_progress++;
 
-										ssend(conn_s_ftp, FTP_OK_150);
+										send_ftp_ok_150(conn_s_ftp);
 
-										while(working)
+										while(working && ftp_working)
 										{
 											read_e = (int)recv(data_s, buffer2, BUFFER_SIZE_FTP, MSG_WAITALL);
 											if(read_e > 0)
@@ -454,7 +466,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										}
 
 										ps3ntfs_close(fd); ftp_ntfs_transfer_in_progress--;
-										if(!working || (err != CELL_FS_OK)) ps3ntfs_unlink(ntfs_path(filename));
+										if(!working || !ftp_working || (err != CELL_FS_OK)) ps3ntfs_unlink(ntfs_path(filename));
 									}
 								}
 								else
@@ -473,16 +485,16 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 									{
 										u64 pos = 0;
 
-											if(rest) cellFsLseek(fd, rest, CELL_FS_SEEK_SET, &pos);
+										if(rest) cellFsLseek(fd, rest, CELL_FS_SEEK_SET, &pos);
 
-											rest = 0;
+										rest = 0;
 
-											ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
+										send_ftp_ok_150(conn_s_ftp); // File status okay; about to open data connection.
 
 										//int optval = BUFFER_SIZE_FTP;
 										//setsockopt(data_s, SOL_SOCKET, SO_RCVBUF, &optval, sizeof(optval));
 
-										while(working)
+										while(working && ftp_working)
 										{
 											read_e = (int)recv(data_s, buffer2, BUFFER_SIZE_FTP, MSG_WAITALL);
 											if(read_e > 0)
@@ -499,7 +511,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 										}
 
 										cellFsClose(fd);
-										if(!working || (err != CELL_FS_OK))
+
+										if(!working || !ftp_working || (err != CELL_FS_OK))
 										{
 											for(u8 n = 0; n < (MAX_DRIVES + 1); n++)
 											{
@@ -518,20 +531,17 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 							if(err == CELL_FS_OK)
 							{
-								ssend(conn_s_ftp, FTP_OK_226);		// Closing data connection. Requested file action successful (for example, file transfer or file abort).
 								cellFsChmod(filename, is_dev_blind ? 0644 : MODE);
 
 								if(*source == '/') {cellFsUnlink(source); cellFsRename(filename, source);} // replace original file
 								*source = NULL;
 							}
-							else
-							{
-								send_reply(conn_s_ftp, err, filename, buffer);
-							}
+
+							send_reply(conn_s_ftp, err, filename, buffer);
 						}
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_501);		// Syntax error in parameters or arguments.
+							send_ftp_error_501(conn_s_ftp);		// Syntax error in parameters or arguments.
 						}
 
 						sys_semaphore_post(g_sem_transfer_limit, 1);
@@ -543,20 +553,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					else
 					{
 						ssend(conn_s_ftp, FTP_ERROR_425);			// Can't open data connection.
-					}
-				}
-				else
-				if(_IS(cmd, "REST"))
-				{
-					if(split)
-					{
-						ssend(conn_s_ftp, FTP_OK_REST_350); // Requested file action pending further information
-						rest = (u64)val(param);
-						dataactive = 1;
-					}
-					else
-					{
-						ssend(conn_s_ftp, FTP_ERROR_REST_501); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -573,8 +569,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						#endif
 						if(is_ntfs || cellFsStat(filename, &buf) == CELL_FS_SUCCEEDED)
 						{
-							sprintf(buffer, "213 %llu\r\n", (unsigned long long)buf.st_size);
-							ssend(conn_s_ftp, buffer);
+							u16 len = sprintf(buffer, "213 %llu\r\n", (unsigned long long)buf.st_size);
+							send(conn_s_ftp, buffer, len, 0);
 							dataactive = 1;
 						}
 						else
@@ -585,7 +581,27 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
+					}
+				}
+				else
+				if(_IS(cmd, "TYPE"))
+				{
+					ssend(conn_s_ftp, FTP_OK_TYPE_200); // The requested action has been successfully completed.
+					dataactive = 1;
+				}
+				else
+				if(_IS(cmd, "REST"))
+				{
+					if(split)
+					{
+						ssend(conn_s_ftp, FTP_OK_REST_350); // Requested file action pending further information
+						rest = (u64)val(param);
+						dataactive = 1;
+					}
+					else
+					{
+						ssend(conn_s_ftp, FTP_ERROR_REST_501); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -603,7 +619,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						#endif
 						if(is_ntfs || cellFsUnlink(filename) == CELL_FS_SUCCEEDED)
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 						}
 						else
 						{
@@ -613,7 +629,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -636,7 +652,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					else
 					{
 						*source = NULL;
-						ssend(conn_s_ftp, FTP_ERROR_501);			// Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp);			// Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -654,7 +670,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						#endif
 						if(is_ntfs || (cellFsRename(source, filename) == CELL_FS_SUCCEEDED))
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 						}
 						else
 						{
@@ -664,7 +680,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
 					}
 					*source = NULL;
 				}
@@ -695,7 +711,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501);		// Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp);		// Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -724,7 +740,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							#ifdef USE_NTFS
 							if(is_ntfs_path(filename))
 							{
-								ssend(conn_s_ftp, FTP_ERROR_501); // NTFS attribute modifications are currently unavailable
+								send_ftp_error_501(conn_s_ftp); // NTFS attribute modifications are currently unavailable
 							}
 							else
 							#endif
@@ -749,19 +765,19 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 								}
 								else
 								{
-									ssend(conn_s_ftp, FTP_ERROR_501);
+									send_ftp_error_501(conn_s_ftp);
 								}
 							}
 						}
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_501);	// Syntax error in parameters or arguments.
+							send_ftp_error_501(conn_s_ftp);	// Syntax error in parameters or arguments.
 						}
 						
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501);	// Syntax errors in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp);	// Syntax errors in parameters or arguments.
 					}
 				}
 				else
@@ -800,12 +816,12 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_501);		// Syntax error in parameters or arguments.
+							send_ftp_error_501(conn_s_ftp);		// Syntax error in parameters or arguments.
 						}
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501);			// Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp);			// Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -908,14 +924,14 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						#endif
 						if(is_ntfs || cellFsOpendir(d_path, &fd) == CELL_FS_SUCCEEDED)
 						{
-							if (!is_MLST) ssend(conn_s_ftp, FTP_OK_150); // File status okay; about to open data connection.
+							if (!is_MLST) send_ftp_ok_150(conn_s_ftp); // File status okay; about to open data connection.
 
 							CellFsDirectoryEntry entry; u32 read_f;
 							CellFsDirent entry_s; u64 read_e; // list root folder using the slower readdir
 							char *entry_name = (is_root) ? entry_s.d_name : entry.entry_name.d_name;
 							u16 slen;
 
-							while(working)
+							while(working && ftp_working)
 							{
 								#ifdef USE_NTFS
 								if(is_ntfs) {if(ps3ntfs_dirnext(pdir, entry_name, &bufn) != CELL_OK) break; entry.attribute.st_mode = bufn.st_mode, entry.attribute.st_size = bufn.st_size, entry.attribute.st_mtime = bufn.st_mtime;}
@@ -1053,7 +1069,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					if(isDir(tempcwd))
 					{
 						strcpy(cwd, tempcwd);
-						ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+						send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 
 						dataactive = 1;
 					}
@@ -1083,14 +1099,14 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						}
 					}
 					normalize_path(cwd, false);
-					ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+					send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 				}
 				else
 				if(_IS(cmd, "PWD") || _IS(cmd, "XPWD"))
 				{
 					normalize_path(cwd, false);
-					sprintf(buffer, "257 \"%s\"\r\n", cwd);
-					ssend(conn_s_ftp, buffer);
+					u16 len = sprintf(buffer, "257 \"%s\"\r\n", cwd);
+					send(conn_s_ftp, buffer, len, 0);
 				}
 				else
 				if(_IS(cmd, "MKD") || _IS(cmd, "XMKD"))
@@ -1108,8 +1124,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 						if(is_ntfs || cellFsMkdir(filename, DMODE) == CELL_FS_SUCCEEDED)
 						{
-							sprintf(buffer, "257 \"%s\" OK\r\n", param);
-							ssend(conn_s_ftp, buffer);
+							u16 len = sprintf(buffer, "257 \"%s\" OK\r\n", param);
+							send(conn_s_ftp, buffer, len, 0);
 						}
 						else
 						{
@@ -1119,7 +1135,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -1135,7 +1151,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						if(cellFsRmdir(filename) == CELL_FS_SUCCEEDED)
 						#endif
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 						}
 						else
 						{
@@ -1145,7 +1161,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -1163,12 +1179,6 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 				if(_IS(cmd, "SYST"))
 				{
 					ssend(conn_s_ftp, "215 UNIX Type: L8\r\n");
-				}
-				else
-				if(_IS(cmd, "TYPE"))
-				{
-					ssend(conn_s_ftp, FTP_OK_TYPE_200); // The requested action has been successfully completed.
-					dataactive = 1;
 				}
 				else
 				if(_IS(cmd, "ABOR"))
@@ -1251,7 +1261,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						else
 						if(_IS(cmd, "FLASH"))
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 
 							bool rw_flash = isDir("/dev_blind"); const char *status = to_upper(filename);
 
@@ -1284,7 +1294,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 
 							cellFsChmod(filename, mode);
 
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 						}
 #ifndef LITE_EDITION
 						#ifdef PKG_HANDLER
@@ -1294,7 +1304,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							findPath(param, filename, cwd); char *msg = filename;
 
 							if(installPKG(param, msg) == CELL_OK)
-								ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+								send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 							else
 								ssend(conn_s_ftp, FTP_ERROR_451); // Requested action aborted. Local error in processing.
 
@@ -1305,7 +1315,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						else
 						if(_IS(cmd, "EXTGD"))
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 
 							char *status = to_upper(filename);
 
@@ -1318,14 +1328,14 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 						else
 						if(_IS(cmd, "UMOUNT"))
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 							do_umount(true);
 						}
 						#ifdef COBRA_ONLY
 						else
 						if(_IS(cmd, "MAPTO"))
 						{
-							ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+							send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 
 							const char *src_path = filename;
 
@@ -1350,7 +1360,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							}
 							else
 							{
-								ssend(conn_s_ftp, FTP_OK_250);		// Requested file action okay, completed.
+								send_ftp_ok_250(conn_s_ftp);		// Requested file action okay, completed.
 								findPath(param, filename, cwd);
 
 								fix_in_progress = true, fix_aborted = false;
@@ -1381,7 +1391,7 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 							absPath(param, filename, cwd);
 							if((*source) && (!IS(source, param)) && file_exists(source))
 							{
-								ssend(conn_s_ftp, FTP_OK_250); // Requested file action okay, completed.
+								send_ftp_ok_250(conn_s_ftp); // Requested file action okay, completed.
 
 								sprintf(buffer, "%s %s\n%s %s", STR_COPYING, source, STR_CPYDEST, param);
 								show_msg(buffer);
@@ -1413,12 +1423,12 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 #endif //#ifndef LITE_EDITION
 						else
 						{
-							ssend(conn_s_ftp, FTP_ERROR_500); // Syntax error, command unrecognized and the requested	action did not take place.
+							ssend(conn_s_ftp, FTP_ERROR_500); // Syntax error, command unrecognized and the requested action did not take place.
 						}
 					}
 					else
 					{
-						ssend(conn_s_ftp, FTP_ERROR_501); // Syntax error in parameters or arguments.
+						send_ftp_error_501(conn_s_ftp); // Syntax error in parameters or arguments.
 					}
 				}
 				else
@@ -1447,27 +1457,8 @@ static void handleclient_ftp(u64 conn_s_ftp_p)
 					ssend(conn_s_ftp, FTP_OK_202);	// OK, not implemented, superfluous at this site.
 				}
 				else
-				/*if(  _IS(cmd, "AUTH") || _IS(cmd, "ADAT")
-					|| _IS(cmd, "CCC")  || _IS(cmd, "CLNT")
-					|| _IS(cmd, "CONF") || _IS(cmd, "ENC" )
-					|| _IS(cmd, "EPRT") || _IS(cmd, "EPSV")
-					|| _IS(cmd, "LANG") || _IS(cmd, "LPRT")
-					|| _IS(cmd, "LPSV") || _IS(cmd, "MIC" )
-					|| _IS(cmd, "OPTS") || _IS(cmd, "HELP")
-					|| _IS(cmd, "PBSZ") || _IS(cmd, "PROT")
-					|| _IS(cmd, "SMNT") || _IS(cmd, "STOU")
-					|| _IS(cmd, "XRCP") || _IS(cmd, "XSEN")
-					|| _IS(cmd, "XSEM") || _IS(cmd, "XRSQ")
-					// RFC 5797 mandatory
-					|| _IS(cmd, "ACCT") || _IS(cmd, "ALLO")
-					|| _IS(cmd, "MODE") || _IS(cmd, "REIN")
-					|| _IS(cmd, "STAT") || _IS(cmd, "STRU") )
 				{
-					ssend(conn_s_ftp, FTP_ERROR_502);	// Command not implemented.
-				}
-				else*/
-				{
-					ssend(conn_s_ftp, FTP_ERROR_500);	// Syntax error, command unrecognized and the requested	action did not take place.
+					ssend(conn_s_ftp, FTP_ERROR_500);	// Syntax error, command unrecognized and the requested action did not take place.
 				}
 
 				if(dataactive) dataactive = 0;
@@ -1553,7 +1544,7 @@ relisten:
 
 	if(ftp_working) list_s = slisten(webman_config->ftp_port, FTP_BACKLOG);
 
-	if(list_s < 0)
+	if(list_s < 0 || !ftp_working)
 	{
 		sys_ppu_thread_sleep(1);
 		goto relisten;

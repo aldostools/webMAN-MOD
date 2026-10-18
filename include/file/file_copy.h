@@ -77,10 +77,11 @@ static void filepath_check(char *file)
 			if(!strchr("\"<|>:*?", file[c])) file[n++] = file[c];
 		}
 		file[n] = 0;
+
+		#ifdef USE_NTFS
+		if(is_ntfs_path(file)) {ntfs_path(file); if(mountCount <= NTFS_UNMOUNTED) check_ntfs_volumes();}
+		#endif
 	}
-	#ifdef USE_NTFS
-	if(is_ntfs_path(file)) {ntfs_path(file); if(mountCount <= NTFS_UNMOUNTED) check_ntfs_volumes();}
-	#endif
 }
 
 #if defined(FIX_GAME) || defined(COPY_PS3)

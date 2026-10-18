@@ -515,7 +515,7 @@ static int add_breadcrumb_trail(char *pbuffer, const char *param)
 	while((slash = strchr(full_path + 1, '/')))
 	{
 		*slash = NULL;
-		tlen+=(slash - full_path) + 1; //strlen(full_path) + 1;
+		tlen += (slash - full_path) + 1; //strlen(full_path) + 1;
 
 		strcpy(swap, param);
 		swap[tlen] = '\0';
