@@ -28,6 +28,7 @@ function resizeEvent()
 	cpursx.style.display = 'block';
 	cpursx.style.display = (getAbsPosition(cpursx) < 650) ? 'none' : 'block';
 	if(navigator.userAgent.indexOf("PLAYSTATION")>-1) document.getElementById('cpursx').style.display='none';
+	if(navigator.userAgent.indexOf("PLAYSTATION")>-1) document.getElementById('b_pad').style.display='none';
 };
 
 function home()

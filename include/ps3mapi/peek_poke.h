@@ -89,6 +89,8 @@ static u64 lv2_peek_hen(u64 addr) //sc6
 #ifdef COBRA_ONLY
 static u64 lv2_peek_ps3mapi(u64 addr) //sc8 + ps3mapi
 {
+	if (is_qcfw) addr &= 0x7FFFFFFFFFFFFFFFULL; // fix by W0lf4llo: qCFW's PS3MAPI is adding 0x8000000000000000ULL
+
 	system_call_3(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_LV2_PEEK, addr);
 	return (u64) p1;
 }
@@ -101,6 +103,8 @@ static void lv2_poke_hen(u64 addr, u64 value) //sc7
 
 static void lv2_poke_ps3mapi(u64 addr, u64 value) //sc8 + ps3mapi
 {
+	if (is_qcfw) addr &= 0x7FFFFFFFFFFFFFFFULL; // fix by W0lf4llo: qCFW's PS3MAPI is adding 0x8000000000000000ULL
+
 	system_call_4(SC_COBRA_SYSCALL8, SYSCALL8_OPCODE_PS3MAPI, PS3MAPI_OPCODE_LV2_POKE, addr, value);
 }
 #endif //#ifdef COBRA_ONLY

@@ -564,8 +564,6 @@ static void wwwd_thread(u64 arg)
 	if(cobra_version >= 0x0800)
 	{
 		sys_ppu_thread_sleep(3); // wait 3 seconds on cobra 8.x for network
-		if(webman_config->noBD)
-			sys_ppu_thread_sleep(10); // wait additional 10 seconds if noBD flag is enabled
 	}
 
 	if(!webman_config->ftpd)

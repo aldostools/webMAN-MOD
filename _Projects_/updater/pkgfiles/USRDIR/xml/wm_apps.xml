@@ -4,6 +4,11 @@
 			<T key="inc">
 				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
+			<T key="menu00">
+				<P key="icon_rsc"><>tex_album_icon</></P>
+				<P key="title"><>Emulators</></P>
+				<P key="child"><>segment</></P>
+			</T>
 			<T key="menu01">
 				<P key="icon_rsc"><>tex_album_icon</></P>
 				<P key="title"><>XMB MODs</></P>
@@ -50,22 +55,6 @@
 			<T key="app03D" include="inc">
 				<P key="title"><>PSX & PS2 Covers Pack 3D</></P>
 				<P key="info"><>496 MB</></P>
-			</T>
-			<T key="emu000" include="inc">
-				<P key="title"><>RetroArch Community Edition</></P>
-				<P key="info"><>601 MB</></P>
-			</T>
-			<T key="emu001" include="inc">
-				<P key="title"><>salsa64 by ricowp81</></P>
-				<P key="info"><>2.7 MB</></P>
-			</T>
-			<T key="emu002" include="inc">
-				<P key="title"><>Cell64 by ZeBobbel</></P>
-				<P key="info"><>0.5 MB</></P>
-			</T>
-			<T key="emu003" include="inc">
-				<P key="title"><>ScummVM</></P>
-				<P key="info"><>86.4 MB</></P>
 			</T>
 			<T key="app009" include="inc">
 				<P key="title"><>multiMAN MOD</></P>
@@ -159,6 +148,7 @@
 			</T>
 		</A>
 		<I>
+			<Q class="type:x-xmb/folder-pixmap" key="menu00" attr="menu00" src="#seg_emulators"/><!-- Emulators -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu01" attr="menu01" src="#seg_mod_xmb"/><!-- XMD MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu02" attr="menu02" src="#seg_mod_cfw"/><!-- CFW MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu03" attr="menu03" src="#seg_webapps"/><!-- WebApps Links -->
@@ -171,11 +161,6 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app006" attr="app006" src="#app006_link"/><!-- PS3 Covers Pack -->
 			<Q class="type:x-xmb/folder-pixmap" key="app007" attr="app007" src="#app007_link"/><!-- PSX & PS2 Covers Pack -->
 			<Q class="type:x-xmb/folder-pixmap" key="app03D" attr="app03D" src="#app03D_link"/><!-- PSX & PS2 Covers Pack 3D -->
-
-			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- salsa64 -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- Cell64 -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- ScummVM -->
 
 			<Q class="type:x-xmb/folder-pixmap" key="app009" attr="app009" src="#app009_link"/><!-- multiMAN -->
 			<Q class="type:x-xmb/folder-pixmap" key="app010" attr="app010" src="#app010_link"/><!-- IRISMAN -->
@@ -321,66 +306,6 @@
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/1.0/EP0001-BLES80608_00-COVERS000000003D.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-BLES80608_00-COVERS000000003D</></P>
-				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
-			</T>
-		</A>
-		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
-	</V>
-
-	<!-- RetroArch CE -->
-	<V id="emu000_link">
-		<A>
-			<T key="pkg_link">
-				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
-				<P key="content_name"><>msg_install</></P>
-				<P key="content_id"><>RETROA-RETROARCH_00-0000000000000000</></P>
-				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
-			</T>
-		</A>
-		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
-	</V>
-
-	<!-- salsa64 -->
-	<V id="emu001_link">
-		<A>
-			<T key="pkg_link">
-				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
-				<P key="content_name"><>msg_install</></P>
-				<P key="content_id"><>UP0001-SLSA00064_00-0000000000000000</></P>
-				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
-			</T>
-		</A>
-		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
-	</V>
-
-	<!-- Cell64 -->
-	<V id="emu002_link">
-		<A>
-			<T key="pkg_link">
-				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
-				<P key="content_name"><>msg_install</></P>
-				<P key="content_id"><>CUSTOM-CLFI00001_00-0000000000000000</></P>
-				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
-			</T>
-		</A>
-		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
-	</V>
-
-	<!-- ScummVM -->
-	<V id="emu003_link">
-		<A>
-			<T key="pkg_link">
-				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
-				<P key="content_name"><>msg_install</></P>
-				<P key="content_id"><>UP0001-SCUM12000_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>
@@ -667,7 +592,7 @@
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- License Pack BIN -->
+`	<!-- License Pack BIN -->
 	<V id="appLIC_link">
 		<A>
 			<T key="pkg_link">
@@ -2010,6 +1935,163 @@ SQUARE + START toggle fan mode</></P>
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02012_multiMAN.Themes.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>CUSTOM-LINK02012_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Emulators -->
+	<V id="seg_emulators">
+		<I>
+			<Q class="type:x-xmb/folder-pixmap" key="items"	src="#seg_emulators_items"/>
+		</I>
+	</V>
+
+	<V id="seg_emulators_items">
+		<A>
+			<T key="inc">
+				<P key="icon"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+			<T key="emu000" include="inc">
+				<P key="title"><>RetroArch Community Edition</></P>
+				<P key="info"><>606 MB - Multiple emulator engines</></P>
+			</T>
+			<T key="emu001" include="inc">
+				<P key="title"><>RetroArch PS3 Overlays by Videogames SCZ</></P>
+				<P key="info"><>21.3 MB</></P>
+			</T>
+			<T key="emu002" include="inc">
+				<P key="title"><>salsa64 by ricowp81</></P>
+				<P key="info"><>2.7 MB - Nintendo 64 emulator</></P>
+			</T>
+			<T key="emu003" include="inc">
+				<P key="title"><>Cell64 by ZeBobbel</></P>
+				<P key="info"><>0.5 MB - Nintendo 64 emulator</></P>
+			</T>
+			<T key="emu004" include="inc">
+				<P key="title"><>ScummVM</></P>
+				<P key="info"><>86.4 MB - Adventure and RPG game engine</></P>
+			</T>
+			<T key="emu005" include="inc">
+				<P key="title"><>NotDC by Mayo1970</></P>
+				<P key="info"><>3.4 MB - Dreamcast emulator</></P>
+			</T>
+			<T key="emu006" include="inc">
+				<P key="title"><>UAE4ALL2HD PS3 by theheroGAC</></P>
+				<P key="info"><>3.4 MB - Amiga emulator</></P>
+			</T>
+		</A>
+		<I>
+			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- RetroArch PS3 Overlays -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- salsa64 -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- Cell64 -->   
+			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- ScummVM -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- NotDC -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu006" attr="emu006" src="#emu006_link"/><!-- UAE4ALL2HD -->
+		</I>
+	</V>
+
+	<!-- RetroArch CE -->
+	<V id="emu000_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_CE.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>RETROA-RETROARCH_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- RetroArch PS3 Overlays -->
+	<V id="emu001_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_PS3_Overlays_by_Videogames_SCZ.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/RetroArch_PS3_Overlays_by_Videogames_SCZ.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-INSTALLER_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- salsa64 -->
+	<V id="emu002_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/salsa64.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-SLSA00064_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Cell64 -->
+	<V id="emu003_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Cell64.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-CLFI00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- ScummVM -->
+	<V id="emu004_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/scummvm-ps3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-SCUM12000_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- NotDC -->
+	<V id="emu005_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/notdc_ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/notdc_ps3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-NOTDC0000_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- UAE4ALL2HD -->
+	<V id="emu006_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/uae4all2hd_PS3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/uae4all2hd_PS3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0002-UAEH00001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>

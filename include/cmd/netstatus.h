@@ -47,15 +47,17 @@
 		#endif
 		if(*params == 's' || (params[0] == 'r' && params[1] == 'e')) // start / stop / reset / restart
 		{
+			const char *dash = strchr(params, '-');
+			const char *service = dash ? (dash + 1) : NULL; // start-***, stop-***, reset-***, restart-***
+
 			if(params[2] == 'o' || *params == 'r') // stop || reset || restart
 			{
-				const char *service = (params[4] == '-') ? (params + 5) : NULL; // stop-***
-				if( !service || (*service == 'f')) {label = service, ftp_working = status = 0;} //ftp
-				#ifdef PS3NET_SERVER
-				if( !service || (*service == 'n')) {label = service, net_working = status = 0;} //netsrv
-				#endif
+				if( !service || (*service == 'f')) {label = service, ftp_working = status = 0; sys_net_abort_socket(active_socket[0], SYS_NET_ABORT_STRICT_CHECK); sclose(&active_socket[0]);} //ftp
 				#ifdef PS3MAPI
-				if( !service || (*service == 'p')) {label = service, ps3mapi_working = status = 0;} //ps3mapi
+				if( !service || (*service == 'p')) {label = service, ps3mapi_working = status = 0; sys_net_abort_socket(active_socket[2], SYS_NET_ABORT_STRICT_CHECK); sclose(&active_socket[2]);} //ps3mapi
+				#endif
+				#ifdef PS3NET_SERVER
+				if( !service || (*service == 'n')) {label = service, net_working = status = 0; sys_net_abort_socket(active_socket[3], SYS_NET_ABORT_STRICT_CHECK); sclose(&active_socket[3]);} //netsrv
 				#endif
 				#ifdef ARTEMIS_PRX
 				if( !service || (*service == 'a')) {label = service, artemis_working = status = 0;} //artemis
@@ -64,16 +66,15 @@
 			}
 			if(params[2] == 'a' || *params == 'r') // start || reset || restart
 			{
-				const char *service = (params[5] == '-') ? (params + 6) : NULL; // start-***
 				if(!service || *service == 'f')
 					{label = service, status = 1; if(!ftp_working) sys_ppu_thread_create(&thread_id_ftpd, ftpd_thread, NULL, THREAD_PRIO, THREAD_STACK_SIZE_FTP_SERVER, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_FTP);} // start ftp daemon immediately
-				#ifdef PS3NET_SERVER
-				if(!service || *service == 'n')
-					{label = service, status = 1; if(!net_working) sys_ppu_thread_create(&thread_id_netsvr, netsvrd_thread, NULL, THREAD_PRIO, THREAD_STACK_SIZE_NET_SERVER, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_NETSVR);}
-				#endif
 				#ifdef PS3MAPI
 				if(!service || *service == 'p')
 					{label = service, status = 1; if(!ps3mapi_working) sys_ppu_thread_create(&thread_id_ps3mapi, ps3mapi_thread, NULL, THREAD_PRIO, THREAD_STACK_SIZE_PS3MAPI_SVR, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_PS3MAPI);}
+				#endif
+				#ifdef PS3NET_SERVER
+				if(!service || *service == 'n')
+					{label = service, status = 1; if(!net_working) sys_ppu_thread_create(&thread_id_netsvr, netsvrd_thread, NULL, THREAD_PRIO, THREAD_STACK_SIZE_NET_SERVER, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_NETSVR);}
 				#endif
 				#ifdef ARTEMIS_PRX
 				if(!service || *service == 'a')

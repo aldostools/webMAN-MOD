@@ -72,7 +72,7 @@ textarea {border-radius: 8px; padding: 5px; margin-bottom: 5px;}
 	box-shadow:5px 5px 15px #101010;
 }
 
-.t_menu,.b_games,.b_files,.b_cflow,.b_ps3mapi,.b_setup, .b_cpursx {
+.t_menu,.b_games,.b_files,.b_cflow,.b_ps3mapi,.b_setup, .b_cpursx, .b_install, .b_pad {
 	float:left;
 	margin:8px;
 	width:85px;
