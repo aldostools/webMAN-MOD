@@ -791,16 +791,16 @@ static bool scan_mygames_xml(u64 conn_s_p)
 
 	#ifdef MOUNT_ROMS
 
-	#define ROM_PATHS	99
+	#define ROM_PATHS	100
 	char cur_roms_path[16]; *cur_roms_path = 0;
-	const char *roms_path[ROM_PATHS] = { "2048", "CAP32", "MAME", "MAME2000", "MAME2003", "MIDWAY", "MAMEPLUS", "FBA", "FBA2012", "FBNEO", "ATARI", "ATARI2600", "STELLA", "ATARI800", "ATARI5200", "ATARI7800", "JAGUAR", "LYNX", "HANDY", "HATARI", "CANNONBALL", "NXENGINE", "COLECO", "AMIGA", "CD32", "VICE", "X64", "X64SC", "X64DTV", "XSCPU64", "X128", "XCBM2", "XCMB25X0", "XPET", "XPLUS4", "XVIC", "DOSBOX", "GME", "GW", "DOOM", "QUAKE", "JAVAME", "JUMP", "O2EM", "INTV", "MSX", "FMSX", "MSX2", "BMSX", "NEOCD", "NEO", "NEOGEO", "PCE", "PCECD", "PCFX", "SGX", "NGP", "NGPC", "NES", "FCEUMM", "NESTOPIA", "QNES", "GB", "GBC", "GAMBATTE", "TGBDUAL", "GBA", "VBA", "MGBA", "VBOY", "PALM", "PSXISO", "PS2ISO", "PS3ISO", "PSPISO", "POKEMINI", "SCUMMVM", "GENESIS", "GEN", "SEGACD", "MEGAD", "MEGADRIVE", "GG", "GEARBOY", "MASTER", "PICO", "SG1000", "FUSE", "ZX81", "SNES", "MSNES", "SNES9X", "SNES9X2005", "SNES9X2010", "SNES9X_NEXT", "THEODORE", "VECX", "WSWAM", "WSWAMC" };
+	const char *roms_path[ROM_PATHS] = { "2048", "CAP32", "MAME", "MAME2000", "MAME2003", "MIDWAY", "MAMEPLUS", "FBA", "FBA2012", "FBNEO", "ATARI", "ATARI2600", "STELLA", "ATARI800", "ATARI5200", "ATARI7800", "JAGUAR", "LYNX", "HANDY", "HATARI", "CANNONBALL", "NXENGINE", "COLECO", "AMIGA", "CD32", "VICE", "X64", "X64SC", "X64DTV", "XSCPU64", "X128", "XCBM2", "XCMB25X0", "XPET", "XPLUS4", "XVIC", "DOSBOX", "GME", "GW", "DOOM", "QUAKE", "JAVAME", "JUMP", "O2EM", "INTV", "MSX", "FMSX", "MSX2", "BMSX", "NEOCD", "NEO", "NEOGEO", "PCE", "PCECD", "PCFX", "SGX", "NGP", "NGPC", "N64", "NES", "FCEUMM", "NESTOPIA", "QNES", "GB", "GBC", "GAMBATTE", "TGBDUAL", "GBA", "VBA", "MGBA", "VBOY", "PALM", "PSXISO", "PS2ISO", "PS3ISO", "PSPISO", "POKEMINI", "SCUMMVM", "GENESIS", "GEN", "SEGACD", "MEGAD", "MEGADRIVE", "GG", "GEARBOY", "MASTER", "PICO", "SG1000", "FUSE", "ZX81", "SNES", "MSNES", "SNES9X", "SNES9X2005", "SNES9X2010", "SNES9X_NEXT", "THEODORE", "VECX", "WSWAM", "WSWAMC" };
 	u16 roms_count[ROM_PATHS]; u32 count_roms = 0; memset(roms_count, 0, sizeof(roms_count));
 
 	// remove paths not listed in roms_paths.txt
 	{
 		char *roms_paths = templn;
 		u16 len = read_file(WM_ROMS_PATHS, roms_paths, 1023, 0);
-		if((len > 0) && (len != 731))
+		if((len > 0) && (len != 736))
 		{
 			roms_paths[len] = '\0'; to_upper(roms_paths);
 			for(u8 i = 0; i < ROM_PATHS; i++)
@@ -988,8 +988,11 @@ scan_roms:
 				else if(IS_NTFS)
 					sprintf(param, "%s/USRDIR/%s%s", RETROARCH_DIR, cores_roms, roms_path[roms_index]);
 				else
+				{
 					sprintf(param, "%s/ROMS%s/%s", drives[f0], SUFIX(uprofile), roms_path[roms_index]);
-
+					if(!uprofile && IS(roms_path[roms_index], "N64") && !isDir(param))
+						concat2(param, drives[f0], "/salsa64");
+				}
 				show_progress(param, OV_SCAN);
 			}
 			else

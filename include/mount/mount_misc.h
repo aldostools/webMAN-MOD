@@ -57,11 +57,11 @@
 	{
 		if( !extcasecmp(_path, ".self", 5) ||
 			strcasestr(ARCHIVE_EXTENSIONS + 4, ext) ||
-			(!strstr(_path, "/ROMS") && _IS(ext, ".zip"))
+			(!strstr(_path, "/ROMS") && !strstr(_path, "/salsa64") && _IS(ext, ".zip"))
 		)
 		{
 			// patch title name in PARAM.SFO of PKGLAUNCH
-			copy_rom_media("/PKG Launcher"); is_busy = false;
+			copy_rom_media("/PKG Launcher", PKGLAUNCH_DIR, 0); is_busy = false;
 
 			ret = file_exists(_path);
 			cobra_map_game(PKGLAUNCH_DIR, PKGLAUNCH_ID, true);
@@ -127,7 +127,33 @@
 	// mount ROMS game
 	// ------------------
 	#ifdef MOUNT_ROMS
-	if(isDir(PKGLAUNCH_DIR))
+	#define N64_EMULATOR_DIR	"/dev_hdd0/game/SLSA00064"
+	#define N64_EMULATOR_ICO	"/dev_hdd0/game/SLSA00064/ICON0.PNG"
+	#define N64_EMULATOR_SFO	"/dev_hdd0/game/SLSA00064/PARAM.SFO"
+	#define N64_EMULATOR		"/dev_hdd0/game/SLSA00064/USRDIR/EBOOT.BIN"
+	#define TMP_EMULATOR_DIR	"/dev_hdd0/game/salsa64"
+	#define TMP_N64_EMULATOR	"/dev_hdd0/game/salsa64/USRDIR/EBOOT.BIN"
+	if(file_exists(N64_EMULATOR) && (strstr(_path, "/salsa64") || strstr(_path, "/ROMS/N64") || strcasestr(".z64.n64.v64", ext)))
+	{
+		// store rom path for PKGLAUNCH
+		save_file(N64_EMULATOR_DIR "/rom.txt", _path, SAVE_ALL);
+
+		cellFsMkdir(TMP_EMULATOR_DIR, DMODE);
+		cellFsMkdir(TMP_EMULATOR_DIR "/USRDIR", DMODE);
+		force_copy(N64_EMULATOR_ICO, strconcat(TMP_EMULATOR_DIR, "/ICON0.PNG"));
+		force_copy(N64_EMULATOR_SFO, strconcat(TMP_EMULATOR_DIR, "/PARAM.SFO"));
+		sysLv2FsLink(N64_EMULATOR, TMP_N64_EMULATOR);
+
+		set_app_home(TMP_EMULATOR_DIR);
+		copy_rom_media(_path, TMP_EMULATOR_DIR, 1);
+
+		if(!(webman_config->app_home)) launch_app_home_icon(webman_config->autoplay);
+
+		mount_unk = EMU_ROMS; ret = isDir(TMP_EMULATOR_DIR);
+
+		goto mounting_done;
+	}
+	else if(isDir(PKGLAUNCH_DIR))
 	{
 		if(islike(_path, "/net")) ; else // mount ROMS in /net module
 
@@ -168,16 +194,16 @@
 
 			// store rom path for PKGLAUNCH
 			save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", _path, SAVE_ALL);
-			copy_rom_media(_path);
+			copy_rom_media(_path, PKGLAUNCH_DIR, 0);
 
 			mount_unk = EMU_ROMS;
 
-			if(!(webman_config->app_home) && launch_app_home_icon(webman_config->autoplay)) {set_app_home(PKGLAUNCH_DIR); ret = true;}
+			if(!(webman_config->app_home) && launch_app_home_icon(webman_config->autoplay)) {set_app_home(PKGLAUNCH_DIR);}
 
 			ret = isDir("/dev_bdvd/PS3_GAME/USRDIR/cores") ||
 				  isDir("/app_home/PS3_GAME/USRDIR/cores");
 
-			goto mounting_done; //goto exit_mount;
+			goto mounting_done;
 		}
 	}
 	#endif // #ifdef MOUNT_ROMS

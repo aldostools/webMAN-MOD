@@ -634,7 +634,7 @@ no_icon0:
 			else if(strstr(ps, "PSP")) //if(strstr(param, "/PSPISO") || strstr(param, "/ISO/") || !extcmp(file, ".ntfs[PSPISO]", 13))
 				default_icon = iPSP;
 		}
-		else if(strstr(param, "/ROMS")) //if(strstr(param, "/ROMS"))
+		else if(strstr(param, "/ROMS") || strstr(param, "/salsa64")) //roms
 			default_icon = iROM;
 		else if(strstr(param, "/GAME")) //if(strstr(param, "/GAMES") || strstr(param, "/GAMEZ") || strstr(param, "/GAMEI"))
 			default_icon = iPS3;

@@ -163,7 +163,7 @@ if(BETWEEN('0', netid, '4'))
 			concat2(full_path, "/dev_bdvd/", filename); // /dev_bdvd/GAME.ZIP
 
 			save_file(PKGLAUNCH_DIR "/USRDIR/launch.txt", full_path, SAVE_ALL);
-			copy_rom_media(full_path);
+			copy_rom_media(full_path, PKGLAUNCH_DIR, 0);
 		}
 		concat2(netiso_args.path, "/***DVD***", netpath); // mount subdirectory e.g. /ROMS/PATH
 	}
