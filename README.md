@@ -186,8 +186,8 @@ and artists that collaborated with development, knowledge, resources, feedback &
 - Use L1+R1+△ to switch between Full/Standard and Lite editions to get a balance between memory usage & features
 - All LV2 peek/pokes are done through syscalls 8/9 (CFW only) - syscalls 6/7 used only by PS3HEN
 - Web Debugger (remote peek/poke/find bytes, dump lv1 & lv2 memory)
-- PS3MAPI web GUI debuger (process view, memory browse/change, attach/unload plugins to the process, syscall managament)
-- Access PS3MAPI server commands through http protocol and return answer as JSON (use /ps3mapi.ps3?commmand)
+- PS3MAPI web GUI debugger (process view, memory browse/change, attach/unload plugins to the process, syscall management)
+- Access PS3MAPI server commands through http protocol and return answer as JSON (use /ps3mapi.ps3?command)
 - MIN+ memory profile (same as MIN but uses 512K and 2.5X more buffer for PS3 games)
 - MAX+ memory profile (same as MAX 1280K for PS3 games, others buffer is reduced, eg: 2X less buffer for ftp and 4X for DVD etc...)
 - Support for up to 3MB from 4 available VSH memory containers [MC] (bg, fg, debug, app)
@@ -309,7 +309,7 @@ are met:
 3. The names of the authors may not be used to endorse or promote products
    derived from this software without specific prior written permission.
 
-For futher information about GPL v3, refer to:
+For further information about GPL v3, refer to:
 [https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 THE SOFTWARE IS DISTRIBUTED "AS IS". NO WARRANTY OF ANY KIND IS EXPRESSED
