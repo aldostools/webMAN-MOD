@@ -96,6 +96,7 @@ static int mount(const char * action)
 		sys_map_path("/dev_bdvd", NULL);
 		sys_map_path("/app_home", NULL);
 
+		int fd;
 		char *t = (char*)action;
 		for(char *c = t; *c; c++, t++)
 		{
@@ -112,12 +113,11 @@ static int mount(const char * action)
 		char *ext = path + (len > 4 ? len - 4 : 0);
 		char *split = path + (len > 6 ? len - 6 : 0);
 		char *files[64]; char parts[64][len + 2];
+		struct CellFsStat s;
 
 		int count = 1;
 		if(IS(split, ".iso.0") || IS(split, ".ISO.0"))
 		{
-			struct CellFsStat s;
-
 			for(int i = 0; i < 64; i++)
 			{
 				if(i < 10)
@@ -151,11 +151,72 @@ retry:		strcpy(ext, (++cue == 1) ? ".bin" : ".BIN");
 
 		show_msg(path);
 
-		if(strstr(path, "/net"))
+		if(cellFsStat(path, &s) == CELL_FS_SUCCEEDED && cellFsStat("/dev_hdd0//game/SLSA00064/USRDIR/EBOOT.BIN", &s) == CELL_FS_SUCCEEDED && (strstr(path, "/salsa64") || strstr(path, "/ROMS/N64") || strstr(".z64.n64.v64.Z64.N64.V64", ext)))
+		{
+			static const u32 DMODE = (CELL_FS_S_IFDIR | 0777);
+
+			cellFsMkdir("/dev_hdd0//game/salsa64", DMODE);
+			cellFsMkdir("/dev_hdd0//game/salsa64/USRDIR", DMODE);
+
+			if(cellFsOpen("/dev_hdd0//game/SLSA00064/rom.txt", CELL_FS_O_CREAT | CELL_FS_O_WRONLY | CELL_FS_O_TRUNC, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
+			{
+				//save rom path
+				cellFsWrite(fd, (void *)path, len, NULL);
+				cellFsClose(fd);
+
+				sysLv2FsLink("/dev_hdd0//game/SLSA00064/USRDIR/EBOOT.BIN", "/dev_hdd0//game/salsa64/USRDIR/EBOOT.BIN");
+
+				u64 size; char data[5000];
+
+				if(cellFsOpen("/dev_hdd0//tmp/wm_icons/ICON0.PNG", CELL_FS_O_RDONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
+				{
+					// read ICON0.PNG
+					size = 5000;
+					cellFsRead(fd, data, size, &size);
+					cellFsClose(fd);
+
+					// write default ICON0.PNG
+					if(cellFsOpen("/dev_hdd0//game/salsa64/ICON0.PNG", CELL_FS_O_CREAT | CELL_FS_O_WRONLY | CELL_FS_O_TRUNC, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
+					{
+						cellFsWrite(fd, (void *)data, size, NULL);
+						cellFsClose(fd);
+					}
+				}
+				else
+					sysLv2FsLink("/dev_hdd0//game/SLSA00064/ICON0.PNG", "/dev_hdd0//game/salsa64/ICON0.PNG");
+
+				if(cellFsOpen("/dev_hdd0//game/SLSA00064/PARAM.SFO", CELL_FS_O_RDONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
+				{
+					// read PARAM.SFO
+					size = 2000;
+					cellFsRead(fd, data, size, &size);
+					cellFsClose(fd);
+
+					// write PARAM.SFO
+					if(cellFsOpen("/dev_hdd0//game/salsa64/PARAM.SFO", CELL_FS_O_CREAT | CELL_FS_O_WRONLY | CELL_FS_O_TRUNC, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
+					{
+						cellFsWriteWithOffset(fd, 0x000, (void *)data, size, NULL);
+
+						// write ROM filename as title
+						char *pos = strrchr(path, '/'); if(pos) strcpy(path, pos + 1);
+						cellFsWriteWithOffset(fd, 0x378, (void *)path, 0x80, NULL);
+						cellFsClose(fd);
+					}
+				}
+
+				// unmount /app_home
+				sys_map_path("/app_home", NULL);
+				sys_map_path("/app_home/PS3_GAME", NULL);
+
+				// map salsa64 to /app_home
+				sys_map_path("/app_home/PS3_GAME", "/dev_hdd0//game/salsa64");
+				err = 0; show_msg("Launch the game from ★PlayStation®3 icon");
+			}
+		}
+		else if(strstr(path, "/net"))
 		{
 			u8 netid = (path[4] - '0'); if(netid > 4) return err;
 
-			int fd;
 			if(cellFsOpen("/dev_hdd0/tmp/wm_config.bin", CELL_FS_O_RDONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 			{
 				_netiso_args netiso_args;
@@ -203,7 +264,6 @@ retry:		strcpy(ext, (++cue == 1) ? ".bin" : ".BIN");
 			sys_memory_allocate(size, SYS_MEMORY_PAGE_SIZE_64K, &sysmem);
 			if(sysmem)
 			{
-				int fd;
 				if(cellFsOpen(path, CELL_FS_O_RDONLY, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 				{
 					char *data = (char*)sysmem;
@@ -228,7 +288,6 @@ retry:		strcpy(ext, (++cue == 1) ? ".bin" : ".BIN");
 			sys_map_path("/dev_bdvd/PS3_GAME/USRDIR/cores", "/dev_hdd0//game/RETROARCH/USRDIR/cores");
 			sys_map_path("/app_home/PS3_GAME/USRDIR/cores", "/dev_hdd0//game/RETROARCH/USRDIR/cores");
 
-			int fd;
 			if(cellFsOpen("/dev_hdd0//game/PKGLAUNCH/USRDIR/launch.txt", CELL_FS_O_CREAT | CELL_FS_O_WRONLY | CELL_FS_O_TRUNC, &fd, NULL, 0) == CELL_FS_SUCCEEDED)
 			{
 				cellFsWrite(fd, (void *)path, len, NULL);
@@ -239,6 +298,7 @@ retry:		strcpy(ext, (++cue == 1) ? ".bin" : ".BIN");
 					cellFsWriteWithOffset(fd, 0x378, (void *)path, 0x80, NULL);
 					cellFsClose(fd);
 				}
+				err = 0;
 			}
 		}
 		else if (IS(ext, ".enc") && strstr(path, "/PS2ISO/"))
