@@ -209,25 +209,6 @@ static void start_www(u64 conn_s_p)
 			clear_codelist();
 			#endif
 
-			#ifdef PLAY_MUSIC
-			if(webman_config->music && USER_LOGGEDIN)
-			{
-				if(wait_for_abort(1)) sys_ppu_thread_exit(0);
-
-				bool is_video = (webman_config->music == 2);
-				sprintf(msg, "Starting %s...\n"
-							 "Press O to abort",
-							 is_video ? "Video" : "Music");
-
-				show_msg_with_icon(is_video ? ICON_VIDEO : ICON_MUSIC, msg);
-
-				if(!wait_for_abort(8 + webman_config->boots))
-					start_xmb_player(is_video ? "video" : "music");
-				else
-					play_rco_sound("snd_system_ng");
-			}
-			#endif
-
 			#ifdef FIX_CLOCK
 			if(webman_config->auto_fixclock)
 			{
@@ -247,6 +228,25 @@ static void start_www(u64 conn_s_p)
 					#define date_time full_path
 					if(currentTick < FIX_CLOCK_DATE) update_clock_from_server_time(date_time);
 				}
+			}
+			#endif
+
+			#ifdef PLAY_MUSIC
+			if(BETWEEN(1, webman_config->music, 2) && USER_LOGGEDIN)
+			{
+				if(wait_for_abort(1)) sys_ppu_thread_exit(0);
+
+				bool is_video = (webman_config->music == 2);
+				sprintf(msg, "Starting %s...\n"
+							 "Press O to abort",
+							 is_video ? "Video" : "Music");
+
+				show_msg_with_icon(is_video ? ICON_VIDEO : ICON_MUSIC, msg);
+
+				if(!wait_for_abort(8 + webman_config->boots))
+					start_xmb_player(is_video ? "video" : "music");
+				else
+					play_rco_sound("snd_system_ng");
 			}
 			#endif
 		}

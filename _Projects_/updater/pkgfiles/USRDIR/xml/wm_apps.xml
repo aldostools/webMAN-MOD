@@ -135,8 +135,20 @@
 				<P key="info"><>433 KB</></P>
 			</T>
 			<T key="app044" include="inc">
-				<P key="title"><>PS3 Health by lucasdaddiego</></P>
+				<P key="title"><>PS3 Health</></P>
 				<P key="info"><>502 KB</></P>
+			</T>
+			<T key="app045" include="inc">
+				<P key="title"><>DeepPlay</></P>
+				<P key="info"><>22 MB</></P>
+			</T>
+			<T key="app046" include="inc">
+				<P key="title"><>ezDSN</></P>
+				<P key="info"><>426 KB</></P>
+			</T>
+			<T key="app047" include="inc">
+				<P key="title"><>qDSNm</></P>
+				<P key="info"><>212 KB</></P>
 			</T>
 			<T key="appLIC" include="inc">
 				<P key="title"><>License Pack BIN</></P>
@@ -200,6 +212,9 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app042" attr="app042" src="#app042_link"/><!-- TEE-Vanced-PS -->
 			<Q class="type:x-xmb/folder-pixmap" key="app043" attr="app043" src="#app043_link"/><!-- TEE-Remote-Play -->
 			<Q class="type:x-xmb/folder-pixmap" key="app044" attr="app044" src="#app044_link"/><!-- PS3-Health -->
+			<Q class="type:x-xmb/folder-pixmap" key="app045" attr="app045" src="#app045_link"/><!-- DeepPlay -->
+			<Q class="type:x-xmb/folder-pixmap" key="app046" attr="app046" src="#app046_link"/><!-- ezDSN -->
+			<Q class="type:x-xmb/folder-pixmap" key="app047" attr="app047" src="#app047_link"/><!-- qDNSm -->
 
 			<!-- <Q class="type:x-xmb/folder-pixmap" key="app017" attr="app017" src="#app017_link"/>Ultimate Toolbox v2.03 FULL 4.84-4.88-->
 			<!-- <Q class="type:x-xmb/folder-pixmap" key="app018" attr="app018" src="#app018_link"/>Ultimate Toolbox v2.03 FULL 4.89-4.92-->
@@ -593,6 +608,51 @@
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/PS3-Health.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>EP0001-HDSH00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- DeepPlay  -->
+	<V id="app045_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/DeepPlay.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/DeepPlay.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>HB0001-DEEPPLAY1_00-DEEPPLAYHB000001</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- ezDSN -->
+	<V id="app046_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ezDSN.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/ezDSN.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PS3EZD001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- qDSNm -->
+	<V id="app047_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/qDNSm-Installer.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/qDNSm-Installer.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-NPUB72381_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>
@@ -1999,6 +2059,10 @@ SQUARE + START toggle fan mode</></P>
 				<P key="title"><>multiMAN Themes</></P>
 				<P key="info"><>Install link to multiMAN Themes website</></P>
 			</T>
+			<T key="webapp012" include="inc">
+				<P key="title"><>RetroGames v2</></P>
+				<P key="info"><>Install link to RetroGames website</></P>
+			</T>
 		</A>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="webapp000" attr="webapp000" src="#webapp000_link"/>
@@ -2015,6 +2079,7 @@ SQUARE + START toggle fan mode</></P>
 			<Q class="type:x-xmb/folder-pixmap" key="webapp009" attr="webapp009" src="#webapp009_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="webapp010" attr="webapp010" src="#webapp010_link"/>
 			<Q class="type:x-xmb/folder-pixmap" key="webapp011" attr="webapp011" src="#webapp011_link"/>
+			<Q class="type:x-xmb/folder-pixmap" key="webapp012" attr="webapp012" src="#webapp012_link"/>
 		</I>
 	</V>
 
@@ -2214,6 +2279,20 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<V id="webapp012_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02013_RetroGames_v2.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/WebApps/LINK02013_RetroGames_v2.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>CUSTOM-LINK02013_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
 	<!-- Emulators -->
 	<V id="seg_emulators">
 		<I>
@@ -2235,44 +2314,69 @@ SQUARE + START toggle fan mode</></P>
 				<P key="info"><>21.3 MB</></P>
 			</T>
 			<T key="emu002" include="inc">
+				<P key="title"><>PPSSPP PS3 by Calyps0man</></P>
+				<P key="info"><>33.3 MB - PSP emulator</></P>
+			</T>
+			<T key="emu003" include="inc">
 				<P key="title"><>salsa64 by ricowp81</></P>
 				<P key="info"><>2.7 MB - Nintendo 64 emulator</></P>
 			</T>
-			<T key="emu003" include="inc">
+			<T key="emu004" include="inc">
 				<P key="title"><>salsaDS by ricowp81</></P>
 				<P key="info"><>2.5 MB - Nintendo DS emulator</></P>
 			</T>
-			<T key="emu004" include="inc">
+			<T key="emu005" include="inc">
 				<P key="title"><>Cell64 by ZeBobbel</></P>
 				<P key="info"><>0.5 MB - Nintendo 64 emulator</></P>
 			</T>
-			<T key="emu005" include="inc">
+			<T key="emu006" include="inc">
 				<P key="title"><>NotDC by Mayo1970</></P>
 				<P key="info"><>3.4 MB - Dreamcast emulator</></P>
 			</T>
-			<T key="emu006" include="inc">
+			<T key="emu007" include="inc">
 				<P key="title"><>ScummVM</></P>
 				<P key="info"><>86.4 MB - Adventure and RPG game engine</></P>
 			</T>
-			<T key="emu007" include="inc">
+			<T key="emu008" include="inc">
 				<P key="title"><>PicoDrive PS3 by theheroGAC</></P>
 				<P key="info"><>3.9 MB - Sega CD / 32X / Megadrive / Genesis emulator</></P>
 			</T>
-			<T key="emu008" include="inc">
+			<T key="emu009" include="inc">
 				<P key="title"><>UAE4ALL2HD PS3 by theheroGAC</></P>
-				<P key="info"><>3.4 MB - Amiga emulator</></P>
+				<P key="info"><>10.2 MB - Amiga emulator</></P>
+			</T>
+			<T key="emu010" include="inc">
+				<P key="title"><>pSNES PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>10.2 MB - Super Nintendo emulator</></P>
+			</T>
+			<T key="emu011" include="inc">
+				<P key="title"><>pNES PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>10.2 MB - Nintendo emulator</></P>
+			</T>
+			<T key="emu012" include="inc">
+				<P key="title"><>pGEN PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>10.2 MB - Sega Genesis / Megadrive emulator</></P>
+			</T>
+			<T key="emu013" include="inc">
+				<P key="title"><>pFBNEO PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>10.2 MB - Final Burn emulator</></P>
 			</T>
 		</A>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- RetroArch PS3 Overlays -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- salsa64 -->  
-			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- salsaDS -->   
-			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- Cell64 -->  
-			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- NotDC -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu006" attr="emu006" src="#emu006_link"/><!-- ScummVM -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu007" attr="emu007" src="#emu007_link"/><!-- PicoDrive -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu008" attr="emu008" src="#emu008_link"/><!-- UAE4ALL2HD -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- PPPSSPP PS3 -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- salsa64 -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- salsaDS -->   
+			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- Cell64 -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu006" attr="emu006" src="#emu006_link"/><!-- NotDC -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu007" attr="emu007" src="#emu007_link"/><!-- ScummVM -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu010" attr="emu010" src="#emu010_link"/><!-- pSNES -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu011" attr="emu011" src="#emu011_link"/><!-- pNES -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu012" attr="emu012" src="#emu012_link"/><!-- pGEN -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu013" attr="emu013" src="#emu013_link"/><!-- pFBNEO -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu008" attr="emu008" src="#emu008_link"/><!-- PicoDrive -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu009" attr="emu009" src="#emu009_link"/><!-- UAE4ALL2HD -->
 		</I>
 	</V>
 
@@ -2306,8 +2410,23 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- salsa64 -->
+	<!-- PPSSPP PS3 -->
 	<V id="emu002_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/PPSSPP_PS3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/PPSSPP_PS3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PPSSPP001_00-0000000PPSSPPPS3</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- salsa64 -->
+	<V id="emu003_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2322,7 +2441,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- salsaDS -->
-	<V id="emu003_link">
+	<V id="emu004_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2337,7 +2456,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- Cell64 -->
-	<V id="emu004_link">
+	<V id="emu005_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2352,7 +2471,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- NotDC -->
-	<V id="emu005_link">
+	<V id="emu006_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2367,7 +2486,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- ScummVM -->
-	<V id="emu006_link">
+	<V id="emu007_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2382,7 +2501,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- PicoDrive -->
-	<V id="emu007_link">
+	<V id="emu008_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2397,7 +2516,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- UAE4ALL2HD -->
-	<V id="emu008_link">
+	<V id="emu009_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2405,6 +2524,66 @@ SQUARE + START toggle fan mode</></P>
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/uae4all2hd_PS3.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>UP0002-UAEH00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pSNES -->
+	<V id="emu010_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PSNE00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pNES -->
+	<V id="emu011_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pnes.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pnes.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PNES00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pGEN -->
+	<V id="emu012_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pgen.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pgen.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PGEN00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pFBNEO -->
+	<V id="emu013_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pfbneo.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pfbneo.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PFBN00001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>

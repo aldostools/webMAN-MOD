@@ -53,12 +53,10 @@
 	#ifdef PKG_LAUNCHER
 	const char *ext = get_ext(_path);
 
-	if(isDir(PKGLAUNCH_DIR) && !islike(_path, "/net"))
+	if(isDir(PKGLAUNCH_DIR) && !islike(_path, "/net") && !strstr(_path, "/ROMS") && !strstr(_path, "/salsa64"))
 	{
 		if( !extcasecmp(_path, ".self", 5) ||
-			strcasestr(ARCHIVE_EXTENSIONS + 4, ext) ||
-			(!strstr(_path, "/ROMS") && !strstr(_path, "/salsa64") && _IS(ext, ".zip"))
-		)
+			strcasestr(ARCHIVE_EXTENSIONS + 4, ext))
 		{
 			// patch title name in PARAM.SFO of PKGLAUNCH
 			copy_rom_media("/PKG Launcher", PKGLAUNCH_DIR, 0); is_busy = false;

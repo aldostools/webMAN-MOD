@@ -146,12 +146,13 @@ static void make_fb_xml(void)
 	sys_addr_t sysmem = sys_mem_allocate(_64KB_);
 	if(sysmem)
 	{
-		cellFsUnlink(_FB_XML);
-
 		const char *fb_xml = FB_XML;
+
 		#ifdef COBRA_ONLY
-		//if(payload_ps3hen)
+		if(webman_config->music != 3)
 		{
+			cellFsUnlink(_FB_XML);
+
 			fb_xml = FB_HEN_XML;
 			sys_map_path(FB_XML, fb_xml);
 		}

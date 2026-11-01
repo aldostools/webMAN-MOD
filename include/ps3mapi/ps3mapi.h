@@ -250,9 +250,10 @@ static int ps3mapi_get_vsh_plugin_slot_by_name(const char *name, int mode)
 static void toggle_wmm_lite(void)
 {
 	#ifndef LITE_EDITION
-	#define TOGGLE_PLUGIN	"/dev_hdd0/plugins/webftp_server_lite.sprx"
+	#define TOGGLE_PLUGIN		"/dev_hdd0/plugins/webftp_server_lite.sprx"
 	#else
-	#define TOGGLE_PLUGIN	"/dev_hdd0/plugins/webftp_server.sprx"
+	#define TOGGLE_PLUGIN		"/dev_hdd0/plugins/webftp_server.sprx"
+	#define TOGGLE_PLUGIN_FULL	"/dev_hdd0/pluginswebftp_server_full.sprx"
 	#endif
 
 	if(syscalls_removed || is_mounting || refreshing_xml || file_exists(WM_RELOAD_FILE) || not_exists(TOGGLE_PLUGIN)) {BEEP3; return;}
@@ -263,7 +264,14 @@ static void toggle_wmm_lite(void)
 
 	while(is_pressed(CELL_PAD_CTRL_TRIANGLE)) sys_ppu_thread_usleep(20000);
 
-	load_vsh_module(TOGGLE_PLUGIN);
+	#ifndef LITE_EDITION
+	load_vsh_module(TOGGLE_PLUGIN); // load lite edition
+	#else
+	if(file_exists(TOGGLE_PLUGIN_FULL))
+		load_vsh_module(TOGGLE_PLUGIN_FULL); // load full edition
+	else
+		load_vsh_module(TOGGLE_PLUGIN); // legacy code (reload lite editon)
+	#endif
 
 	unload_me(3);
 }

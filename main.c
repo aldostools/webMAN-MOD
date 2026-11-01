@@ -111,7 +111,7 @@ SYS_MODULE_STOP(wwwd_stop);
 SYS_MODULE_EXIT(wwwd_stop);
 
 #define WM_APPNAME			"webMAN"
-#define WM_VERSION			"1.47.50c MOD"
+#define WM_VERSION			"1.47.50d MOD"
 #define WM_APP_VERSION		WM_APPNAME " " WM_VERSION
 #define WEBMAN_MOD			WM_APPNAME " MOD"
 
@@ -549,8 +549,6 @@ static void wwwd_thread(u64 arg)
 	cellFsUnlink(WM_REQUEST_FILE);
 	#endif
 
-	sys_ppu_thread_create(&thread_id_poll, poll_thread, (u64)webman_config->poll, THREAD_PRIO_POLL, THREAD_STACK_SIZE_POLL_THREAD, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_POLL);
-
 	#ifdef COBRA_ONLY
 	set_app_home(NULL); // initialize /app_home
 	#endif
@@ -560,6 +558,33 @@ static void wwwd_thread(u64 arg)
 	#ifdef AUTO_POWER_OFF
 	restoreAutoPowerOff();
 	#endif
+
+	#ifdef FULL_EDITION
+	if(webman_config->music == 3) // unload webMAN MOD on startup to preserve maximum memory
+	{
+		wait_for_xmb(); // wait for XMB
+
+		if (is_pressed(CELL_PAD_CTRL_L1) || is_pressed(CELL_PAD_CTRL_R1)) // continue loading normally if R1 or L1 are pressed
+		{
+			if(!webman_config->nobeep) BEEP1; // beep to notify the user that can stop pressing the buttons
+		}
+		else if(webman_config->refr) // unload if content scan on startup is disabled
+		{
+			file_copy(FB_HEN_XML, (char*)_FB_XML);
+
+			#ifdef WM_PROXY_SPRX
+			if(file_exists(_FB_XML)) // fb.xml must exits
+			{
+				apply_remaps(); // remap to wm_proxy
+
+				goto end; // Stop loading webMAN MOD
+			}
+			#endif
+		}
+	}
+	#endif
+
+	sys_ppu_thread_create(&thread_id_poll, poll_thread, (u64)webman_config->poll, THREAD_PRIO_POLL, THREAD_STACK_SIZE_POLL_THREAD, SYS_PPU_THREAD_CREATE_JOINABLE, THREAD_NAME_POLL);
 
 	if(cobra_version >= 0x0800)
 	{

@@ -268,6 +268,7 @@ body {margin-top:0px; margin-left:0px; margin-right:0px; overflow:hidden;
 <!--//--><![CDATA[//><!--
 var isoffline = false, pause = 0;
 var indexEl = 0, nextEl = null, url = 'http://ps3.aldostools.org';
+var custom1='',custom2='',custom3='',custom4='';
 
 //if(location.protocol!='http:'){location.href='http:'+window.location.href.substring(window.location.protocol.length);}
 
@@ -1845,6 +1846,8 @@ if(ip.length>0 && ip!="127.0.0.1" && ip!="localhost") {setCookie("ip", ip, 10000
 	<div id="wrapper-menu" onclick="hideMenu();">
 		<div id="scroller">
 			<ul id="thelist">
+				<li><a id="nav-menuItem20" onclick="hideMenu();" href="javascript:pad('/play.ps3');">&#9737; Play Disc</a></li>
+				<li><a id="nav-menuItem2a" onclick="hideMenu();" href="javascript:_go('/install.ps3');">&#9733; Install PKG</a></li>
 				<li><a id="nav-menuItem1" onclick="hideMenu();" href="javascript:askIP();">&#9733; Remote IP</a></li>
 				<li><a id="nav-menuItem2" onclick="hideMenu();" href="javascript:_go('off');">&#9733; Disconnect webPAD</a></li>
 				<li><a id="nav-menuItem3" onclick="hideMenu();" href="javascript:toggle_GameMode();">&#9733; Switch Game Mode / Normal</a></li>
@@ -1854,8 +1857,6 @@ if(ip.length>0 && ip!="127.0.0.1" && ip!="localhost") {setCookie("ip", ip, 10000
 				<li><a id="nav-menuItem12" onclick="showWait();" href="javascript:_go('/setup.ps3');"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAMAAADzapwJAAAAB3RJTUUH3wIUFDgN+AZcGAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAARnQU1BAACxjwv8YQUAAACKUExURf///9be3oyUnEpSWiEhIf///97n5+/v9zlCUqWlpSEpKTk5Qs7W3nN7hNbW3jE5OSkpKSkpMSEhKdbe57W9xsbGzmNrc2trc1paY1JaWoSMlHuEjGtzc2Nra729xu/v7+/3/zlCSpScpVJaY62ttc7O1jExOTExMXuMnLW9vaWtrbXGzjlKUmNjawUgndwAAAABdFJOUwBA5thmAAAA1klEQVR42m2R6xqCIAyGMcEUEaXU1Eo7WWl6/7fXHOgT1X7At/fZgTFCZqvHMSW/NlA6WIClAg6fUp8RIl7M0CdNut6lYG7fKfrUPKNfliFu7jZ9NLpKyz/ppjUtb3b0TXc8FeidL5cziiuDnnWcoBNCxSZEmcQ1qUxqNWXOznFRe8hke+MciCxKrKIEYwIVLws5pea6Yr5TKHLzwK8xM4NTaxxuvner7Gi1RSwhOFkYTC/1mAEPhYgmGAkZ82D+cG8N57QGuNYes3YEe3D/7NJZrZzFeQM6ewy7ZXtahwAAAABJRU5ErkJggg==" border=0 style="position:relative;top:2px;left:5px">&nbsp; SETUP WEBMAN </a></li>
 				<li><a id="nav-menuItem13" onclick="showWait();" href="javascript:_go('/');"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAUCAQAAAA9vDUIAAAAB3RJTUUH3wIUFQQptjSrAQAAAAlwSFlzAAALEgAACxIB0t1+/AAAAARnQU1BAACxjwv8YQUAAADlSURBVHjaY2BgWOGi+p8fCdp92mPLgBOwMDDcN7zL8A9J6BBv4YIlVQwn0JVyMOi9V/sE1PCJ/x+a1GWl7BX8GGYzMeTMZUgBauBzwLT4IxBignsaIG0MtxmIBW+BmHER9xEWonUw2Pxh2f9guwjxGr6+YXki8oJ49QyvRJiESVDOwCDIwCROkgYxBqZbG0nR8OkkEz8p6hm+vGBSJEmDFAOT6BtSNMgzMN05RoqG29uYpBgYSdDA+5tJi4GNaOXMDAoMTBcPsBKtgZVBi4Hp3kcuEjTs28NS9evb2z1Epg/jt6YfAP77PxQ5JPzrAAAAAElFTkSuQmCC" border=0 style="position:relative;top:2px;left:5px">&nbsp; FILE MANAGER </a></li>
 				<li><a id="nav-menuItem14" onclick="showWait();" href="javascript:_go('/mount.ps3/unmount');"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAUCAQAAAAjdQW7AAAAB3RJTUUH3wIUFQgPyIxh8AAAAAlwSFlzAAALEgAACxIB0t1+/AAAAARnQU1BAACxjwv8YQUAAACPSURBVHjatdGxDYMwFITh3xQowcyAMgszZFhAGESVFbJCMgFd4keFsYVfityV/mSdbIhjWXwtitSMfHzHPLe4jUrdOd/TDK8YAioduKXpHFHp5E+iAX2SSvtwTGpAOKbS0h2/0mWptOPC4bHO6goazbduaQylXK/Kqr5WYrjTquSDp/HD1Sl+mfFP/Fbb1xfsHITyNa0xJgAAAABJRU5ErkJggg==" border=0 style="position:relative;top:2px;left:5px">&nbsp; UNMOUNT GAME </a></li>
-				<li><a id="nav-menuItem20" onclick="hideMenu();" href="javascript:pad('/play.ps3');">&#9737; Play Disc</a></li>
-				<li><a id="nav-menuItem2a" onclick="hideMenu();" href="javascript:_go('/install.ps3');">&#9733; Install PKG</a></li>
 				<li><a id="nav-menuItem21" onclick="hideMenu();" href="javascript:url=prompt('URL',url);navigate(url);">&#127758; Browse on PS3</a></li>
 				<li><a id="nav-menuItem22" onclick="showWait();" href="javascript:_go('/play.ps3?col=network&seg=seg_premo');">&#127915; Remote Play on PS3</a></li>
 				<li><a id="nav-menuItem23" onclick="showWait();" href="javascript:_go('/refresh.ps3');">&#8635; Refresh XML</a></li>
@@ -1881,7 +1882,16 @@ if(ip.length>0 && ip!="127.0.0.1" && ip!="localhost") {setCookie("ip", ip, 10000
 <!--<a href="javascript:_go('off');"style="position:absolute;top:15px;right:15px;text-decoration:none;" title="Disconnect"><font face="arial" color=#202020><div id="off"><b>X</b></div></font></a>-->
 
 <center>
-<div id=home><h3><a title="XMB Screen Capture" onclick="javascript:_go('/xmb.ps3$screenshot?show');" style='color:#888'>Capture</a><p><a title="Return to XMB / Home" onclick="javascript:go('/browser.ps3$home*;/xmb.ps3$exit');" style='color:#888'>Home</a></h3></div>
+<div id=home><h3>
+<a title="XMB Screen Capture" onclick="javascript:_go('/xmb.ps3$screenshot?show');" style='color:#888'>Capture</a><p>
+<a title="Return to XMB / Home" onclick="javascript:go('/browser.ps3$home*;/xmb.ps3$exit');" style='color:#CCC'>Home</a><p>
+<a title="Open URL on PS3" onclick="javascript:url=prompt('URL',url);navigate(url);" style='color:#888'>Browse on PS3</a><p>
+<a title="SELECT+START" onclick="javascript:go('/pad.ps3?hold+SELECT+START');" style='color:#888'>SELECT+START</a><p>
+<a title="custom1" onclick="javascript:if(custom1==''||window.event.ctrlKey)custom1=prompt('Enter button names for custom1',custom1);if(custom1!='null'){go('/pad.ps3?'+custom1);document.getElementById('custom1').innerHTML=custom1;}else custom1='';" style='color:#444' id='custom1'>custom1</a><p>
+<a title="custom2" onclick="javascript:if(custom2==''||window.event.ctrlKey)custom2=prompt('Enter button names for custom2',custom2);if(custom2!='null'){go('/pad.ps3?'+custom2);document.getElementById('custom2').innerHTML=custom2;}else custom2='';" style='color:#444' id='custom2'>custom2</a><p>
+<a title="custom3" onclick="javascript:if(custom3==''||window.event.ctrlKey)custom3=prompt('Enter button names for custom3',custom3);if(custom3!='null'){go('/pad.ps3?'+custom3);document.getElementById('custom3').innerHTML=custom3;}else custom3='';" style='color:#444' id='custom3'>custom3</a><p>
+<a title="custom4" onclick="javascript:if(custom4==''||window.event.ctrlKey)custom4=prompt('Enter button names for custom4',custom4);if(custom4!='null'){go('/pad.ps3?'+custom4);document.getElementById('custom4').innerHTML=custom4;}else custom4='';" style='color:#444' id='custom4'>custom4</a><p>
+</h3></div>
 <img id="imgpad" src="pad.jpg" border="0" width="900" height="572" orgwidth="900" orgheight="572" usemap="#ps3pad" alt="">
 <map name="ps3pad" id="ps3pad">
 <area id="btnUp" href="javascript:_go('up');" shape="rect" coords="137,91,205,173" style="outline-color:red;outline-style:dotted;">
