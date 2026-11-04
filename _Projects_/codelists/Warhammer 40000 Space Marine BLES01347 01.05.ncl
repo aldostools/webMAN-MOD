@@ -1,0 +1,5 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 0003F970 60000000
+#

@@ -1,3 +1,10 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 00210450 38600001
+0 00BB2080 38800000
+0 00BB2090 38800000
+#
 Infinite Health
 0
 rambo999

@@ -1,3 +1,8 @@
+﻿Debug Menu (PSXPlace)
+0
+Joey
+0 0121DBAC 38600000
+#
 Infinite HP
 0
 CodeFreak/PS3UserCheat

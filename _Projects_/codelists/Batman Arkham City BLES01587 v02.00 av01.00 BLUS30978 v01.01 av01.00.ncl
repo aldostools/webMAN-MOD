@@ -1,3 +1,8 @@
+﻿Debug Menu (PSXPlace)
+0
+Joey
+0 00E36504 38600000
+#
 Infinite Health
 0
 dron_3

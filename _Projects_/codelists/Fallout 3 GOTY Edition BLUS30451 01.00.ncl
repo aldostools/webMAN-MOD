@@ -1,3 +1,8 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 00702BCC 60000000
+#
 Infinite Health + Oxygen + AP + Ammo + Carrying Weight
 0
 dron_3

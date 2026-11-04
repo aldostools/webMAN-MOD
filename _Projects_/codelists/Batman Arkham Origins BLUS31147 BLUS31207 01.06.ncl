@@ -1,3 +1,13 @@
+﻿Debug Menu (RPCS3)
+0
+RPCS3
+0 00F249F0 38600000
+#
+Debug Menu (PSXPlace)
+0
+PSXPlace
+0 00F249F0 38600000
+#
 Infinite Health
 0
 dron_3

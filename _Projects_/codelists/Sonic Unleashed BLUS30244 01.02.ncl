@@ -1,28 +1,28 @@
-Also known as
-Sonic World Adventure
-
-#
-Disable shadows
+Disable Shadows (PSXPlace) [Tested]
 0
 illusion
 0 00E0464C 38000000
 #
-Disable motion blur
+Disable Motion Blur (PSXPlace) [Tested]
 0
 illusion
 0 00E234E8 38000000
 #
-Disable depth of field
+Disable Depth Of Field (PSXPlace) [Tested]
 0
 illusion
 0 00E5D7C4 38000000
 #
-Disable reflection
+Disable Reflection (PSXPlace) [Tested]
 0
 illusion
 0 00E1EEF0 38000000
 #
-Max Rings On Gain
+Also known as [Tested]
+Sonic World Adventure
+
+#
+Max Rings On Gain [Tested]
 0
 dron_3
 0 0040E1D8 3C003B9A
@@ -30,61 +30,61 @@ dron_3
 0 01088AD8 3C003B9A
 0 01088AE0 6000C9FF
 #
-Rings Never Decrease
+Rings Never Decrease [Tested]
 0
 dron_3
 0 00450A3C 60000000
 #
-Max Ring Energy On Gain
+Max Ring Energy On Gain [Tested]
 0
 dron_3
 0 0040574C 48000008
 #
-Infinite Ring Energy
+Infinite Ring Energy [Tested]
 0
 dron_3
 0 00446034 FFE00090
 #
-Max Lives On Gain + Lose
+Max Lives On Gain + Lose [Tested]
 0
 dron_3
 0 00260ED4 60000000
 0 00227D1C 39600063
 #
-Freeze Time
+Freeze Time [Tested]
 0
 dron_3
 0 00227644 60000000
 0 00BA463C FC20F890
 #
-Werehog Infinite Health
+Werehog Infinite Health [Tested]
 0
 dron_3
 0 010867C0 7C1F0378
 #
-Werehog Max Unleashe On Gain
+Werehog Max Unleashe On Gain [Tested]
 0
 dron_3
 0 010864C4 60000000
 #
-Werehog Infinite Unleashe
+Werehog Infinite Unleashe [Tested]
 0
 dron_3
 0 01086498 FFE00090
 #
-Max Exp On Gain + Spend
+Max Exp On Gain + Spend [Tested]
 0
 dron_3
 0 00228844 60000000
 0 00228870 60000000
 #
-Gaia Colossus Infinite Health
+Gaia Colossus Infinite Health [Tested]
 0
 dron_3
 0 00B6CD48 60000000
 0 00C19D4C 60000000
 #
-AoB Max Rings On Gain
+AoB Max Rings On Gain [Tested]
 0
 dron_3
 B 00010000 04000000
@@ -92,25 +92,25 @@ B 801D05287C004A14 3C003B9A6000C9FF
 B 00010000 04000000
 B 801F06507FC3F3787C1D0214 3C003B9A7FC3F3786000C9FF
 #
-AoB Rings Never Decrease
+AoB Rings Never Decrease [Tested]
 0
 dron_3
 B 00010000 04000000
 B 7C1A00503BA10070 600000003BA10070
 #
-AoB Max Ring Energy On Gain
+AoB Max Ring Energy On Gain [Tested]
 0
 dron_3
 B 00010000 04000000
 B 419C0008FC20F890FF810000409C0008FC200090E8010090D03F052CCBE100787C0803A6EBE10070382100804E800020F821FF01 48000008FC20F890FF810000409C0008FC200090E8010090D03F052CCBE100787C0803A6EBE10070382100804E800020F821FF01
 #
-AoB Infinite Ring Energy
+AoB Infinite Ring Energy [Tested]
 0
 dron_3
 B 00010000 04000000
 B EFE1002AD3FF052C FFE00090D3FF052C
 #
-AoB Max Lives On Gain + Lose
+AoB Max Lives On Gain + Lose [Tested]
 0
 dron_3
 B 00010000 04000000
@@ -118,7 +118,7 @@ B 409D00083880006390838000 600000003880006390838000
 B 00010000 04000000
 B 816980007D6307B4 396000637D6307B4
 #
-AoB Freeze Time
+AoB Freeze Time [Tested]
 0
 dron_3
 B 00010000 04000000
@@ -126,31 +126,31 @@ B C00B005CEC00082A C00B005C60000000
 B 00010000 04000000
 B EC3F08282F800004 FC20F8902F800004
 #
-AoB Werehog Infinite Health
+AoB Werehog Infinite Health [Tested]
 0
 dron_3
 B 00010000 04000000
 B 7FE9021493FE066C 7C1F037893FE066C
 #
-AoB Werehog Max Unleashe On Gain
+AoB Werehog Max Unleashe On Gain [Tested]
 0
 dron_3
 B 00010000 04000000
 B FC00F890FF806800409C0008FC006890E80100A0D01F0678CBE100887C0803A6EBE10080382100904E800020F821FF81 60000000FF806800409C0008FC006890E80100A0D01F0678CBE100887C0803A6EBE10080382100904E800020F821FF81
 #
-AoB Werehog Infinite Unleashe
+AoB Werehog Infinite Unleashe [Tested]
 0
 dron_3
 B 00010000 04000000
 B EFE1002AD3FF0678 FFE00090D3FF0678
 #
-AoB Max Exp On Gain + Spend
+AoB Max Exp On Gain + Spend [Tested]
 0
 dron_3
 B 00010000 04000000
 B 409D00083880270F908985DC4E800020812300783D290001800985DC7C0022142F80270F2F000000900985DC409D000C 600000003880270F908985DC4E800020812300783D290001800985DC7C0022142F80270F2F000000900985DC60000000
 #
-AoB Gaia Colossus Infinite Health
+AoB Gaia Colossus Infinite Health [Tested]
 0
 dron_3
 B 00010000 04000000

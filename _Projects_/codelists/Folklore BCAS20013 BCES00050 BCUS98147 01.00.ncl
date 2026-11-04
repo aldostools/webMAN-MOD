@@ -39,3 +39,7 @@ CodeFreak/PS3UserCheat
 0 10146A18 03E7
 0 10146A1A 03E7
 #
+Unlock FPS
+1
+0 001823C0 60
+#

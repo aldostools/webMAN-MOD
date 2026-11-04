@@ -1,3 +1,9 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 008A3238 28030001
+0 008A30E4 28030001
+#
 Infinite HP
 0
 Hiei-YYH

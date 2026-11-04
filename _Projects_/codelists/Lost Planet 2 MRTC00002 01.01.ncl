@@ -1,20 +1,26 @@
-Infinite HP
+Unlock FPS (PSXPlace) [Tested]
+0
+PSXPlace
+0 013DC518 60000000
+0 013DC524 60000000
+#
+Infinite HP [Tested]
 0
 CodeFreak/PS3UserCheat
 6 021DD98C 00001938
 0 00000000 42C80000
 #
-B-Gauge 99,999
+B-Gauge 99,999 [Tested]
 0
 CodeFreak/PS3UserCheat
 0 312B7458 0001869F
 #
-T-Eng Supplier Never Descreases
+T-Eng Supplier Never Descreases [Tested]
 0
 cagao123
 0 003EF21C 60000000
 #
-Infinite Health + Partial Invincibility
+Infinite Health + Partial Invincibility [Tested]
 0
 cagao123
 0 0040EC00 4E800020
@@ -28,17 +34,23 @@ cagao123
 0 01CA3710 48C63E0A
 0 00C63E04 49CA36FA
 #
-Infinite Ammo, Grenades + Bottomless Clip
+Infinite Ammo, Grenades + Bottomless Clip [Tested]
 0
 cagao123
 0 00843E90 60000000
 0 00843FB0 60000000
 #
-Infinite B Gauge
+Infinite B Gauge [Tested]
 0
 cagao123
 0 0023B844 3D600018
 0 0023B84C 616B967F
 0 0023B860 91690004
 0 0023B864 9161008C
+#
+Unlock FPS v01.00 (RPCS3)
+0
+RPCS3
+0 01394BB8 60000000
+0 01394BC4 60000000
 #

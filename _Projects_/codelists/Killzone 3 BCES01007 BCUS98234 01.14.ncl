@@ -1,4 +1,10 @@
-Debug Options
+Extended FOV (PSXPlace) [Tested]
+0
+vFxMz
+0 0139BDF0 3F59999A
+0 0139BEEC 3F59999A
+#
+Debug Options [Tested]
 0
 dron_3
 0 00EDCB80 74727565

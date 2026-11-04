@@ -1,3 +1,9 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 0074BCD4 60000000
+0 0074BBFC 60000000
+#
 Infinite Health (%99.99)
 0
 FBML
@@ -22,9 +28,6 @@ Freeze Retry Counter
 0
 FBML
 0 006F56BC 60000000
-#
-Enable Pause + Start Menu (Cheats)
-0 00915B6C 60000000
 #
 AoB Infinite Health (%99.99)
 0

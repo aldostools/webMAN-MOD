@@ -1,13 +1,18 @@
-Lot Of Money On Gain
+Unlock FPS (PSXPlace) [Tested]
+0
+Zolika1351/illusion
+0 00F18840 00000000
+#
+Lot Of Money On Gain [Tested]
 0
 jgduff1
 0 0018C5D8 92F904D0 
 #
-1P Invincible Mode
+1P Invincible Mode [Tested]
 0
 0 0066C908 419EFF40
 #
-Infinite Ammo/No Reload
+Infinite Ammo/No Reload [Tested]
 0
 /*Dynamic Memory Codes*/
 /0 33D0777C 00110066
@@ -33,7 +38,7 @@ Infinite Ammo/No Reload
 /0 0066BFDC B018001C 
 /0 0066BFF4 B138001E 
 #
-Star Cop Never Increase
+Star Cop Never Increase [Tested]
 0
 /*Dynamic Memory Codes*/
 /0 338928A8 00000000
@@ -65,7 +70,7 @@ Star Cop Never Increase
 /0 0022B954 917F0068 
 /0 0022BA14 917F0068
 #
-
+ [Tested]
 
 
 
@@ -76,7 +81,7 @@ Star Cop Never Increase
 xtatu
 0 0066C908 419EFF40
 #
-AoB 1P Invincible Mode
+AoB 1P Invincible Mode [Tested]
 0
 xtatu
 B 00010000 04000000

@@ -1,3 +1,8 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 005C92F8 2B800000
+#
 Infinite Ammo + No Reload
 0
 dron_3

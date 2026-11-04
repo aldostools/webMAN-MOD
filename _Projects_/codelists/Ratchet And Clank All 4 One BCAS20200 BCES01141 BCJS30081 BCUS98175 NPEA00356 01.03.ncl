@@ -1,3 +1,9 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 0073C7A0 38600001
+0 0073C78C 38A00001
+#
 1P Infinite Health
 0
 xtatu

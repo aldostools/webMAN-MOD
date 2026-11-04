@@ -1,19 +1,33 @@
-Primary Ammo Never Decreases
+Unlock FPS (RPCS3) [Tested]
+0
+RPCS3
+0 007EEAC8 C0228DCC
+0 00F02AD4 38D1B717
+0 00736C44 60000000
+#
+Unlock FPS (PSXPlace) [Tested]
+0
+PSXPlace
+0 00817D48 C0228DD4
+0 00F330FC 38D1B717
+0 0075FA54 60000000
+#
+Primary Ammo Never Decreases [Tested]
 0
 bungholio
 0 00570B6C 60000000
 #
-Secondary Ammo Never Decreases
+Secondary Ammo Never Decreases [Tested]
 0
 bungholio
 0 00571770 60000000
 #
-Grenades Never Decrease
+Grenades Never Decrease [Tested]
 0
 bungholio
 0 00158268 38600005
 #
-Can Not Die
+Can Not Die [Tested]
 0
 bungholio
 0 0017761C 3C607F80
@@ -24,31 +38,31 @@ bungholio
 0 00183D78 38600000
 0 00183D7C 4BFFFF6C
 #
-Have All Weapons
+Have All Weapons [Tested]
 0
 bungholio
 0 001BE7F0 3CA07FFF
 0 001BE7F4 60A5FFFF
 #
-AoB Primary Ammo Never Decreases
+AoB Primary Ammo Never Decreases [Tested]
 0
 bungholio
 B 00010000 04000000
 B 10421C801041124C7C43F94E 10421C801041124C60000000
 #
-AoB Secondary Ammo Never Decreases
+AoB Secondary Ammo Never Decreases [Tested]
 0
 bungholio
 B 00010000 04000000
 B 2C0400007C43F94E 2C04000060000000
 #
-AoB Grenades Never Decrease
+AoB Grenades Never Decrease [Tested]
 0
 bungholio
 B 00010000 04000000
 B 7C632814987609EC 38600005987609EC
 #
-AoB Can Not Die
+AoB Can Not Die [Tested]
 0
 bungholio
 B 00010000 04000000
@@ -56,7 +70,7 @@ B 63E30000484C9361607E0000 3C607F80907F00F83BC00000
 B 00010000 04000000
 B 63A30000484BCC0D2C0300004182FF6C 3C607F80907D00F8386000004BFFFF6C
 #
-AoB Have All Weapons
+AoB Have All Weapons [Tested]
 0
 bungholio
 B 00010000 04000000

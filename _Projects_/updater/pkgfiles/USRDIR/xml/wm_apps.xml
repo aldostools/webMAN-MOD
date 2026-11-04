@@ -122,6 +122,10 @@
 				<P key="title"><>Swarm [Torrent client] by mohasi</></P>
 				<P key="info"><>392 KB</></P>
 			</T>
+			<T key="app040" include="inc">
+				<P key="title"><>CELL Social Media</></P>
+				<P key="info"><>7 MB</></P>
+			</T>
 			<T key="app041" include="inc">
 				<P key="title"><>JellyFin-PS3</></P>
 				<P key="info"><>3 MB</></P>
@@ -218,6 +222,7 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app034" attr="app034" src="#app034_link"/><!-- Thermal Bench by mohasi -->
 			<Q class="type:x-xmb/folder-pixmap" key="app035" attr="app035" src="#app035_link"/><!-- Swarm by mohasi -->
 
+			<Q class="type:x-xmb/folder-pixmap" key="app040" attr="app040" src="#app040_link"/><!-- CELL Social Media -->
 			<Q class="type:x-xmb/folder-pixmap" key="app041" attr="app041" src="#app041_link"/><!-- JellyFin-PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="app042" attr="app042" src="#app042_link"/><!-- TEE-Vanced-PS -->
 			<Q class="type:x-xmb/folder-pixmap" key="app043" attr="app043" src="#app043_link"/><!-- TEE-Remote-Play -->
@@ -558,6 +563,21 @@
 				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/mohasi-swarm.pkg</></P>
 				<P key="content_name"><>msg_install</></P>
 				<P key="content_id"><>HB0001-SWARM0001_00-SWARMVPNCLIENT01</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- CELL Social Media -->
+	<V id="app040_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/CELL.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/CELL.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-CELL00001_00-0000000000000000</></P>
 				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
 			</T>
 		</A>
@@ -2386,22 +2406,26 @@ SQUARE + START toggle fan mode</></P>
 				<P key="info"><>10.2 MB - Amiga emulator</></P>
 			</T>
 			<T key="emu010" include="inc">
-				<P key="title"><>pSNES PS3 by theheroGAC & Cpasjuste</></P>
-				<P key="info"><>10.2 MB - Super Nintendo emulator</></P>
-			</T>
-			<T key="emu011" include="inc">
 				<P key="title"><>pNES PS3 by theheroGAC & Cpasjuste</></P>
 				<P key="info"><>10.2 MB - Nintendo emulator</></P>
 			</T>
+			<T key="emu011" include="inc">
+				<P key="title"><>pSNES PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>10.2 MB - Super Nintendo emulator</></P>
+			</T>
 			<T key="emu012" include="inc">
+				<P key="title"><>pGBA PS3 by theheroGAC & Cpasjuste</></P>
+				<P key="info"><>5.4 MB - Nintendo Game Boy Advance emulator</></P>
+			</T>
+			<T key="emu013" include="inc">
 				<P key="title"><>pGEN PS3 by theheroGAC & Cpasjuste</></P>
 				<P key="info"><>10.2 MB - Sega Genesis / Megadrive emulator</></P>
 			</T>
-			<T key="emu013" include="inc">
+			<T key="emu014" include="inc">
 				<P key="title"><>pFBNEO PS3 by theheroGAC & Cpasjuste</></P>
 				<P key="info"><>10.2 MB - Final Burn emulator</></P>
 			</T>
-			<T key="emu014" include="inc">
+			<T key="emu015" include="inc">
 				<P key="title"><>MSX4PS3 by theheroGAC</></P>
 				<P key="info"><>5.4 MB - MSX emulator</></P>
 			</T>
@@ -2415,11 +2439,12 @@ SQUARE + START toggle fan mode</></P>
 			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- Cell64 -->  
 			<Q class="type:x-xmb/folder-pixmap" key="emu006" attr="emu006" src="#emu006_link"/><!-- NotDC -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu007" attr="emu007" src="#emu007_link"/><!-- ScummVM -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu010" attr="emu010" src="#emu010_link"/><!-- pSNES -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu011" attr="emu011" src="#emu011_link"/><!-- pNES -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu012" attr="emu012" src="#emu012_link"/><!-- pGEN -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu013" attr="emu013" src="#emu013_link"/><!-- pFBNEO -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu014" attr="emu014" src="#emu014_link"/><!-- MSX4PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu010" attr="emu010" src="#emu010_link"/><!-- pNES -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu011" attr="emu011" src="#emu011_link"/><!-- pSNES -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu012" attr="emu012" src="#emu012_link"/><!-- pGBA -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu013" attr="emu013" src="#emu013_link"/><!-- pGEN -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu014" attr="emu014" src="#emu014_link"/><!-- pFBNEO -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu015" attr="emu015" src="#emu015_link"/><!-- MSX4PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu008" attr="emu008" src="#emu008_link"/><!-- PicoDrive -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu009" attr="emu009" src="#emu009_link"/><!-- UAE4ALL2HD -->
 		</I>
@@ -2575,23 +2600,8 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- pSNES -->
-	<V id="emu010_link">
-		<A>
-			<T key="pkg_link">
-				<P key="info"><>net_package_install</></P>
-				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
-				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
-				<P key="content_name"><>msg_install</></P>
-				<P key="content_id"><>UP0001-PSNE00001_00-0000000000000000</></P>
-				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
-			</T>
-		</A>
-		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
-	</V>
-
 	<!-- pNES -->
-	<V id="emu011_link">
+	<V id="emu010_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2605,8 +2615,38 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- pGEN -->
+	<!-- pSNES -->
+	<V id="emu011_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/psnes.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PSNE00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pGBA -->
 	<V id="emu012_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pgba.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pgba.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PGBA00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- pGEN -->
+	<V id="emu013_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2621,7 +2661,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- pFBNEO -->
-	<V id="emu013_link">
+	<V id="emu014_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
@@ -2636,7 +2676,7 @@ SQUARE + START toggle fan mode</></P>
 	</V>
 
 	<!-- MSX4PS3 -->
-	<V id="emu014_link">
+	<V id="emu015_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>

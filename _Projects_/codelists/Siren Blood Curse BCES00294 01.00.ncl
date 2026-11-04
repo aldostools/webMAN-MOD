@@ -1,3 +1,10 @@
+Unlock FPS (PSXPlace)
+0
+Joey
+0 002E8404 38600001
+0 002FA99C 38600001
+0 00022818 4E800020
+#
 Also known as
 SIREN New Translation
 

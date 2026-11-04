@@ -1,52 +1,5 @@
-Gil 99999
+Unlock FPS (PSXPlace)
 0
-CodeFreak/PS3UserCheat
-0 44591228 3B9AC9FF
-#
-LV 10 Crystarum LV10
-0
-CodeFreak/PS3UserCheat
-0 4459123C 0000000A
-#
-CP Max
-0
-CodeFreak/PS3UserCheat
-0 005A22D8 60000000
-#
-Infinite CP
-0
-CodeFreak/PS3UserCheat
-0 0059219C 3C00000F
-#
-Use CP Max
-0
-CodeFreak/PS3UserCheat
-0 005921A0 6000423F
-#
-Status Max
-0
-CodeFreak/PS3UserCheat
-0 005898A0 92370018
-0 005898A4 9237001C
-#
-Item Buy Sell 99
-0
-CodeFreak/PS3UserCheat
-0 005AA2D8 3B800000
-0 005AA5A8 38C00063
-#
-Infinite Item
-0
-CodeFreak/PS3UserCheat
-0 00591440 60000000
-#
-Item Drop X 8
-0
-CodeFreak/PS3UserCheat
-0 005AA434 549B1838
-#
-Weapon EXP
-0
-CodeFreak/PS3UserCheat
-0 0041CA60 93830014
+RPCS3_illusion
+0 008D2E94 38800001
 #
