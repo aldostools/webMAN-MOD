@@ -218,19 +218,19 @@ static void check_path_alias(char *param)
 			}
 			if(not_exists(param))
 			{
-				const char *ext = get_ext(param);
-				const char *dir = IS(ext, ".pkg") ? DEFAULT_PKG_PATH : HDD0_GAME_DIR;
-				snprintf(param, HTML_RECV_LAST, "%s%s", dir, path); // try /dev_hdd0/game
-				if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s%s", _HDD0_GAME_DIR, path);} // try /dev_hdd0//game
-			}
-			if(not_exists(param))
-			{
 				for(u8 i = 0; i < (MAX_DRIVES + 1); i++)
 				{
 					if(i == NET) i = NTFS + 1;
 					snprintf(param, HTML_RECV_LAST, "%s/%s", drives[i], path); // try hdd0, usb0, usb1, etc.
 					if(file_exists(param)) break;
 				}
+			}
+			if(not_exists(param))
+			{
+				const char *ext = get_ext(param);
+				const char *dir = IS(ext, ".pkg") ? DEFAULT_PKG_PATH : HDD0_GAME_DIR;
+				snprintf(param, HTML_RECV_LAST, "%s%s", dir, path); // try /dev_hdd0/game
+				if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s%s", _HDD0_GAME_DIR, path);} // try /dev_hdd0//game
 			}
 			if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s/%s", "/dev_hdd0/tmp", path);} // try hdd0
 			if(not_exists(param)) {snprintf(param, HTML_RECV_LAST, "%s/%s", HDD0_HOME_DIR, path);} // try /dev_hdd0/home

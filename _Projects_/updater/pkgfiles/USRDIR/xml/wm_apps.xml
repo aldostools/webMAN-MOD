@@ -189,7 +189,7 @@
 		</A>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="menu00" attr="menu00" src="#seg_emulators"/><!-- Emulators -->
-			<Q class="type:x-xmb/folder-pixmap" key="menu01" attr="menu01" src="#seg_mod_xmb"/><!-- XMD MODs -->
+			<Q class="type:x-xmb/folder-pixmap" key="menu01" attr="menu01" src="#seg_mod_xmb"/><!-- XMB MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu02" attr="menu02" src="#seg_mod_cfw"/><!-- CFW MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu03" attr="menu03" src="#seg_webapps"/><!-- WebApps Links -->
 
@@ -793,7 +793,7 @@
 		</A>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
-	
+
 	<!-- webMAN MOD Installer -->
 	<V id="app020_link">
 		<A>
@@ -1581,7 +1581,7 @@ SQUARE + START toggle fan mode</></P>
 		</A>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
-	
+
 	<V id="mod126_link">
 		<A>
 			<T key="pkg_link">
@@ -1595,7 +1595,7 @@ SQUARE + START toggle fan mode</></P>
 		</A>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
-	
+
 	<V id="mod127_link">
 		<A>
 			<T key="pkg_link">
@@ -1609,7 +1609,7 @@ SQUARE + START toggle fan mode</></P>
 		</A>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
-	
+
 	<V id="mod128_link">
 		<A>
 			<T key="pkg_link">
@@ -1994,7 +1994,7 @@ SQUARE + START toggle fan mode</></P>
 		</A>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
-	
+
 	<V id="xmb006_link">
 		<A>
 			<T key="pkg_link">
@@ -2429,14 +2429,27 @@ SQUARE + START toggle fan mode</></P>
 				<P key="title"><>MSX4PS3 by theheroGAC</></P>
 				<P key="info"><>5.4 MB - MSX emulator</></P>
 			</T>
+			<T key="emu016" include="inc">
+				<P key="title"><>PCE4PS3 by theheroGAC</></P>
+				<P key="info"><>5.7 MB - PC Engine / TurboGrafx-16 / SuperGrafx / CD-ROM2 emulator</></P>
+			</T>
+			<T key="emu017" include="inc">
+				<P key="title"><>VICE4PS3 by theheroGAC</></P>
+				<P key="info"><>5.7 MB - Commodore 64 emulator</></P>
+			</T>
+			<T key="emu018" include="inc">
+				<P key="title"><>PCSX Rearmed PS3 by Calip</></P>
+				<P key="info"><>1.4 MB - PSX emulator</></P>
+			</T>
 		</A>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- RetroArch PS3 Overlays -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- PPPSSPP PS3 -->  
-			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- salsa64 -->  
-			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- salsaDS -->   
-			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- Cell64 -->  
+			<Q class="type:x-xmb/folder-pixmap" key="emu018" attr="emu018" src="#emu018_link"/><!-- PCSX Rearmed PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- PPPSSPP PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- salsa64 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- salsaDS -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu005" attr="emu005" src="#emu005_link"/><!-- Cell64 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu006" attr="emu006" src="#emu006_link"/><!-- NotDC -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu007" attr="emu007" src="#emu007_link"/><!-- ScummVM -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu010" attr="emu010" src="#emu010_link"/><!-- pNES -->
@@ -2445,6 +2458,8 @@ SQUARE + START toggle fan mode</></P>
 			<Q class="type:x-xmb/folder-pixmap" key="emu013" attr="emu013" src="#emu013_link"/><!-- pGEN -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu014" attr="emu014" src="#emu014_link"/><!-- pFBNEO -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu015" attr="emu015" src="#emu015_link"/><!-- MSX4PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu016" attr="emu016" src="#emu016_link"/><!-- PCE4PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu017" attr="emu017" src="#emu017_link"/><!-- VICE4PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu008" attr="emu008" src="#emu008_link"/><!-- PicoDrive -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu009" attr="emu009" src="#emu009_link"/><!-- UAE4ALL2HD -->
 		</I>
@@ -2690,4 +2705,48 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- PCE4PS3 -->
+	<V id="emu016_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/PCE4PS3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/PCE4PS3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PCE4PS300_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- VICE4PS3 -->
+	<V id="emu017_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/VICE4PS3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/VICE4PS3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-VICEP3001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- PCSX Rearmed PS3 -->
+	<V id="emu018_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pcsx-rearmed-ps3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/pcsx-rearmed-ps3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PCSR00001_00-0000000000000001</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
 </X>

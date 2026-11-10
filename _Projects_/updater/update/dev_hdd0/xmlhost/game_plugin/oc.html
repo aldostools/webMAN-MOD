@@ -72,7 +72,7 @@ function updateClock(gval, mval)
 	if( (gval < 300) && (mval < 300) )
 		$('oc').src="/xmb.ps3$exit";
 	else if( (ocgpu.value >= 300) && (ocmem.value >= 300) )
-		$('oc').src="/gpuclock.ps3?"+ocgpu.value.toString()+"|"+ocmem.value.toString();
+		$('oc').src="/gpuclock.ps3?"+ocgpu.value.toString()+"|"+ocmem.value.toString()+"|"+ocmem.value.toString();
 }
 
 function initScriptedGauges() {
