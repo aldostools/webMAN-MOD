@@ -84,7 +84,7 @@ static void poll_start_play_time(void)
 
 		if(!toggle_snd0 && webman_config->nosnd0) { toggle_snd0 = true; cellFsChmod("/dev_bdvd/PS3_GAME/SND0.AT3", MODE); } /* re-enable SND0.AT3 in-game */
 
-		close_ftp_sessions_idle(); if(!max_temp && webman_config->fanc) reset_fan_mode();
+		close_ftp_sessions_idle(); 
 
 		#ifdef PS3MAPI
 		// unmap gameboot audio
@@ -168,6 +168,13 @@ static void poll_start_play_time(void)
 				start_artemis();
 		}
 		#endif
+
+		// increase fan speed in manual mode if webman_config->man_ingame > 0
+		if(!max_temp && webman_config->fanc)
+		{
+			while(is_ingame_first_15_seconds()) sys_ppu_thread_sleep(1);
+			reset_fan_mode();
+		}
 	}
 }
 

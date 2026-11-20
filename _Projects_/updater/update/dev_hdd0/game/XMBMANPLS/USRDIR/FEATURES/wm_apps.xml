@@ -158,6 +158,10 @@
 				<P key="title"><>HDD Atlas</></P>
 				<P key="info"><>12.8 MB</></P>
 			</T>
+			<T key="app049" include="inc">
+				<P key="title"><>CRTube</></P>
+				<P key="info"><>1.5 MB</></P>
+			</T>
 			<T key="appLIC" include="inc">
 				<P key="title"><>License Pack BIN</></P>
 				<P key="info"><>2.38 MB</></P>
@@ -190,6 +194,14 @@
 				<P key="title"><>RetroPlay 1</></P>
 				<P key="info"><>3.6 MB</></P>
 			</T>
+			<T key="app023" include="inc">
+				<P key="title"><>PS Dashboard</></P>
+				<P key="info"><>2.4 MB</></P>
+			</T>
+			<T key="app024" include="inc">
+				<P key="title"><>PS3 World Store</></P>
+				<P key="info"><>4.7 MB</></P>
+			</T>
 		</A>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="menu00" attr="menu00" src="#seg_emulators"/><!-- Emulators -->
@@ -210,6 +222,8 @@
 			<Q class="type:x-xmb/folder-pixmap" key="app010" attr="app010" src="#app010_link"/><!-- IRISMAN -->
 			<Q class="type:x-xmb/folder-pixmap" key="app021" attr="app021" src="#app021_link"/><!-- SpookyFlow -->
 			<Q class="type:x-xmb/folder-pixmap" key="app022" attr="app022" src="#app022_link"/><!-- RetroPlay 1 -->
+			<Q class="type:x-xmb/folder-pixmap" key="app023" attr="app023" src="#app023_link"/><!-- PS Dashboard -->
+			<Q class="type:x-xmb/folder-pixmap" key="app024" attr="app024" src="#app024_link"/><!-- PS3 World Store -->
 
 			<Q class="type:x-xmb/folder-pixmap" key="app012" attr="app012" src="#app012_link"/><!-- Movian -->
 			<Q class="type:x-xmb/folder-pixmap" key="app013" attr="app013" src="#app013_link"/><!-- Apollo Save Tool -->
@@ -228,6 +242,7 @@
 
 			<Q class="type:x-xmb/folder-pixmap" key="app040" attr="app040" src="#app040_link"/><!-- CELL Social Media -->
 			<Q class="type:x-xmb/folder-pixmap" key="app041" attr="app041" src="#app041_link"/><!-- JellyFin-PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="app049" attr="app049" src="#app049_link"/><!-- CRTube -->
 			<Q class="type:x-xmb/folder-pixmap" key="app042" attr="app042" src="#app042_link"/><!-- TEE-Vanced-PS -->
 			<Q class="type:x-xmb/folder-pixmap" key="app043" attr="app043" src="#app043_link"/><!-- TEE-Remote-Play -->
 			<Q class="type:x-xmb/folder-pixmap" key="app044" attr="app044" src="#app044_link"/><!-- PS3-Health -->
@@ -709,6 +724,21 @@
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- CRTube -->
+	<V id="app049_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/crtube.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/crtube.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-CRTUBE001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
 	<!-- Ultimate Toolbox v2.03 FULL -->
 	<V id="app017_link">
 		<A>
@@ -859,6 +889,37 @@
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- PS Dashboard -->
+	<V id="app023_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/PS_Dashboard.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/PS_Dashboard.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PSDB00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- PS3 World App -->
+	<V id="app024_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/PS3WorldApp.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/Addons/PS3WorldApp.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-PSWD00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- CFW MODs -->
 	<V id="seg_mod_cfw">
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="pkg_dev_blind"	src="#seg_toggle_dev_blind"/>
@@ -949,20 +1010,20 @@
 			</T>
 		</A>
 		<I>
-			<Q class="type:x-xmb/folder-pixmap" key="mod00A" attr="mod00A" src="#mod00A_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod00B" attr="mod00B" src="#mod00B_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod001" attr="mod001" src="#mod001_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod002" attr="mod002" src="#mod002_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod003" attr="mod003" src="#mod003_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod004" attr="mod004" src="#mod004_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod005" attr="mod005" src="#mod005_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod006" attr="mod006" src="#mod006_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod007" attr="mod007" src="#mod007_link"/>
+			<Q class="type:x-xmb/folder-pixmap" key="mod00A" attr="mod00A" src="#mod00A_link"/><!-- PSN Login Blocker -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod00B" attr="mod00B" src="#mod00B_link"/><!-- ps3-updatelist.txt -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod001" attr="mod001" src="#mod001_link"/><!-- webMAN LaunchPad -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod002" attr="mod002" src="#mod002_link"/><!-- FREE 4MB -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod003" attr="mod003" src="#mod003_link"/><!-- CFW Tools menu MOD -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod004" attr="mod004" src="#mod004_link"/><!-- Package Manager MOD -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod005" attr="mod005" src="#mod005_link"/><!-- Package Manager MOD + Stores -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod006" attr="mod006" src="#mod006_link"/><!-- Extended Download MOD -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod007" attr="mod007" src="#mod007_link"/><!-- Power Options -->
 
-			<Q class="type:x-xmb/folder-pixmap" key="mod101" attr="mod101" src="#mod101_link"/>
-			<Q class="type:x-xmb/folder-pixmap" key="mod102" attr="mod102" src="#mod102_link"/>
+			<Q class="type:x-xmb/folder-pixmap" key="mod101" attr="mod101" src="#mod101_link"/><!-- Default PS1 emulators -->
+			<Q class="type:x-xmb/folder-pixmap" key="mod102" attr="mod102" src="#mod102_link"/><!-- Default PS2 emulators -->
 
-			<Q class="type:x-xmb/folder-pixmap" key="menu10" attr="menu10" src="#seg_mnu_ps1emu"/><!-- PS1 EMU MODs -->
+			<Q class="type:x-xmb/folder-pixmap" key="menu10" attr="menu10" src="#seg_mnu_ps1emu"/>   <!-- PS1 EMU MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu11" attr="menu11" src="#seg_mnu_ps1netemu"/><!-- PS1 NETEMU MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu12" attr="menu12" src="#seg_mnu_ps2netemu"/><!-- PS2 NETEMU MODs -->
 			<Q class="type:x-xmb/folder-pixmap" key="menu13" attr="menu13" src="#seg_mnu_ps2gxemu"/> <!-- PS2 GXEMU MODs -->
@@ -1237,6 +1298,7 @@ SQUARE + START toggle fan mode</></P>
 		</I>
 	</V>
 
+	 <!-- PSN Login Blocker -->
 	<V id="mod00A_link">
 		<A>
 			<T key="pkg_link">
@@ -1251,6 +1313,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- ps3-updatelist.txt -->
 	<V id="mod00B_link">
 		<A>
 			<T key="pkg_link">
@@ -1265,6 +1328,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- webMAN LaunchPad -->
 	<V id="mod001_link">
 		<A>
 			<T key="pkg_link">
@@ -1279,6 +1343,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- FREE 4MB -->
 	<V id="mod002_link">
 		<A>
 			<T key="pkg_link">
@@ -1293,6 +1358,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- CFW Tools menu MOD -->
 	<V id="mod003_link">
 		<A>
 			<T key="pkg_link">
@@ -1307,6 +1373,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- Package Manager MOD -->
 	<V id="mod004_link">
 		<A>
 			<T key="pkg_link">
@@ -1321,6 +1388,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- Package Manager MOD + Stores -->
 	<V id="mod005_link">
 		<A>
 			<T key="pkg_link">
@@ -1335,6 +1403,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- Extended Download MOD -->
 	<V id="mod006_link">
 		<A>
 			<T key="pkg_link">
@@ -1349,6 +1418,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- Power Options -->
 	<V id="mod007_link">
 		<A>
 			<T key="pkg_link">
@@ -1363,7 +1433,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- PS1 & PS2 mods by kozarovv-->
+	<!-- PS1 & PS2 mods by kozarovv -->
 	<V id="mod101_link">
 		<A>
 			<T key="pkg_link">
@@ -1855,6 +1925,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- VSH Fix 4.93 CEX-->
 	<V id="mod212_link">
 		<A>
 			<T key="pkg_link">
@@ -1869,6 +1940,7 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
+	<!-- VSH Fix 4.93 PEX-->
 	<V id="mod213_link">
 		<A>
 			<T key="pkg_link">
@@ -2458,6 +2530,14 @@ SQUARE + START toggle fan mode</></P>
 				<P key="info"><>9.6 MB - Commodore 64 emulator</></P>
 			</T>
 			<T key="emu018" include="inc">
+				<P key="title"><>CPC4PS3 by theheroGAC</></P>
+				<P key="info"><>2.4 MB - Amstrad CPC emulator</></P>
+			</T>
+			<T key="emu019" include="inc">
+				<P key="title"><>Puffle3 by trashy12-boop</></P>
+				<P key="info"><>7.7 MB - Adobe Flash emulator</></P>
+			</T>
+			<T key="emu020" include="inc">
 				<P key="title"><>PSXONPS3 by Calyps0man</></P>
 				<P key="info"><>1.5 MB - PSX emulator</></P>
 			</T>
@@ -2465,7 +2545,7 @@ SQUARE + START toggle fan mode</></P>
 		<I>
 			<Q class="type:x-xmb/folder-pixmap" key="emu000" attr="emu000" src="#emu000_link"/><!-- RetroArch CE -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu001" attr="emu001" src="#emu001_link"/><!-- RetroArch PS3 Overlays -->
-			<Q class="type:x-xmb/folder-pixmap" key="emu018" attr="emu018" src="#emu018_link"/><!-- PSXONPS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu020" attr="emu020" src="#emu020_link"/><!-- PSXONPS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu002" attr="emu002" src="#emu002_link"/><!-- PPPSSPP PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu003" attr="emu003" src="#emu003_link"/><!-- salsaDS -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu004" attr="emu004" src="#emu004_link"/><!-- salsa64 -->
@@ -2480,6 +2560,8 @@ SQUARE + START toggle fan mode</></P>
 			<Q class="type:x-xmb/folder-pixmap" key="emu015" attr="emu015" src="#emu015_link"/><!-- MSX4PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu016" attr="emu016" src="#emu016_link"/><!-- PCE4PS3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu017" attr="emu017" src="#emu017_link"/><!-- VICE4PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu018" attr="emu018" src="#emu018_link"/><!-- CPC4PS3 -->
+			<Q class="type:x-xmb/folder-pixmap" key="emu019" attr="emu019" src="#emu019_link"/><!-- Pluffle3 -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu008" attr="emu008" src="#emu008_link"/><!-- PicoDrive -->
 			<Q class="type:x-xmb/folder-pixmap" key="emu009" attr="emu009" src="#emu009_link"/><!-- UAE4ALL2HD -->
 		</I>
@@ -2755,8 +2837,38 @@ SQUARE + START toggle fan mode</></P>
 		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
 	</V>
 
-	<!-- PSXONPS3 -->
+	<!-- CPC4PS3 -->
 	<V id="emu018_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/CPC4PS3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/CPC4PS3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-CPC4PS300_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- Pluffle3 -->
+	<V id="emu019_link">
+		<A>
+			<T key="pkg_link">
+				<P key="info"><>net_package_install</></P>
+				<P key="pkg_src"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Puffle3.pkg</></P>
+				<P key="pkg_src_qa"><>https://gh-proxy.com/github.com/aldostools/Resources/releases/download/RetroArch_CE/Puffle3.pkg</></P>
+				<P key="content_name"><>msg_install</></P>
+				<P key="content_id"><>UP0001-RFLP00001_00-0000000000000000</></P>
+				<P key="prod_pict_path"><>/dev_hdd0//game/XMBMANPLS/USRDIR/IMAGES/package.png</></P>
+			</T>
+		</A>
+		<I><Item class="type:x-xmb/xmlnpsignup" key="pkg_link" attr="pkg_link"/></I>
+	</V>
+
+	<!-- PSXONPS3 -->
+	<V id="emu020_link">
 		<A>
 			<T key="pkg_link">
 				<P key="info"><>net_package_install</></P>
